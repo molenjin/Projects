@@ -1,0 +1,51 @@
+﻿@using BlazorBootstrap;
+@using BlazorDemo.Models;
+
+<div class="row">
+    <div class="col flex-grow-0 pb-2">
+        <img source src=@Airplane.ImageName alt=@Airplane.Name />
+    </div>
+    <div class="col" style="min-width: 300px; max-width: 525px;">
+        <h1 style="color:darkblue;">@Airplane.Name</h1>
+        <p>Country <b>@Airplane.Country</b></p>
+        <p>@Airplane.Description</p>
+        <p>Price <b>USD @PriceFormattedStr()</b></p>
+        <button class="btn btn-primary" @onclick="OnBuyButtonClickAsync">Buy</button>
+        <button class="btn btn-primary" @onclick="@(()=> DeleteAirplane.InvokeAsync(Airplane))">Delete</button>
+    </div>
+</div>
+
+<Modal @ref="modal" title="Warning" IsVerticallyCentered="true">
+    <BodyTemplate>
+        <span>This airplane is not for sale</span>        
+    </BodyTemplate>  
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="OnHideModalClickAsync">Close</Button>
+    </FooterTemplate>
+</Modal>
+
+
+@code {
+    [Parameter]
+    public AirplaneViewModel? Airplane { get; set; }
+
+    [Parameter]
+    public EventCallback<AirplaneViewModel> DeleteAirplane { get; set; }
+
+    private Modal modal = default!;
+
+    private async Task OnBuyButtonClickAsync()
+    {
+        await modal.ShowAsync();   
+    }
+
+    private async Task OnHideModalClickAsync()
+    {
+        await modal.HideAsync();
+    }
+
+    private string PriceFormattedStr()
+    {
+        return Airplane.Price.ToString("0,000,000");
+    }
+}

@@ -1,0 +1,60 @@
+﻿@page "/miroslav"
+@using BlazorBootstrap;
+
+<PageTitle>Miroslav</PageTitle>
+
+<h1 style="color:darkblue;">Miroslav Olenjin</h1>
+
+<br>
+
+<table width="400">
+    <tr>
+        <td>
+            <Carousel ShowIndicators="true" Crossfade=@isCrossfadeOn>
+                <CarouselItem Active="true">
+                    <Image Src="/Images/miroslav1.png" />
+                </CarouselItem>
+                <CarouselItem>
+                    <Image Src="/Images/miroslav2.png" />
+                </CarouselItem>
+                <CarouselItem>
+                    <Image Src="/Images/miroslav3.png" />
+                </CarouselItem>
+                <CarouselItem>
+                    <Image Src="/Images/miroslav4.png" />
+                </CarouselItem>
+                <CarouselItem>
+                    <Image Src="/Images/helen.png" />
+                </CarouselItem>
+                <CarouselItem>
+                    <Image Src="/Images/children.png" />
+                </CarouselItem>
+            </Carousel>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<RadioInput Name="CarouselMode" Label="Scroll" @bind-Value="isScrollOn" />
+<RadioInput Name="CarouselMode" Label="Crossfade" @bind-Value="isCrossfadeOn" />
+
+<br>
+
+<p>Senior Software Developer</p>
+
+<ul>
+    <li>Microsoft .Net</li>
+    <li>MS SQL Server, Oracle</li>
+    <li>HTML, CSS, JavaScript, MUAI, Blazor</li>
+    <li>Azure DevOps</li>
+</ul>
+<span>molenjin@gmail.com</span>
+<br>
+<span>0416 254 202</span>
+
+
+@code {
+    private bool isScrollOn = true;
+    private bool isCrossfadeOn;
+}

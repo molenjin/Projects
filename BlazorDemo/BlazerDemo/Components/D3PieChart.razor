@@ -1,0 +1,17 @@
+﻿@using BlazorDemo.Models
+@inject IJSRuntime JSRuntime;
+
+<div id="piechart"></div>
+
+@code {
+    [Parameter]
+    public D3PieChartRecords? PieChartRecords { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (PieChartRecords != null)
+        {
+            await JSRuntime.InvokeVoidAsync("SiteFunctions.GeneratePieChart", PieChartRecords);
+        }
+    }
+}

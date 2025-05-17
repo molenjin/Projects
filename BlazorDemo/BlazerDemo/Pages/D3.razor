@@ -1,0 +1,27 @@
+﻿@page "/d3js"
+@inject D3PieChartRecords pieChartRecords
+
+@using BlazorBootstrap;
+@using BlazorDemo.Models;
+@using BlazorDemo.Components;
+
+<PageTitle>D3</PageTitle>
+
+<h1 style="color:darkblue;">D3.js</h1>
+
+<D3PieChart PieChartRecords="pieChartRecords"></D3PieChart>
+
+<h1 style="color:darkblue;">Browsers</h1>
+
+@foreach (var record in pieChartRecords.Records)
+{
+    <div class="d-flex flex-row mb-2" style="width:500px">
+        <div style="width:100px">@record.BrowserName</div>
+        <RangeInput TValue="int" @bind-Value="record.Value" Min="0" Max="100" />
+        <div style="width:40px; display: flex; justify-content: flex-end">@record.Value</div>
+    </div>    
+}
+
+
+@code {
+}

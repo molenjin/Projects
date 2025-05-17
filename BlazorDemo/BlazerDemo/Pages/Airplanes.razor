@@ -1,0 +1,50 @@
+﻿@page "/airplanes"
+@inject AirplaneService airplaneService
+
+@using BlazorBootstrap;
+@using BlazorDemo.Components
+@using BlazorDemo.Models
+
+<PageTitle>Airplanes</PageTitle>
+
+<h1 style="color:darkblue;">Airplanes for sale</h1>
+
+<br>
+
+@if (!airplaneService.Loaded)
+{
+    <div class="spinner"> </div>
+}
+
+@foreach (var airplane in airplaneService.AirplaneList)
+{
+    <AirplaneComp Airplane="airplane" DeleteAirplane="OnDeleteAirplaneAsync"></AirplaneComp>
+
+    //Do not draw a line after the last airplane
+    @if (airplane != airplaneService.AirplaneList.Last())
+    {
+        <hr>
+    }
+}
+
+<br>
+<br>
+<br>
+
+<ConfirmDialog @ref="dialogConfirm" />
+
+
+@code {
+    private ConfirmDialog dialogConfirm = default!;
+
+    private async Task OnDeleteAirplaneAsync(AirplaneViewModel airplane)
+    {
+        var options = new ConfirmDialogOptions { IsVerticallyCentered = true };
+
+        if (await dialogConfirm.ShowAsync(title: "Delete",
+        message1: "Do you want to remove this airplane from the list?", options))
+        {
+            airplaneService.AirplaneList.Remove(airplane);
+        }
+    }
+}

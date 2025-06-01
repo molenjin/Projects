@@ -22,7 +22,6 @@ namespace BlazorForum.Database
             try
             {
                 var values = new { ShowAll = true, PageNo = 1, PageLimit = 100, PageOffset = 1 };
-
                 topicList = (await Connection.QueryAsync<Topic>("GetTopicList", values, commandType: CommandType.StoredProcedure)).ToList(); /////////////////no need for topic text!!!!
             }
             catch (Exception ex)
@@ -40,7 +39,6 @@ namespace BlazorForum.Database
             try
             {
                 var values = new { TopicId = Id, ShowAll = true};
-
                 topicList = (await Connection.QueryAsync<Comment>("GetCommentList", values, commandType: CommandType.StoredProcedure)).ToList();
             }
             catch (Exception ex)

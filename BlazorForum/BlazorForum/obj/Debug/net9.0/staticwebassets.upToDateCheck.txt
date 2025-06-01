@@ -1,0 +1,43 @@
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\css\open-iconic\README.md
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\css\open-iconic\font\fonts\open-iconic.otf
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\favicon.ico
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\css\bootstrap\bootstrap.min.css.map
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\css\open-iconic\font\fonts\open-iconic.svg
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\css\site.css
+C:\Miroslav\Blazor Projects\BlazorForum\BlazorForum\wwwroot\css\bootstrap\bootstrap.min.css
+wwwroot\css\bootstrap\bootstrap.min.css
+wwwroot\css\bootstrap\bootstrap.min.css.map
+wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css
+wwwroot\css\open-iconic\font\fonts\open-iconic.eot
+wwwroot\css\open-iconic\font\fonts\open-iconic.otf
+wwwroot\css\open-iconic\font\fonts\open-iconic.svg
+wwwroot\css\open-iconic\font\fonts\open-iconic.ttf
+wwwroot\css\open-iconic\font\fonts\open-iconic.woff
+wwwroot\css\open-iconic\FONT-LICENSE
+wwwroot\css\open-iconic\ICON-LICENSE
+wwwroot\css\open-iconic\README.md
+wwwroot\css\site.css
+wwwroot\favicon.ico
+wwwroot\Images\Flags\AR.png
+wwwroot\Images\Flags\AT.png
+wwwroot\Images\Flags\AU.png
+wwwroot\Images\Flags\BE.png
+wwwroot\Images\Flags\BG.png
+wwwroot\Images\Flags\CA.png
+wwwroot\Images\Flags\CH.png
+wwwroot\Images\Flags\CZ.png
+wwwroot\Images\Flags\DE.png
+wwwroot\Images\Flags\FR.png
+wwwroot\Images\Flags\GB.png
+wwwroot\Images\Flags\HU.png
+wwwroot\Images\Flags\IE.png
+wwwroot\Images\Flags\IL.png
+wwwroot\Images\Flags\IR.png
+wwwroot\Images\Flags\NO.png
+wwwroot\Images\Flags\RO.png
+wwwroot\Images\Flags\RS.png
+wwwroot\Images\Flags\RU.png
+wwwroot\Images\Flags\SE.png
+wwwroot\Images\Flags\UA.png
+wwwroot\Images\Flags\US.png

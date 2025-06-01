@@ -1,0 +1,66 @@
+﻿@page "/forum"
+
+@using BlazorForum.Data
+@using BlazorForum.Database
+@using BlazorForum.Libraries
+
+@inject IDatabaseCalls DatabaseCalls
+@inject LibFormat LibFormat
+
+<PageTitle>Forum</PageTitle>
+
+<h1>Forum</h1>
+
+<br />
+
+<button class="btn btn-primary" @onclick=OnLoadTopicListAsync>Load</button>
+
+<br />
+<br />
+
+@if (@topicList != null)
+{
+    foreach (var topicItem in @topicList)
+    {
+        string topicTitle = LibFormat.HtmlDecode(topicItem.Title);
+        string topicName = LibFormat.HtmlDecode(topicItem.Name);
+        string topicLink = $"/topic/{topicItem.Id}/{LibFormat.TitleLink(topicItem.Title)}{LibFormat.NumberOfCommentsLink(topicItem.NumOfComments)}";
+        string topicHidden = LibFormat.HiddenText(topicItem.Hidden);
+
+        <span>@topicHidden<a href=@topicLink>@topicTitle</a> - @topicName</span>
+
+        if (@FlagExists(@topicItem.CountryCode))
+        {
+            <span>&nbsp;<img src=@GetFlagLink(@topicItem.CountryCode)></span>
+        }
+        <span>&nbsp;@LibFormat.NumberOfCommentsText(@topicItem.NumOfComments)</span>
+        <br />
+    }
+}
+
+
+@code {
+    List<Topic>? topicList;
+
+    async Task OnLoadTopicListAsync()
+    {     
+        try
+        {
+            topicList = await DatabaseCalls.GetTopicListAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    bool FlagExists(string userCountryCode)
+    {
+        return File.Exists("wwwroot" + GetFlagLink(userCountryCode));
+    }
+
+    string GetFlagLink(string userCountryCode)
+    {
+        return $"/Images/Flags/{userCountryCode}.png";
+    }
+}

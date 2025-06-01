@@ -1,0 +1,23 @@
+﻿@page "/topic/{Id:int}/{Title}/{NumOfComments:int?}"
+
+@using BlazorForum.Data
+@using BlazorForum.Database
+
+@inject IDatabaseCalls DatabaseCalls
+
+<PageTitle>Topic</PageTitle>
+
+<h1>Topic</h1>
+
+<p>Topic: @Id Title: @Title NumOffComments: @NumOfComments</p>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = String.Empty;
+
+    [Parameter]
+    public int NumOfComments { get; set; }
+}

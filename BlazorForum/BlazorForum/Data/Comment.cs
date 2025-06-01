@@ -15,5 +15,6 @@
         public bool Hidden { get; set; }
         public bool Closed { get; set; }
         public int Views { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

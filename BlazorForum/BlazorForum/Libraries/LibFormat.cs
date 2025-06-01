@@ -45,5 +45,10 @@ namespace BlazorForum.Libraries
         {
             return $"/Images/Flags/{userCountryCode}.png";
         }
+
+        public static string DateTimeFormat(DateTime time)
+        {
+            return time.ToString("dd MMM yyy HH:mm");
+        }
     }
 }

@@ -20,6 +20,10 @@
         <br/>
         <span><img src=@LibFormat.FlagLink(@comment.CountryCode)> @LibData.CountryName(@comment.CountryCode)</span>
         <br />
+        <span>@LibFormat.DateTimeFormat(@comment.CreatedOn)</span>
+        <br />
+        <span>@comment.Views views</span>
+        <br />
         <span>@LibFormat.HtmlDecode(@comment.Text)</span>
         <br />
         <br />

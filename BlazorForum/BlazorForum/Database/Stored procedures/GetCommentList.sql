@@ -14,6 +14,7 @@ BEGIN
 		, C.Hidden
 		, C.Closed
 		, C.Views
+        , C.CreatedOn
 	FROM Comment C
 	LEFT JOIN User U ON U.ID = UserID
 	WHERE (C.ID = TopicID OR C.TopicID = TopicID)

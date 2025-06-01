@@ -35,5 +35,15 @@ namespace BlazorForum.Libraries
         {
             return hidden ? $"(hidden) " : " ";
         }
+
+        public static bool FlagExists(string userCountryCode)
+        {
+            return File.Exists("wwwroot" + FlagLink(userCountryCode));
+        }
+
+        public static string FlagLink(string userCountryCode)
+        {
+            return $"/Images/Flags/{userCountryCode}.png";
+        }
     }
 }

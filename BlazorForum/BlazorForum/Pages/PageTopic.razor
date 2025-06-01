@@ -5,6 +5,8 @@
 @using BlazorForum.Libraries
 
 @inject IDatabaseCalls DatabaseCalls
+@inject LibData LibData
+@inject LibFormat LibFormat
 
 <PageTitle>Topic</PageTitle>
 
@@ -16,6 +18,8 @@
     {
         <span>@LibFormat.HtmlDecode(@comment.Name)</span>
         <br/>
+        <span><img src=@LibFormat.FlagLink(@comment.CountryCode)> @LibData.CountryName(@comment.CountryCode)</span>
+        <br />
         <span>@LibFormat.HtmlDecode(@comment.Text)</span>
         <br />
         <br />

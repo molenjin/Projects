@@ -5,6 +5,7 @@
 @using BlazorForum.Libraries
 
 @inject IDatabaseCalls DatabaseCalls
+@inject LibFormat LibData
 @inject LibFormat LibFormat
 
 <PageTitle>Forum</PageTitle>
@@ -29,9 +30,9 @@
 
         <span>@topicHidden<a href=@topicLink>@topicTitle</a> - @topicName</span>
 
-        if (@FlagExists(@topic.CountryCode))
+        if (@LibFormat.FlagExists(@topic.CountryCode))
         {
-            <span>&nbsp;<img src=@GetFlagLink(@topic.CountryCode)></span>
+            <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
         }
         <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
         <br />
@@ -52,15 +53,5 @@
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
-    }
-
-    bool FlagExists(string userCountryCode)
-    {
-        return File.Exists("wwwroot" + GetFlagLink(userCountryCode));
-    }
-
-    string GetFlagLink(string userCountryCode)
-    {
-        return $"/Images/Flags/{userCountryCode}.png";
     }
 }

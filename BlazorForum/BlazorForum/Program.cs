@@ -9,6 +9,8 @@ builder.Services.AddServerSideBlazor();
 
 // Add the database call object  
 builder.Services.AddSingleton<IDatabaseCalls, DatabaseCallsMySQL>();
+// Add the data library
+builder.Services.AddSingleton<LibData>();
 // Add the formatting library
 builder.Services.AddSingleton<LibFormat>();
 

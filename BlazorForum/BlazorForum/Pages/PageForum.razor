@@ -20,20 +20,20 @@
 
 @if (@topicList != null)
 {
-    foreach (var topicItem in @topicList)
+    foreach (var topic in @topicList)
     {
-        string topicTitle = LibFormat.HtmlDecode(topicItem.Title);
-        string topicName = LibFormat.HtmlDecode(topicItem.Name);
-        string topicLink = $"/topic/{topicItem.Id}/{LibFormat.TitleLink(topicItem.Title)}{LibFormat.NumberOfCommentsLink(topicItem.NumOfComments)}";
-        string topicHidden = LibFormat.HiddenText(topicItem.Hidden);
+        string topicTitle = LibFormat.HtmlDecode(topic.Title);
+        string topicName = LibFormat.HtmlDecode(topic.Name);
+        string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
+        string topicHidden = LibFormat.HiddenText(topic.Hidden);
 
         <span>@topicHidden<a href=@topicLink>@topicTitle</a> - @topicName</span>
 
-        if (@FlagExists(@topicItem.CountryCode))
+        if (@FlagExists(@topic.CountryCode))
         {
-            <span>&nbsp;<img src=@GetFlagLink(@topicItem.CountryCode)></span>
+            <span>&nbsp;<img src=@GetFlagLink(@topic.CountryCode)></span>
         }
-        <span>&nbsp;@LibFormat.NumberOfCommentsText(@topicItem.NumOfComments)</span>
+        <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
         <br />
     }
 }

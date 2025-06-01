@@ -2,14 +2,26 @@
 
 @using BlazorForum.Data
 @using BlazorForum.Database
+@using BlazorForum.Libraries
 
 @inject IDatabaseCalls DatabaseCalls
 
 <PageTitle>Topic</PageTitle>
 
-<h1>Topic</h1>
+<h1>@LibFormat.HtmlDecode(@topicTitle)</h1>
 
-<p>@Id Title444: @Title NumOffComments: @NumOfComments</p>
+@if (@commentList != null)
+{
+    foreach (var comment in @commentList)
+    {
+        <span>@LibFormat.HtmlDecode(@comment.Name)</span>
+        <br/>
+        <span>@LibFormat.HtmlDecode(@comment.Text)</span>
+        <br />
+        <br />
+    }
+}
+
 
 @code {
     [Parameter]
@@ -20,4 +32,28 @@
 
     [Parameter]
     public int NumOfComments { get; set; }
+
+    List<Comment>? commentList;
+    string topicTitle = String.Empty;
+    bool topicClosed;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        try
+        {
+            commentList = await DatabaseCalls.GetCommentListAsync(Id);
+
+            if (commentList.Count > 0)
+            {
+                topicTitle = commentList.First().Title;
+                topicClosed = commentList.First().Closed;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
 }

@@ -12,10 +12,8 @@
         public string IP { get; set; } = String.Empty;
         public bool Active { get; set; }
         public bool Moderator { get; set; }
-        public bool Closed { get; set; }
         public bool Hidden { get; set; }
+        public bool Closed { get; set; }
         public int Views { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public DateTime ModifiedOn { get; set; }
     }
 }

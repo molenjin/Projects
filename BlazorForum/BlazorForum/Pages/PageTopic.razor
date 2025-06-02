@@ -1,4 +1,4 @@
-﻿@page "/topic/{Id:int}/{Title}/{NumOfComments:int?}"
+﻿@page "/topic/{TopicId:int}/{Title}/{NumOfComments:int?}"
 
 @using BlazorForum.Data
 @using BlazorForum.Database
@@ -47,7 +47,7 @@
 
 @code {
     [Parameter]
-    public int Id { get; set; }
+    public int TopicId { get; set; }
 
     [Parameter]
     public string Title { get; set; } = String.Empty;
@@ -65,12 +65,14 @@
 
         try
         {
-            commentList = await DatabaseCalls.GetCommentListAsync(Id);
+            commentList = await DatabaseCalls.GetCommentListAsync(TopicId);
 
-            if (commentList.Count > 0)
+            if (commentList.Count != 0)
             {
                 topicTitle = commentList.First().Title;
                 topicClosed = commentList.First().Closed;
+
+                await DatabaseCalls.IncTopicViewsAsync(TopicId);
             }
         }
         catch (Exception ex)

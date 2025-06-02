@@ -48,13 +48,13 @@ namespace BlazorForum.Database
             return topicList ?? [];
         }
 
-        public async Task<List<Comment>> GetCommentListAsync(int Id)
+        public async Task<List<Comment>> GetCommentListAsync(int topicId)
         {
             var commentList = new List<Comment>();
 
             try
             {
-                var values = new { TopicId = Id, ShowAll = true};
+                var values = new { TopicId = topicId, ShowAll = true};
                 commentList = (await Connection.QueryAsync<Comment>("GetCommentList", values, commandType: CommandType.StoredProcedure)).ToList();
             }
             catch (Exception ex)
@@ -63,6 +63,19 @@ namespace BlazorForum.Database
             }
 
             return commentList ?? [];
+        }
+
+        public async Task IncTopicViewsAsync(int topicId)
+        {
+            try
+            {
+                var values = new { TopicId = topicId };
+                await Connection.QueryAsync("IncTopicViews", values, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
     }
 }

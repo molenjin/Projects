@@ -10,25 +10,39 @@
 
 <PageTitle>Topic</PageTitle>
 
-<h1>@LibFormat.HtmlDecode(@topicTitle)</h1>
+<div class="forum_content">
+    <div class="forum" style="background-color: rgb(240,240,240);">
 
-@if (@commentList != null)
-{
-    foreach (var comment in @commentList)
-    {
-        <span>@LibFormat.HtmlDecode(@comment.Name)</span>
-        <br/>
-        <span><img src=@LibFormat.FlagLink(@comment.CountryCode)> @LibData.CountryName(@comment.CountryCode)</span>
-        <br />
-        <span>@LibFormat.DateTimeFormat(@comment.CreatedOn)</span>
-        <br />
-        <span>@comment.Views views</span>
-        <br />
-        <span>@LibFormat.HtmlDecode(@comment.Text)</span>
+        <span class="forum_header">
+            <a class="header" href="/">ACCN Forum</a>
+            <span> | @LibFormat.HtmlDecode(@topicTitle)</span>
+        </span>
+
         <br />
         <br />
-    }
-}
+
+        @if (@commentList != null)
+        {
+            foreach (var comment in @commentList)
+            {
+                <strong>@LibFormat.HtmlDecode(@comment.Name)</strong>
+                <br/>
+                <span><img src=@LibFormat.FlagLink(@comment.CountryCode)> @LibData.CountryName(@comment.CountryCode)</span>
+                <br />
+                <span class="forum_faint">@LibFormat.DateTimeFormat(@comment.CreatedOn)</span>
+                <br />
+                <span class="forum_faint">@comment.Views @if (comment.Views == 1) { <span> view</span> } else { <span> views</span> }</span>
+                <br />
+                <span >@LibFormat.HtmlDecode(@comment.Text)</span>
+                <br />
+                <hr>
+            }
+        }
+    </div>
+
+    <br />
+    <br />
+</div>
 
 
 @code {

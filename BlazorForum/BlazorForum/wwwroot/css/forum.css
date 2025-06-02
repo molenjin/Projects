@@ -1,0 +1,150 @@
+﻿html * {
+    max-height: 1000000px;
+}
+
+*:not(input.field) {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.forum_header {
+    color: rgb(50,50,50);
+    text-align: left;
+    font-family: Verdana;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.forum_content {
+    color: rgb(0,0,0);
+    text-align: left;
+    font-family: Verdana;
+    font-size: 10pt;
+}
+
+.forum_footer {
+    color: rgb(50,50,50);
+    text-align: left;
+    font-family: Verdana;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.forum_title {
+    color: rgb(50,200,50);
+    text-align: left;
+    font-family: Verdana;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.forum_faint {
+    color: rgb(100,100,100);
+    text-align: left;
+    font-family: Verdana;
+    font-size: 8pt;
+}
+
+a, img {
+    border: none;
+    outline: none;
+}
+
+    a.header:link {
+        color: rgb(0,0,150);
+        text-decoration: none;
+    }
+
+    a.header:visited {
+        color: rgb(0,0,150);
+        text-decoration: none;
+    }
+
+    a.header:hover {
+        text-decoration: underline;
+    }
+
+    a.header:active {
+        text-decoration: underline;
+    }
+
+    a.topiclist:link {
+        color: rgb(0,0,150);
+        text-decoration: none;
+    }
+
+    a.topiclist:visited {
+        color: rgb(100,100,100);
+        text-decoration: none;
+    }
+
+    a.topiclist:hover {
+        text-decoration: underline;
+    }
+
+    a.topiclist:active {
+        text-decoration: underline;
+    }
+
+    a.footer:link {
+        color: rgb(0,0,150);
+        text-decoration: none;
+    }
+
+    a.footer:visited {
+        color: rgb(0,0,150);
+        text-decoration: none;
+    }
+
+    a.footer:hover {
+        text-decoration: underline;
+    }
+
+    a.footer:active {
+        text-decoration: underline;
+    }
+
+div.forum {
+    border: 1px;
+    border-style: solid;
+    border-radius: 10px 10px 10px 10px;
+    border-color: rgb(180,180,180);
+    padding: 10px;
+}
+
+hr.topic {
+    display: block;
+    border: none;
+    height: 1px;
+    color: rgb(180,180,180);
+    background-color: rgb(180,180,180);
+    border-color: rgb(180,180,180);
+}
+
+/*--- iPhone --------------------------------------*/
+
+@media only screen and (max-width: 480px) {
+
+    .forum_header {
+        font-size: 20pt;
+    }
+
+    .forum_content {
+        font-size: 18pt;
+    }
+
+    .forum_footer {
+        font-size: 20pt;
+    }
+
+    .forum_title {
+        font-size: 20pt;
+    }
+
+    .forum_faint {
+        font-size: 14pt;
+    }
+}

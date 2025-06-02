@@ -39,17 +39,49 @@
     }
 }
 
+<br />
+
+<button class="btn btn-primary" @onclick=OnLoadMoreAsync hidden=@loadMoreButtonStyle>Load More</button>
+
+<br />
+<br />
 
 @code {
     int numOfTopics = 0;
+    int pageNo = 1;
+    const int pageSize = 50;
     List<Topic>? topicList;
+    bool loadMoreButtonStyle = true;
 
     async Task OnLoadTopicListAsync()
     {     
         try
         {
             numOfTopics = await DatabaseCalls.GetNumOfTopicsAsync(true);
-            topicList = await DatabaseCalls.GetTopicListAsync(true, 1, 50);
+            topicList = await DatabaseCalls.GetTopicListAsync(true, pageNo, pageSize);
+
+            loadMoreButtonStyle = (pageNo * pageSize) < numOfTopics ? false : true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    async Task OnLoadMoreAsync()
+    {
+        List<Topic>? additionalTopicList;
+
+        try
+        {
+            if (topicList != null)
+            {
+                pageNo++;
+                additionalTopicList = await DatabaseCalls.GetTopicListAsync(true, pageNo, pageSize);
+                topicList.AddRange(additionalTopicList);
+
+                loadMoreButtonStyle = (pageNo * pageSize) < numOfTopics ? false : true;
+            }
         }
         catch (Exception ex)
         {

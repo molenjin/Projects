@@ -10,7 +10,7 @@
 
 <PageTitle>Forum</PageTitle>
 
-<h1>Forum</h1>
+<h1>Forum (@numOfTopics)</h1>
 
 <br />
 
@@ -41,13 +41,15 @@
 
 
 @code {
+    int numOfTopics = 0;
     List<Topic>? topicList;
 
     async Task OnLoadTopicListAsync()
     {     
         try
         {
-            topicList = await DatabaseCalls.GetTopicListAsync();
+            numOfTopics = await DatabaseCalls.GetNumOfTopicsAsync(true);
+            topicList = await DatabaseCalls.GetTopicListAsync(true, 1, 50);
         }
         catch (Exception ex)
         {

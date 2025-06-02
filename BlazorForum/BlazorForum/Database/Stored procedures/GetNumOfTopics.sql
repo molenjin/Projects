@@ -1,0 +1,7 @@
+﻿CREATE DEFINER=`accnaust_ACCN`@`101.185.215.189` PROCEDURE `GetNumOfTopics`(ShowAll INT)
+BEGIN
+	SELECT COUNT(ID) AS NumOfTopics
+	FROM Comment
+	WHERE TopicID IS NULL
+	AND (Hidden = 0 OR ShowAll = 1);
+END

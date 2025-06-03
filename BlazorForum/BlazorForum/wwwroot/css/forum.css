@@ -181,6 +181,7 @@ a, img {
     }
 
 div.forum {
+    background-color: rgb(240,240,240);
     border: 1px;
     border-style: solid;
     border-radius: 10px 10px 10px 10px;
@@ -320,7 +321,7 @@ hr.topic {
 
 /*--- iPhone --------------------------------------*/
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 640px) {
     .small {
         font-family: helvetica;
         font-size: 10pt;

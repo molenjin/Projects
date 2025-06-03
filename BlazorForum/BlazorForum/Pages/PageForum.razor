@@ -18,11 +18,11 @@
 
         <br />
         <br />
+        <big>
 
         @if (@topicList != null)
         {
-            <big>
-            @foreach (var topic in @topicList)
+            foreach (var topic in @topicList)
             {
                 string topicTitle = LibFormat.HtmlDecode(topic.Title);
                 string topicName = LibFormat.HtmlDecode(topic.Name);
@@ -37,10 +37,10 @@
                 }
                 <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
                 <br />
-            }
-            </big>
+            }            
         }
 
+        </big>
         <br />
 
         <button class="btn btn-primary" @onclick=OnLoadMoreAsync hidden=@loadMoreButtonStyle>Load More</button>

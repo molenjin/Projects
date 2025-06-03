@@ -1,0 +1,36 @@
+﻿@using BlazorForum.Libraries
+
+@inject LibFormat LibFormat
+
+<span class="forum_header">
+    @if (ForumLinkOn)
+    {
+        <a class="header" href="/">ACCN Forum</a>
+    }
+    else
+    {
+        <span>ACCN Forum</span>
+    }
+    @if (ActionLinkOn)
+    {
+        <span> | </span><a class="header" href=@ActionLink>@ActionTitle</a>
+    }
+    else
+    {
+        <span> | @LibFormat.HtmlDecode(@ActionTitle)</span>
+    }
+</span>
+
+@code {
+    [Parameter]
+    public bool ForumLinkOn { get; set; }
+
+    [Parameter]
+    public string ActionTitle { get; set; } = String.Empty;
+
+    [Parameter]
+    public bool ActionLinkOn { get; set; } 
+
+    [Parameter]
+    public string ActionLink { get; set; } = String.Empty;
+}

@@ -3,6 +3,7 @@
 @using BlazorForum.Data
 @using BlazorForum.Database
 @using BlazorForum.Libraries
+@using BlazorForum.Components
 
 @inject IDatabaseCalls DatabaseCalls
 @inject LibData LibData
@@ -11,12 +12,9 @@
 <PageTitle>Topic</PageTitle>
 
 <div class="forum_content">
-    <div class="forum" style="background-color: rgb(240,240,240);">
+    <div class="forum">
 
-        <span class="forum_header">
-            <a class="header" href="/">ACCN Forum</a>
-            <span> | @LibFormat.HtmlDecode(@topicTitle)</span>
-        </span>
+        <CompForumHeader ForumLinkOn=true ActionTitle=@topicTitle ActionLinkOn=false></CompForumHeader>
 
         <br />
         <br />
@@ -43,7 +41,6 @@
     <br />
     <br />
 </div>
-
 
 @code {
     [Parameter]
@@ -72,7 +69,7 @@
                 topicTitle = commentList.First().Title;
                 topicClosed = commentList.First().Closed;
 
-                await DatabaseCalls.IncTopicViewsAsync(TopicId);
+                ///////////////Later/////////////// await DatabaseCalls.IncTopicViewsAsync(TopicId);
             }
         }
         catch (Exception ex)

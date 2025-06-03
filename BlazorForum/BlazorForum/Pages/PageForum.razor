@@ -2,6 +2,7 @@
 
 @using BlazorForum.Data
 @using BlazorForum.Database
+@using BlazorForum.Components
 @using BlazorForum.Libraries
 
 @inject IDatabaseCalls DatabaseCalls
@@ -10,41 +11,47 @@
 
 <PageTitle>Forum</PageTitle>
 
-<h1>Forum (@numOfTopics)</h1>
+<div class="forum_content">
+    <div class="forum">
 
-<br />
+        <CompForumHeader ForumLinkOn=false ActionTitle="Start new topic" ActionLinkOn=true ActionLink="/new"></CompForumHeader>
 
-<button class="btn btn-primary" @onclick=OnLoadTopicListAsync>Load</button>
-
-<br />
-<br />
-
-@if (@topicList != null)
-{
-    foreach (var topic in @topicList)
-    {
-        string topicTitle = LibFormat.HtmlDecode(topic.Title);
-        string topicName = LibFormat.HtmlDecode(topic.Name);
-        string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
-        string topicHidden = LibFormat.HiddenText(topic.Hidden);
-
-        <span>@topicHidden<a href=@topicLink>@topicTitle</a> - @topicName</span>
-
-        if (@LibFormat.FlagExists(@topic.CountryCode))
-        {
-            <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
-        }
-        <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
         <br />
-    }
-}
+        <br />
 
-<br />
+        @if (@topicList != null)
+        {
+            <big>
+            @foreach (var topic in @topicList)
+            {
+                string topicTitle = LibFormat.HtmlDecode(topic.Title);
+                string topicName = LibFormat.HtmlDecode(topic.Name);
+                string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
+                string topicHidden = LibFormat.HiddenText(topic.Hidden);
 
-<button class="btn btn-primary" @onclick=OnLoadMoreAsync hidden=@loadMoreButtonStyle>Load More</button>
+                <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
 
-<br />
-<br />
+                if (@LibFormat.FlagExists(@topic.CountryCode))
+                {
+                    <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
+                }
+                <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+                <br />
+            }
+            </big>
+        }
+
+        <br />
+
+        <button class="btn btn-primary" @onclick=OnLoadMoreAsync hidden=@loadMoreButtonStyle>Load More</button>
+
+        <br />
+        <br />
+    </div>
+
+    <br />
+    <br />
+</div>
 
 @code {
     int numOfTopics = 0;
@@ -53,8 +60,10 @@
     List<Topic>? topicList;
     bool loadMoreButtonStyle = true;
 
-    async Task OnLoadTopicListAsync()
-    {     
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
         try
         {
             numOfTopics = await DatabaseCalls.GetNumOfTopicsAsync(true);

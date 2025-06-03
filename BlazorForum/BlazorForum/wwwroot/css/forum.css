@@ -1,56 +1,129 @@
-﻿html * {
-    max-height: 1000000px;
+﻿html {
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
-*:not(input.field) {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: -moz-none;
-    -o-user-select: none;
-    user-select: none;
+/*--- Desktop/Mobile ------------------------------*/
+
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
+.small {
+    font-family: verdana;
+    font-size: 8pt;
+}
+
+.normal {
+    font-family: verdana;
+    font-size: 10pt;
+}
+
+.large {
+    font-family: verdana;
+    font-size: 12pt;
+}
+
+.title {
+    font-family: verdana;
+    font-size: 32pt;
+}
+
+.email {
+    font-family: verdana;
+    font-size: 12pt;
 }
 
 .forum_header {
     color: rgb(50,50,50);
     text-align: left;
-    font-family: Verdana;
+    font-family: verdana;
     font-size: 14pt;
     font-weight: bold;
+}
+
+.forum_topic {
+    color: rgb(50,50,50);
+    text-align: left;
+    font-family: verdana;
+    font-size: 12pt;
 }
 
 .forum_content {
     color: rgb(0,0,0);
     text-align: left;
-    font-family: Verdana;
+    font-family: verdana;
     font-size: 10pt;
-}
-
-.forum_footer {
-    color: rgb(50,50,50);
-    text-align: left;
-    font-family: Verdana;
-    font-size: 14pt;
-    font-weight: bold;
-}
-
-.forum_title {
-    color: rgb(50,200,50);
-    text-align: left;
-    font-family: Verdana;
-    font-size: 14pt;
-    font-weight: bold;
 }
 
 .forum_faint {
     color: rgb(100,100,100);
     text-align: left;
-    font-family: Verdana;
+    font-family: verdana;
     font-size: 8pt;
+}
+
+/*--- Background color ----------------------------*/
+
+.back-black {
+    background-color: black;
+}
+
+.back-red {
+    background-color: red;
+}
+
+.back-darkred {
+    background-color: #D00000 !important;
+    ;
+}
+/*--- Text color ----------------------------------*/
+
+.white {
+    color: white;
+}
+
+.grey {
+    color: grey;
+}
+
+.lightgrey {
+    color: lightgrey;
+}
+
+/*--- Text style ----------------------------------*/
+
+.bold {
+    font-weight: bold;
+}
+
+/*--- Text alignment ------------------------------*/
+
+.left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.right-desktop {
+    text-align: right;
 }
 
 a, img {
     border: none;
     outline: none;
+    max-width: 100%;
 }
 
     a.header:link {
@@ -124,27 +197,220 @@ hr.topic {
     border-color: rgb(180,180,180);
 }
 
+/*--- Padding -------------------------------------*/
+
+.padding-2 {
+    padding: 2px;
+}
+
+.padding-5 {
+    padding: 5px;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+.padding-20 {
+    padding: 20px;
+}
+
+/*--- Text field ----------------------------------*/
+
+.textfield {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block; /*reset from inline*/
+    border: 1px solid #888;
+    margin: 0; /*remove defaults*/
+    padding: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/*--- Text area -----------------------------------*/
+
+.textarea {
+    width: 95%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block; /*reset from inline*/
+    border: 1px solid #888;
+    margin: 0; /*remove defaults*/
+    padding: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/*--- Div -----------------------------------------*/
+
+.frame_content {
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.frame_main {
+    width: 800px;
+    height: 100%;
+}
+
+.spacer2 {
+    height: 2px;
+    clear: left;
+}
+
+.spacer4 {
+    height: 4px;
+    clear: left;
+}
+
+.spacer10 {
+    height: 10px;
+    clear: left;
+}
+
+.spacer20 {
+    height: 20px;
+    clear: left;
+}
+
+.panel {
+    width: 100%;
+    overflow: hidden;
+}
+
+.column {
+    overflow: hidden;
+}
+
+.column20 {
+    width: 20%;
+    float: left;
+}
+
+.cell {
+    width: 100%;
+    display: table-cell;
+}
+
+.black_stripe {
+    width: 100%;
+    background-color: black;
+}
+
+.main_image_frame {
+    width: 28%;
+    float: left;
+}
+
+.main_title_frame {
+    overflow: hidden;
+}
+
+.user_details_left {
+    width: 100%;
+}
+
+.user_details_right {
+    width: 100%;
+}
+
 /*--- iPhone --------------------------------------*/
 
 @media only screen and (max-width: 480px) {
-
-    .forum_header {
-        font-size: 20pt;
+    .small {
+        font-family: helvetica;
+        font-size: 10pt;
     }
 
-    .forum_content {
+    .normal {
+        font-family: helvetica;
+        font-size: 12pt;
+    }
+
+    .large {
+        font-family: helvetica;
+        font-size: 14pt;
+    }
+
+    .title {
+        font-family: helvetica;
         font-size: 18pt;
     }
 
-    .forum_footer {
-        font-size: 20pt;
+    .email {
+        font-family: helvetica;
+        font-size: 10pt;
     }
 
-    .forum_title {
-        font-size: 20pt;
+    .forum_header {
+        font-family: helvetica;
+        font-size: 16pt;
+    }
+
+    .forum_topic {
+        font-family: helvetica;
+        font-size: 14pt;
+    }
+
+    .forum_content {
+        font-family: helvetica;
+        font-size: 12pt;
     }
 
     .forum_faint {
-        font-size: 14pt;
+        font-family: helvetica;
+        font-size: 10pt;
+    }
+
+    .right-desktop {
+        text-align: left;
+    }
+
+    .frame_main {
+        width: 100%;
+    }
+
+    .panel {
+        width: 100%;
+        display: table;
+    }
+
+    .column {
+        width: 100%;
+    }
+
+    .column20 {
+        width: 100%;
+    }
+
+    .main_image_frame {
+        width: 50%;
+        float: left;
+    }
+
+    .user_details_left {
+        display: table-cell;
+        width: 50%;
+    }
+
+    .user_details_right {
+        display: table-cell;
+        text-align: right;
+    }
+
+    .textfield {
+        width: 95%;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: block;
     }
 }

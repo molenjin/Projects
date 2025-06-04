@@ -3,14 +3,6 @@ using System.Data;
 using Dapper;
 using MySql.Data.MySqlClient;
 
-
-
-
-using System.Collections.Generic;
-using System.Linq;
-using Google.Protobuf.WellKnownTypes;
-
-
 namespace BlazorForum.Database
 {
     public class DatabaseCallsMySQL : IDatabaseCalls
@@ -54,8 +46,8 @@ namespace BlazorForum.Database
 
             try
             {
-                var values = new { ShowAll = showAll };
-                numOfTopics = (await Connection.QueryAsync<int>("GetNumOfTopics", values, commandType: CommandType.StoredProcedure)).FirstOrDefault(0);
+                var param = new { ShowAll = showAll };
+                numOfTopics = (await Connection.QueryAsync<int>("GetNumOfTopics", param, commandType: CommandType.StoredProcedure)).FirstOrDefault(0);
             }
             catch (Exception ex)
             {
@@ -68,13 +60,51 @@ namespace BlazorForum.Database
         {
             try
             {
-                var values = new { TopicId = topicId };
-                await Connection.QueryAsync("IncTopicViews", values, commandType: CommandType.StoredProcedure);
+                var param = new { TopicId = topicId };
+                await Connection.QueryAsync("IncTopicViews", param, commandType: CommandType.StoredProcedure);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
+        }
+
+        private async Task<bool> GetStoredProcResultBoolAsync(string mrpStoredProc, object? param = null)
+        {
+            bool result = false;
+            try
+            {
+                result = (await Connection.QueryAsync<int>(mrpStoredProc, param, commandType: CommandType.StoredProcedure)).First() != 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            return result;
+        }
+
+        public async Task<bool> IsBannedIP(string ip)
+        {
+            var param = new { IP = ip };
+            return await GetStoredProcResultBoolAsync("IsBannedIP", param);
+        }
+
+        public async Task<bool> IsDuplicatedComment(string text)
+        {
+            var param = new { Text = text };
+            return await GetStoredProcResultBoolAsync("IsDuplicatedComment", param);
+        }
+
+        public async Task<bool> TopicExists(int topicId)
+        {
+            var param = new { TopicID = topicId };
+            return await GetStoredProcResultBoolAsync("TopicExists", param);
+        }
+
+        public async Task<bool> UserExists(string name, string ip)
+        {
+            var param = new { Name = name, IP = ip };
+            return await GetStoredProcResultBoolAsync("IsDuplicatedComment", param);
         }
     }
 }

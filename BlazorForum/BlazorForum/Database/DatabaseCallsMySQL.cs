@@ -2,6 +2,7 @@
 using System.Data;
 using Dapper;
 using MySql.Data.MySqlClient;
+using System.Xml.Linq;
 
 namespace BlazorForum.Database
 {
@@ -13,6 +14,8 @@ namespace BlazorForum.Database
         {
             Connection = new MySqlConnection(configuration["ConnectionString"]);
         }
+
+        //--- Task<List<T>> --------------------------------------------------------------------------------------
 
         private async Task<List<T>> GetStoredProcResultListAsync<T>(string mrpStoredProc, object? param = null)
         {
@@ -40,41 +43,14 @@ namespace BlazorForum.Database
             return await GetStoredProcResultListAsync<Comment>("GetCommentList", param);
         }
 
-        public async Task<int> GetNumOfTopicsAsync(bool showAll)
-        {
-            int numOfTopics = 0;
+        //--- Task<int> -----------------------------------------------------------------------------------------
 
+        private async Task<int> GetStoredProcResultIntAsync(string mrpStoredProc, object? param = null)
+        {
+            int result = 0;
             try
             {
-                var param = new { ShowAll = showAll };
-                numOfTopics = (await Connection.QueryAsync<int>("GetNumOfTopics", param, commandType: CommandType.StoredProcedure)).FirstOrDefault(0);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            return numOfTopics;
-        }
-
-        public async Task IncTopicViewsAsync(int topicId)
-        {
-            try
-            {
-                var param = new { TopicId = topicId };
-                await Connection.QueryAsync("IncTopicViews", param, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
-
-        private async Task<bool> GetStoredProcResultBoolAsync(string mrpStoredProc, object? param = null)
-        {
-            bool result = false;
-            try
-            {
-                result = (await Connection.QueryAsync<int>(mrpStoredProc, param, commandType: CommandType.StoredProcedure)).First() != 0;
+                result = (await Connection.QueryAsync<int>(mrpStoredProc, param, commandType: CommandType.StoredProcedure)).First();
             }
             catch (Exception ex)
             {
@@ -83,28 +59,69 @@ namespace BlazorForum.Database
             return result;
         }
 
-        public async Task<bool> IsBannedIP(string ip)
+        public async Task<int> GetNumOfTopicsAsync(bool showAll)
+        {
+            var param = new { ShowAll = showAll };
+            return await GetStoredProcResultIntAsync("GetNumOfTopics", param);
+        }
+
+        public async Task<int> GetNextCommentIdAsync()
+        {
+            var param = new {};
+            return await GetStoredProcResultIntAsync("GetNextCommentId", param);
+        }
+
+        public async Task<bool> IsBannedIpAsync(string ip)
         {
             var param = new { IP = ip };
-            return await GetStoredProcResultBoolAsync("IsBannedIP", param);
+            return await GetStoredProcResultIntAsync("IsBannedIP", param) != 0;
         }
 
-        public async Task<bool> IsDuplicatedComment(string text)
+        public async Task<bool> IsDuplicatedCommentAsync(string text)
         {
             var param = new { Text = text };
-            return await GetStoredProcResultBoolAsync("IsDuplicatedComment", param);
+            return await GetStoredProcResultIntAsync("IsDuplicatedComment", param) != 0;
         }
 
-        public async Task<bool> TopicExists(int topicId)
+        public async Task<bool> TopicExistsAsync(int topicId)
         {
             var param = new { TopicID = topicId };
-            return await GetStoredProcResultBoolAsync("TopicExists", param);
+            return await GetStoredProcResultIntAsync("TopicExists", param) != 0;
         }
 
-        public async Task<bool> UserExists(string name, string ip)
+        public async Task<bool> UserExistsAsync(string name, string ip)
         {
             var param = new { Name = name, IP = ip };
-            return await GetStoredProcResultBoolAsync("IsDuplicatedComment", param);
+            return await GetStoredProcResultIntAsync("IsDuplicatedComment", param) != 0;
+        }
+
+        //--- Task ----------------------------------------------------------------------------------------------
+
+        public async Task SaveStoredProcAsync<T>(string mrpStoredProc, T record)
+        {
+            try
+            {
+                await Connection.QueryAsync<T>(mrpStoredProc, record, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public async Task IncTopicViewsAsync(int topicId)
+        {
+            await SaveStoredProcAsync<int>("IncTopicViews", topicId);
+        }
+
+        public async Task SaveCommentAsync(Comment comment)
+        {
+            await SaveStoredProcAsync<Comment>("SaveComment", comment);
+        }
+
+        public async Task SaveUserAsync(User user)
+        {
+            await SaveStoredProcAsync<User>("SaveUser", user);
         }
     }
 }

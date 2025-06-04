@@ -13,6 +13,8 @@ builder.Services.AddSingleton<IDatabaseCalls, DatabaseCallsMySQL>();
 builder.Services.AddSingleton<LibData>();
 // Add the formatting library
 builder.Services.AddSingleton<LibFormat>();
+// Add the validation library
+builder.Services.AddSingleton<LibValidate>();
 
 var app = builder.Build();
 

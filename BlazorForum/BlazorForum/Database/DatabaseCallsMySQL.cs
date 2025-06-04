@@ -3,6 +3,14 @@ using System.Data;
 using Dapper;
 using MySql.Data.MySqlClient;
 
+
+
+
+using System.Collections.Generic;
+using System.Linq;
+using Google.Protobuf.WellKnownTypes;
+
+
 namespace BlazorForum.Database
 {
     public class DatabaseCallsMySQL : IDatabaseCalls
@@ -12,6 +20,32 @@ namespace BlazorForum.Database
         public DatabaseCallsMySQL(IConfiguration configuration)
         {
             Connection = new MySqlConnection(configuration["ConnectionString"]);
+        }
+
+        private async Task<List<T>> GetStoredProcResultListAsync<T>(string mrpStoredProc, object? param = null)
+        {
+            var resultList = new List<T>();
+            try
+            {
+                resultList = (await Connection.QueryAsync<T>(mrpStoredProc, param, commandType: CommandType.StoredProcedure)).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            return resultList ?? new List<T>();
+        }
+
+        public async Task<List<Topic>> GetTopicListAsync(bool showAll, int pageNo, int pageLimit)
+        {
+            var param = new { ShowAll = showAll, PageNo = pageNo, PageLimit = pageLimit, PageOffset = (pageNo - 1) * pageLimit };
+            return await GetStoredProcResultListAsync<Topic>("GetTopicList", param);
+        }
+
+        public async Task<List<Comment>> GetCommentListAsync(int topicId)
+        {
+            var param = new { TopicId = topicId, ShowAll = true }; ;
+            return await GetStoredProcResultListAsync<Comment>("GetCommentList", param);
         }
 
         public async Task<int> GetNumOfTopicsAsync(bool showAll)
@@ -28,41 +62,6 @@ namespace BlazorForum.Database
                 Console.WriteLine($"Error: {ex.Message}");
             }
             return numOfTopics;
-        }
-
-        public async Task<List<Topic>> GetTopicListAsync(bool showAll, int pageNo, int pageLimit)
-        {
-            var topicList = new List<Topic>();
-
-            try
-            {
-                int pageOffset = (pageNo - 1) * pageLimit;
-                var values = new { ShowAll = showAll, PageNo = pageNo, PageLimit = pageLimit, PageOffset = pageOffset };
-                topicList = (await Connection.QueryAsync<Topic>("GetTopicList", values, commandType: CommandType.StoredProcedure)).ToList();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-
-            return topicList ?? [];
-        }
-
-        public async Task<List<Comment>> GetCommentListAsync(int topicId)
-        {
-            var commentList = new List<Comment>();
-
-            try
-            {
-                var values = new { TopicId = topicId, ShowAll = true};
-                commentList = (await Connection.QueryAsync<Comment>("GetCommentList", values, commandType: CommandType.StoredProcedure)).ToList();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-
-            return commentList ?? [];
         }
 
         public async Task IncTopicViewsAsync(int topicId)

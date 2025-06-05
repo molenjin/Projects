@@ -21,19 +21,19 @@
                 @* User name ----------------------------------------- *@
                 <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputText @bind-Value="name" class="textfield" tabindex="1" size="40" maxlength="20" />
+                    <InputText @bind-Value="comment.Name" class="textfield" tabindex="1" size="40" maxlength="20" />
                 </div>
                 <div class="spacer4"></div>
                 @* Title --------------------------------------------- *@
                 <div class="column20 right-desktop">Title&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputText @bind-Value="title" class="textfield" tabindex="2" size="40" maxlength="60" />
+                    <InputText @bind-Value="comment.Title" class="textfield" tabindex="2" size="40" maxlength="60" />
                 </div>
                 <div class="spacer4"></div>
                 @* Text ---------------------------------------------- *@
                 <div class="column20 right-desktop">Text&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputTextArea @bind-Value="text" class="textarea" tabindex="3" rows="20" maxlength="5000" />
+                    <InputTextArea @bind-Value="comment.Text" class="textarea" tabindex="3" rows="20" maxlength="5000" />
                 </div>
                 <div class="spacer4"></div>
                 @* Submit -------------------------------------------- *@
@@ -48,14 +48,27 @@
 </div>
 
 @code {
-    string name { get; set; } = string.Empty;
-    string title { get; set; } = string.Empty;
-    string text { get; set; } = string.Empty;
+    Comment comment = new Comment();
 
     private async Task SubmitAsync()
     {
-        Comment comment = new Comment() { Name = name, Title = title, Text = text };
-
-        await LibValidate.ValidateCommentAsync(comment);
+        try
+        {
+            (bool result, string message) = await LibValidate.IsCommentValidAsync(comment);
+            if (result == true)
+            {
+                // Call the method to save the comment to the database
+                // await DatabaseCalls.SaveCommentAsync(comment);
+                // Redirect to the topic page or show a success message
+            }
+            else
+            {
+                ////////////////
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle validation errors
+        }
     }
 }

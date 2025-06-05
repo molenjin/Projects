@@ -2,7 +2,6 @@
 using System.Data;
 using Dapper;
 using MySql.Data.MySqlClient;
-using System.Xml.Linq;
 
 namespace BlazorForum.Database
 {

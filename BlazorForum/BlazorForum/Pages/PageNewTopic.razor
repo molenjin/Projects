@@ -1,7 +1,10 @@
 ﻿@page "/new"
 
+@using BlazorForum.Data
 @using BlazorForum.Libraries
 @using BlazorForum.Components
+
+@inject LibValidate LibValidate
 
 <PageTitle>New Topic</PageTitle>
 
@@ -14,23 +17,23 @@
         <br />
 
         <div class="panel">
-            <EditForm FormName="Hello" Model="this" OnSubmit="Submit">                
+            <EditForm FormName="Hello" Model="this" OnSubmit="SubmitAsync">                
                 @* User name ----------------------------------------- *@
                 <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputText @bind-Value="Name" class="textfield" tabindex="1" size="40" maxlength="20" />
+                    <InputText @bind-Value="name" class="textfield" tabindex="1" size="40" maxlength="20" />
                 </div>
                 <div class="spacer4"></div>
                 @* Title --------------------------------------------- *@
                 <div class="column20 right-desktop">Title&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputText @bind-Value="Title" class="textfield" tabindex="2" size="40" maxlength="60" />
+                    <InputText @bind-Value="title" class="textfield" tabindex="2" size="40" maxlength="60" />
                 </div>
                 <div class="spacer4"></div>
                 @* Text ---------------------------------------------- *@
                 <div class="column20 right-desktop">Text&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputTextArea @bind-Value="Text" class="textarea" tabindex="3" rows="20" maxlength="5000" />
+                    <InputTextArea @bind-Value="text" class="textarea" tabindex="3" rows="20" maxlength="5000" />
                 </div>
                 <div class="spacer4"></div>
                 @* Submit -------------------------------------------- *@
@@ -45,12 +48,14 @@
 </div>
 
 @code {
-    string Name { get; set; } = string.Empty;
-    string Title { get; set; } = string.Empty;
-    string Text { get; set; } = string.Empty;
+    string name { get; set; } = string.Empty;
+    string title { get; set; } = string.Empty;
+    string text { get; set; } = string.Empty;
 
-    private void Submit()
+    private async Task SubmitAsync()
     {
+        Comment comment = new Comment() { Name = name, Title = title, Text = text };
 
+        await LibValidate.ValidateCommentAsync(comment);
     }
 }

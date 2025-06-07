@@ -45,9 +45,16 @@
             </EditForm>
         </div>
 
-        <p>IP: @ip</p>
-        <p>URL: @url</p>
-        <p>UserAgent: @userAgent</p>
+        @if (ipInfo is not null)
+        {
+            <p>IP: @ipInfo.Ip</p>
+            <p>Postal number: @ipInfo.Postal</p>
+            <p>City: @ipInfo.City</p>
+            <p>Region: @ipInfo.Region</p>
+            <p>Country code: @ipInfo.CountryCode</p>
+            <p>Host Name: @ipInfo.HostName</p>
+            <p>User Agent: @ipInfo.UserAgent</p>        
+        }
 
     </div>
 </div>
@@ -55,16 +62,11 @@
 @code {
     Comment comment = new Comment();
 
-
-    string ip;
-    string url;
-    string userAgent;
+    IpInfo ipInfo;
 
     private async Task SubmitAsync()
     {
-        ip = LibExternal.GetIP();
-        url = LibExternal.GetUrl();
-        userAgent = LibExternal.GetUserAgent();
+        ipInfo = await LibExternal.GetIpInfoAsync();
 
         try
         {

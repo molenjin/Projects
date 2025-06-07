@@ -1,25 +1,20 @@
-﻿namespace BlazorForum.Libraries
+﻿using BlazorForum.Data;
+using System.Text.Json;
+
+namespace BlazorForum.Libraries
 {
     public class LibExternal(IHttpContextAccessor HttpContextAccessor)
     {
-        public string GetIP()
+        public async Task<IpInfo> GetIpInfoAsync()
         {
-            return HttpContextAccessor.HttpContext?.Request?.Headers["X-Forwarded-For"].ToString() ?? "Unknown IP";
-        }
-
-        public string GetUrl()
-        {
-            return HttpContextAccessor.HttpContext?.Request?.Path.ToString() ?? "Unknown URL";
-        }
-
-        public string GetUserAgent()
-        {
-            return HttpContextAccessor.HttpContext?.Request?.Headers["User-Agent"].ToString() ?? "Unknown User-Agent";
-        }
-
-        public string GetCountryCode()
-        {
-            return "";
+            string ip = "101.189.80.166"; //HttpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "0.0.0.0";
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"http://ipinfo.io/{ip}");
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var ipInfo = JsonSerializer.Deserialize<IpInfo>(responseBody) ?? new IpInfo();
+            ipInfo.UserAgent = HttpContextAccessor.HttpContext?.Request?.Headers.UserAgent.ToString() ?? "Unknown User-Agent";
+            return ipInfo;
         }
     }
 }

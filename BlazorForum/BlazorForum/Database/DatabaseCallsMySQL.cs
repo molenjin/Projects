@@ -1,7 +1,7 @@
 ﻿using BlazorForum.Data;
-using System.Data;
 using Dapper;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace BlazorForum.Database
 {
@@ -66,7 +66,7 @@ namespace BlazorForum.Database
 
         public async Task<int> GetNextCommentIdAsync()
         {
-            var param = new {};
+            var param = new { };
             return await GetStoredProcResultIntAsync("GetNextCommentId", param);
         }
 

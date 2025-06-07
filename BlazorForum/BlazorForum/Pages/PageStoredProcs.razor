@@ -1,0 +1,53 @@
+﻿@page "/storedprocs"
+
+<button class="btn btn-primary" @onclick=OnLoadStoredProcs>Load Stored Procs to Clipboard</button>
+<br>
+<br>
+<span style="white-space: pre-line;">@storedProcText</span>
+
+@code {
+    void OnLoadStoredProcs()
+    {
+        const string path = $"C:/Miroslav/Blazor/Projects/BlazorForum/BlazorForum/Database/Stored procedures";
+        string storedProcText = string.Empty;
+        List<string> lines = new List<string>();
+        int posDefiner;
+        int posProcedure;
+
+        if (Directory.Exists(path))
+        {
+            string[] fileEntries = Directory.GetFiles(path);
+            foreach (string fileName in fileEntries)
+            {
+                using (var reader = new StreamReader(fileName))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        if (line == null)
+                            continue;
+
+                        posDefiner = line.IndexOf("DEFINER");
+                        posProcedure = line.IndexOf("PROCEDURE");
+
+                        if (posDefiner != 0 && posProcedure != 0)
+                        {
+                            line = line.Remove(posDefiner, posProcedure - posDefiner);
+                        }
+
+                        lines.Add(line ?? string.Empty);
+                    }
+                }         
+
+                lines.Add(string.Empty);
+                lines.Add("--------------------------------------------------------");
+                lines.Add(string.Empty);
+            }
+        }
+
+        foreach (string line in lines)
+        {
+            storedProcText += line + "\r\n";
+        }
+    }
+}

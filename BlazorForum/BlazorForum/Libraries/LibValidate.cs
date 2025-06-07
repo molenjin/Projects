@@ -1,6 +1,5 @@
 ﻿using BlazorForum.Data;
 using BlazorForum.Database;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BlazorForum.Libraries
 {
@@ -82,7 +81,7 @@ namespace BlazorForum.Libraries
 
             //------ Improper content in Text
             if (IsImproperContent(comment.Text))
-                 return (false, "Comment text contains improper content");
+                return (false, "Comment text contains improper content");
 
             return (true, string.Empty);
         }

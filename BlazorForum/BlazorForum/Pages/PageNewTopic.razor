@@ -5,6 +5,7 @@
 @using BlazorForum.Components
 
 @inject LibValidate LibValidate
+@inject LibExternal LibExternal
 
 <PageTitle>New Topic</PageTitle>
 
@@ -44,14 +45,27 @@
             </EditForm>
         </div>
 
+        <p>IP: @ip</p>
+        <p>URL: @url</p>
+        <p>UserAgent: @userAgent</p>
+
     </div>
 </div>
 
 @code {
     Comment comment = new Comment();
 
+
+    string ip;
+    string url;
+    string userAgent;
+
     private async Task SubmitAsync()
     {
+        ip = LibExternal.GetIP();
+        url = LibExternal.GetUrl();
+        userAgent = LibExternal.GetUserAgent();
+
         try
         {
             (bool result, string message) = await LibValidate.IsCommentValidAsync(comment);

@@ -1,6 +1,7 @@
-﻿CREATE DEFINER=`accnaust_ACCN`@`101.185.215.189` PROCEDURE `IsDuplicatedComment`(Text TEXT)
+﻿CREATE DEFINER=`accnaust_ACCN`@`101.189.80.166` PROCEDURE `IsDuplicatedComment`(Text TEXT)
 BEGIN
 	SELECT COUNT(C.ID) AS NumOfComments
 	FROM Comment C
-	WHERE TRIM(LOWER(C.Text)) = TRIM(LOWER(Text));
+	WHERE TRIM(LOWER(C.Text)) = TRIM(LOWER(Text))
+	AND NOW() - C.ModifiedOn < 3;
 END

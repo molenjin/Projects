@@ -14,6 +14,8 @@ namespace BlazorForum.Data
         public string Region { get; set; } = string.Empty;
         [JsonPropertyName("country")]
         public string CountryCode { get; set; } = string.Empty;
+        [JsonPropertyName("org")]
+        public string Organisation { get; set; } = string.Empty;
         [JsonPropertyName("hostname")]
         public string HostName { get; set; } = string.Empty;
         [JsonPropertyName("useragent")]

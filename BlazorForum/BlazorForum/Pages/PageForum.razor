@@ -54,11 +54,11 @@
 </div>
 
 @code {
-    int numOfTopics = 0;
-    int pageNo = 1;
-    const int pageSize = 50;
-    List<Topic>? topicList;
-    bool loadMoreButtonStyle = true;
+    private int numOfTopics = 0;
+    private int pageNo = 1;
+    private const int pageSize = 50;
+    private List<Topic>? topicList;
+    private bool loadMoreButtonStyle = true;
 
     protected override async Task OnInitializedAsync()
     {

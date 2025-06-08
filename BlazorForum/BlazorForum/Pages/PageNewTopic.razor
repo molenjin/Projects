@@ -1,9 +1,11 @@
 ﻿@page "/new"
 
 @using BlazorForum.Data
+@using BlazorForum.Database
 @using BlazorForum.Libraries
 @using BlazorForum.Components
 
+@inject IDatabaseCalls DatabaseCalls
 @inject LibValidate LibValidate
 @inject LibExternal LibExternal
 
@@ -41,46 +43,67 @@
                 <div class="column20 right-desktop">&nbsp;</div>
                 <div class="column paddingR-10">
                     <button class="btn btn-primary" type="submit">Submit</button>
+                    <br />
+                    <br />
+                    <p class="text-danger">@errorMessage</p>
                 </div>
             </EditForm>
         </div>
-
-        @if (ipInfo is not null)
-        {
-            <p>IP: @ipInfo.Ip</p>
-            <p>Postal number: @ipInfo.Postal</p>
-            <p>City: @ipInfo.City</p>
-            <p>Region: @ipInfo.Region</p>
-            <p>Country code: @ipInfo.CountryCode</p>
-            <p>Host Name: @ipInfo.HostName</p>
-            <p>User Agent: @ipInfo.UserAgent</p>        
-        }
 
     </div>
 </div>
 
 @code {
-    Comment comment = new Comment();
-
-    IpInfo ipInfo;
+    private Comment comment = new Comment();
+    private string errorMessage = string.Empty;
 
     private async Task SubmitAsync()
     {
-        ipInfo = await LibExternal.GetIpInfoAsync();
+        IpInfo ipInfo = await LibExternal.GetIpInfoAsync();
 
         try
         {
+            // Validate the input fields
             (bool result, string message) = await LibValidate.IsCommentValidAsync(comment);
-            if (result == true)
+            if (result != true)
             {
-                // Call the method to save the comment to the database
-                // await DatabaseCalls.SaveCommentAsync(comment);
-                // Redirect to the topic page or show a success message
+                errorMessage = message;
+                return;
             }
-            else
+
+            // Make sure the comment is new
+            if (await DatabaseCalls.IsDuplicatedCommentAsync(comment.Text))
             {
-                ////////////////
+                errorMessage = "This comment already exists";
+                return;
             }
+
+            int userId = await DatabaseCalls.GetUserIdAsync(comment.Name, comment.IP);
+
+            if (userId == 0)
+            {
+                userId = await DatabaseCalls.GetNextUserIdAsync();
+                
+                await DatabaseCalls.SaveUserAsync(new User() 
+                { 
+                    Id = userId,
+                    Name = comment.Name,
+                    CountryCode = ipInfo.CountryCode,
+                    IP = ipInfo.Ip,
+                    Active = true,
+                    Moderator = false
+                });
+            }
+
+            comment.Id = await DatabaseCalls.GetNextCommentIdAsync();
+            comment.TopicId = null;
+            comment.Title = comment.Title.Trim();
+            comment.Text = comment.Text.Trim();
+            comment.UserId = userId;
+            comment.Hidden = false;
+            comment.Closed = false;
+
+            await DatabaseCalls.SaveCommentAsync(comment);
         }
         catch (Exception ex)
         {

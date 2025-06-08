@@ -8,12 +8,13 @@ namespace BlazorForum.Database
         Task<List<Comment>> GetCommentListAsync(int topicId);
         Task<int> GetNumOfTopicsAsync(bool showAll);
         Task<int> GetNextCommentIdAsync();
+        Task<int> GetNextUserIdAsync();
+        Task<int> GetUserIdAsync(string name, string ip);
         Task<bool> IsBannedIpAsync(string ip);
         Task<bool> IsDuplicatedCommentAsync(string text);
-        Task<bool> TopicExistsAsync(int topicId);
-        Task<bool> UserExistsAsync(string name, string ip);
-        Task IncTopicViewsAsync(int topicId);
+        Task<bool> TopicExistsAsync(int topicId);                
         Task SaveCommentAsync(Comment comment);
         Task SaveUserAsync(User user);
+        Task IncTopicViewsAsync(int topicId);
     }
 }

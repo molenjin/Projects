@@ -67,7 +67,19 @@ namespace BlazorForum.Database
         public async Task<int> GetNextCommentIdAsync()
         {
             var param = new { };
-            return await GetStoredProcResultIntAsync("GetNextCommentId", param);
+            return await GetStoredProcResultIntAsync("GetNextCommentID", param);
+        }
+
+        public async Task<int> GetNextUserIdAsync()
+        {
+            var param = new { };
+            return await GetStoredProcResultIntAsync("GetNextUserID", param);
+        }
+
+        public async Task<int> GetUserIdAsync(string name, string ip)
+        {
+            var param = new { Name = name, IP = ip };
+            return await GetStoredProcResultIntAsync("GetUserId", param);
         }
 
         public async Task<bool> IsBannedIpAsync(string ip)
@@ -88,39 +100,21 @@ namespace BlazorForum.Database
             return await GetStoredProcResultIntAsync("TopicExists", param) != 0;
         }
 
-        public async Task<bool> UserExistsAsync(string name, string ip)
-        {
-            var param = new { Name = name, IP = ip };
-            return await GetStoredProcResultIntAsync("IsDuplicatedComment", param) != 0;
-        }
-
-        //--- Task ----------------------------------------------------------------------------------------------
-
-        public async Task SaveStoredProcAsync<T>(string mrpStoredProc, T record)
-        {
-            try
-            {
-                await Connection.QueryAsync<T>(mrpStoredProc, record, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
-
-        public async Task IncTopicViewsAsync(int topicId)
-        {
-            await SaveStoredProcAsync<int>("IncTopicViews", topicId);
-        }
-
         public async Task SaveCommentAsync(Comment comment)
         {
-            await SaveStoredProcAsync<Comment>("SaveComment", comment);
+            var param = new { ID = comment.Id, TopicID = comment.TopicId, comment.Title, comment.Text, UserID = comment.UserId, comment.Hidden, comment.Closed };
+            await GetStoredProcResultIntAsync("SaveComment", param);
         }
 
         public async Task SaveUserAsync(User user)
         {
-            await SaveStoredProcAsync<User>("SaveUser", user);
+            var param = new { ID = user.Id, user.Name, user.CountryCode, user.IP, Active = user.Active, Moderator = user.Moderator };
+            await GetStoredProcResultIntAsync("SaveUser", param);
+        }
+
+        public async Task IncTopicViewsAsync(int topicId)
+        {
+            await GetStoredProcResultIntAsync("IncTopicViews", topicId);
         }
     }
 }

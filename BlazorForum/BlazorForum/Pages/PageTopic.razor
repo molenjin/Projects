@@ -52,9 +52,9 @@
     [Parameter]
     public int NumOfComments { get; set; }
 
-    List<Comment>? commentList;
-    string topicTitle = String.Empty;
-    bool topicClosed;
+    private List<Comment>? commentList;
+    private string topicTitle = String.Empty;
+    private bool topicClosed;
 
     protected override async Task OnInitializedAsync()
     {

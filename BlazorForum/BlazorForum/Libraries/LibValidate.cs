@@ -16,7 +16,7 @@ namespace BlazorForum.Libraries
                 throw new Exception("Title not allowed for comments");
 
             //------ If not new topic and TopicExists(TopicID) = FALSE
-            if ((!IsNewTopic(comment.TopicId)) && !(await DatabaseCalls.TopicExistsAsync(comment.TopicId)))
+            if ((!IsNewTopic(comment.TopicId)) && !(await DatabaseCalls.TopicExistsAsync(comment.TopicId ?? 0)))
                 throw new Exception("TopicID not found among existing topics");
 
             //------ Banned IP            
@@ -27,21 +27,25 @@ namespace BlazorForum.Libraries
             if (string.IsNullOrWhiteSpace(comment.Name))
                 return (false, "User name is missing");
 
-            //------ If new topic and Title length = 0
-            if (IsNewTopic(comment.TopicId) && string.IsNullOrWhiteSpace(comment.Title))
-                return (false, "Topic title is missing");
-
-            //------ If Text length = 0
-            if (string.IsNullOrWhiteSpace(comment.Text))
-                return (false, "Comment text is missing");
-
-            //------ UserName min length (2)
+            //------ Name min length (2)
             if (comment.Name.Length < 2)
                 return (false, "User name is too short (min. 2 characters required)");
 
-            //------ UserName max length (20)
+            //------ Name max length (20)
             if (comment.Name.Length > 20)
                 return (false, "User name is too long (max. 20 characters allowed)");
+
+            //------ Invalid characters in Name
+            if (!IsValidString(comment.Name))
+                return (false, "User name contains invalid characters");
+
+            //------ Improper content in Name
+            if (IsImproperContent(comment.Name))
+                return (false, "User name contains improper content");
+
+            //------ If new topic and Title length = 0
+            if (IsNewTopic(comment.TopicId) && string.IsNullOrWhiteSpace(comment.Title))
+                return (false, "Topic title is missing");
 
             //------ Title min length (2)
             if ((IsNewTopic(comment.TopicId) && comment.Title.Length < 2))
@@ -51,6 +55,18 @@ namespace BlazorForum.Libraries
             if (comment.Title.Length > 60)
                 return (false, "Topic title is too long (max. 60 characters allowed)");
 
+            //------ Invalid characters in Title
+            if (!IsValidString(comment.Title))
+                return (false, "Topic title contains invalid characters");
+
+            //------ Improper content in Title
+            if (IsImproperContent(comment.Title))
+                return (false, "Topic title contains improper content");
+
+            //------ If Text length = 0
+            if (string.IsNullOrWhiteSpace(comment.Text))
+                return (false, "Comment text is missing");
+
             //------ Text min length (2)
             if (comment.Text.Length < 2)
                 return (false, "Comment text is too short (min. 2 characters allowed)");
@@ -59,25 +75,9 @@ namespace BlazorForum.Libraries
             if (comment.Text.Length > 5000)
                 return (false, "Comment text is too long (max. 5000 characters allowed)");
 
-            //------ Invalid characters in UserName
-            if (!IsValidString(comment.Name))
-                return (false, "User name contains invalid characters");
-
-            //------ Invalid characters in Title
-            if (!IsValidString(comment.Title))
-                return (false, "Topic title contains invalid characters");
-
             //------ Invalid characters in Text
             if (!IsValidString(comment.Text))
                 return (false, "Comment text contains invalid characters");
-
-            //------ Improper content in UserName
-            if (IsImproperContent(comment.Name))
-                return (false, "User name contains improper content");
-
-            //------ Improper content in Title
-            if (IsImproperContent(comment.Title))
-                return (false, "Topic title contains improper content");
 
             //------ Improper content in Text
             if (IsImproperContent(comment.Text))
@@ -97,9 +97,9 @@ namespace BlazorForum.Libraries
             return words.Any(word => content.ToLower().Contains(word));
         }
 
-        private static bool IsNewTopic(int topicId)
+        private static bool IsNewTopic(int? topicId)
         {
-            return (topicId == 0);
+            return (topicId == null || topicId == 0);
         }
     }
 }

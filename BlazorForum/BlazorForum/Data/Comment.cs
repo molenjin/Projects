@@ -3,7 +3,7 @@
     public class Comment
     {
         public int Id { get; set; }
-        public int TopicId { get; set; }
+        public int? TopicId { get; set; } = null;
         public string Title { get; set; } = string.Empty;
         public string Text { get; set; } = string.Empty;
         public int UserId { get; set; }

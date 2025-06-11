@@ -88,6 +88,12 @@ namespace BlazorForum.Database
             return await GetStoredProcResultIntAsync("IsBannedIP", param) != 0;
         }
 
+        public async Task<bool> IsDuplicatedTitleAsync(string? title)
+        {
+            var param = new { Title = title };
+            return await GetStoredProcResultIntAsync("IsDuplicatedTitle", param) != 0;
+        }
+
         public async Task<bool> IsDuplicatedCommentAsync(string text)
         {
             var param = new { Text = text };

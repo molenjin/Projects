@@ -3,5 +3,5 @@ BEGIN
 	SELECT COUNT(C.ID) AS NumOfComments
 	FROM Comment C
 	WHERE TRIM(LOWER(C.Text)) = TRIM(LOWER(Text))
-	AND NOW() - C.ModifiedOn < 3;
+	AND DATEDIFF(NOW(), C.CreatedOn) < 3;
 END

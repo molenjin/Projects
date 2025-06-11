@@ -24,19 +24,19 @@
                 @* User name ----------------------------------------- *@
                 <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputText @bind-Value="comment.Name" class="textfield" tabindex="1" size="40" maxlength="20" />
+                    <InputText @bind-Value="inputName" class="textfield" tabindex="1" size="40" maxlength="20" />
                 </div>
                 <div class="spacer4"></div>
                 @* Title --------------------------------------------- *@
                 <div class="column20 right-desktop">Title&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputText @bind-Value="comment.Title" class="textfield" tabindex="2" size="40" maxlength="60" />
+                    <InputText @bind-Value="inputTitle" class="textfield" tabindex="2" size="40" maxlength="60" />
                 </div>
                 <div class="spacer4"></div>
                 @* Text ---------------------------------------------- *@
                 <div class="column20 right-desktop">Text&nbsp;&nbsp;</div>
                 <div class="column paddingR-10">
-                    <InputTextArea @bind-Value="comment.Text" class="textarea" tabindex="3" rows="20" maxlength="5000" />
+                    <InputTextArea @bind-Value="inputText" class="textarea" tabindex="3" rows="20" maxlength="5000" />
                 </div>
                 <div class="spacer4"></div>
                 @* Submit -------------------------------------------- *@
@@ -54,12 +54,28 @@
 </div>
 
 @code {
-    private Comment comment = new Comment();
+    private string inputName = string.Empty;
+    private string inputTitle = string.Empty;
+    private string inputText = string.Empty;
+
     private string errorMessage = string.Empty;
 
     private async Task SubmitAsync()
     {
         IpInfo ipInfo = await LibExternal.GetIpInfoAsync();
+
+        Comment comment = new Comment()
+        {
+            Id = await DatabaseCalls.GetNextCommentIdAsync(),
+            Name = inputName.Trim(),
+            Title = inputTitle.Trim(),
+            Text = inputText.Trim(),
+            Active = true,
+            Hidden = false,
+            Closed = false
+        };
+
+        errorMessage = string.Empty;
 
         try
         {
@@ -71,14 +87,14 @@
                 return;
             }
 
-            // Make sure the comment is new
-            if (await DatabaseCalls.IsDuplicatedCommentAsync(comment.Text))
+            //------ Banned IP
+            if (await DatabaseCalls.IsBannedIpAsync(ipInfo.Ip))
             {
-                errorMessage = "This comment already exists";
+                errorMessage = "You are not allowed to post on this forum";
                 return;
             }
 
-            int userId = await DatabaseCalls.GetUserIdAsync(comment.Name, comment.IP);
+            int userId = await DatabaseCalls.GetUserIdAsync(comment.Name, ipInfo.Ip);
 
             if (userId == 0)
             {
@@ -95,13 +111,7 @@
                 });
             }
 
-            comment.Id = await DatabaseCalls.GetNextCommentIdAsync();
-            comment.TopicId = null;
-            comment.Title = comment.Title.Trim();
-            comment.Text = comment.Text.Trim();
             comment.UserId = userId;
-            comment.Hidden = false;
-            comment.Closed = false;
 
             await DatabaseCalls.SaveCommentAsync(comment);
         }

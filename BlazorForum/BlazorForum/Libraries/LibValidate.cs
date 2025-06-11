@@ -19,10 +19,6 @@ namespace BlazorForum.Libraries
             if ((!IsNewTopic(comment.TopicId)) && !(await DatabaseCalls.TopicExistsAsync(comment.TopicId ?? 0)))
                 throw new Exception("TopicID not found among existing topics");
 
-            //------ Banned IP            
-            if (await DatabaseCalls.IsBannedIpAsync(comment.IP))
-                return (false, "You are not allowed to post on this forum");
-
             //------ If Name length = 0
             if (string.IsNullOrWhiteSpace(comment.Name))
                 return (false, "User name is missing");
@@ -48,20 +44,24 @@ namespace BlazorForum.Libraries
                 return (false, "Topic title is missing");
 
             //------ Title min length (2)
-            if ((IsNewTopic(comment.TopicId) && comment.Title.Length < 2))
+            if ((IsNewTopic(comment.TopicId) && comment.Title?.Length < 2))
                 return (false, "Topic title is too short (min. 2 characters required)");
 
             //------ Title max length (60)
-            if (comment.Title.Length > 60)
+            if (comment.Title?.Length > 60)
                 return (false, "Topic title is too long (max. 60 characters allowed)");
 
             //------ Invalid characters in Title
-            if (!IsValidString(comment.Title))
+            if (!IsValidString(comment.Title ?? string.Empty))
                 return (false, "Topic title contains invalid characters");
 
             //------ Improper content in Title
-            if (IsImproperContent(comment.Title))
+            if (IsImproperContent(comment.Title ?? string.Empty))
                 return (false, "Topic title contains improper content");
+
+            //------ Title already exist
+            if (await DatabaseCalls.IsDuplicatedTitleAsync(comment.Title))
+                return (false, "Topic title already exists");
 
             //------ If Text length = 0
             if (string.IsNullOrWhiteSpace(comment.Text))
@@ -82,6 +82,10 @@ namespace BlazorForum.Libraries
             //------ Improper content in Text
             if (IsImproperContent(comment.Text))
                 return (false, "Comment text contains improper content");
+
+            //------ Comment already exist
+            if (await DatabaseCalls.IsDuplicatedCommentAsync(comment.Text))
+                return (false, "Comment already exists");
 
             return (true, string.Empty);
         }

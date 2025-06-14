@@ -35,6 +35,8 @@
                 <br />
                 <hr>
             }
+
+            <CompComment PostType=PostType.CommentNew TopicId=TopicId CommentId=null></CompComment>
         }
     </div>
 
@@ -66,7 +68,7 @@
 
             if (commentList.Count != 0)
             {
-                topicTitle = commentList.First().Title;
+                topicTitle = commentList.First().Title ?? string.Empty;
                 topicClosed = commentList.First().Closed;
 
                 ///////////////Later/////////////// await DatabaseCalls.IncTopicViewsAsync(TopicId);

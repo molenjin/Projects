@@ -112,6 +112,12 @@ namespace BlazorForum.Database
             await GetStoredProcResultIntAsync("SaveComment", param);
         }
 
+        public async Task DeleteCommentAsync(int commentId)
+        {
+            var param = new { CommentID = commentId };
+            await GetStoredProcResultIntAsync("DeleteComment", param);
+        }
+
         public async Task SaveUserAsync(User user)
         {
             var param = new { ID = user.Id, user.Name, user.CountryCode, user.IP, Active = user.Active, Moderator = user.Moderator };

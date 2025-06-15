@@ -8,6 +8,7 @@
 @inject IDatabaseCalls DatabaseCalls
 @inject LibData LibData
 @inject LibFormat LibFormat
+@inject LibExternal LibExternal
 
 <PageTitle>Topic</PageTitle>
 
@@ -33,6 +34,12 @@
                 <br />
                 <span >@LibFormat.HtmlDecode(@comment.Text)</span>
                 <br />
+                @if (comment.Ip == ipInfo?.Ip)
+                {
+                    <br />
+                    <button class="btn btn-primary" @onclick="() => OnEditCommentAsync(comment)">Edit</button>
+                    <button class="btn btn-primary" @onclick="() => OnDeleteCommentAsync(comment)">Delete</button>
+                }
                 <hr>
             }
 
@@ -58,12 +65,16 @@
     private string topicTitle = String.Empty;
     private bool topicClosed;
 
+    IpInfo? ipInfo;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         try
         {
+            ipInfo = await LibExternal.GetIpInfoAsync();
+
             commentList = await DatabaseCalls.GetCommentListAsync(TopicId);
 
             if (commentList.Count != 0)
@@ -78,5 +89,15 @@
         {
             Console.WriteLine($"Error: {ex.Message}");
         }
+    }
+
+    async Task OnEditCommentAsync(Comment comment)
+    {
+        //
+    }
+
+    async Task OnDeleteCommentAsync(Comment comment)
+    {
+        await DatabaseCalls.DeleteCommentAsync(comment.Id);
     }
 }

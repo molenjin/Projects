@@ -50,5 +50,38 @@ namespace BlazorForum.Libraries
         {
             return time.ToString("dd MMM yyy HH:mm");
         }
+
+        public static string Initials(string name)
+        {
+            if (name == null || name == string.Empty)
+                return "NN";
+
+            string[] parts = name.Trim().Split(' ', '.', ',', '-', '/', '&');
+
+            if (parts.Length == 0)
+                return "NN";
+
+            if (parts.Length == 1 && parts[0].Length != 0)
+                return parts[0][..1].ToUpper();
+
+            if (parts.Length > 1 && parts[0].Length != 0 && parts[1].Length != 0)
+                return parts[0][..1].ToUpper() + parts[1][..1].ToUpper();
+
+            return "NN";
+        }
+
+        public static int ColorIndexFromIp (string ip)
+        {
+            string[] digits = ip.Split(".");
+            int sum = 0;
+            foreach (string digit in digits)
+            {
+                if (int.TryParse(digit, out int number))
+                {
+                    sum += number;
+                }
+            }
+            return sum % 20;
+        }
     }
 }

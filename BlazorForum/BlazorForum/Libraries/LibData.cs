@@ -1,4 +1,6 @@
-﻿namespace BlazorForum.Libraries
+﻿using System.Drawing;
+
+namespace BlazorForum.Libraries
 {
     public class LibData
     {
@@ -244,6 +246,34 @@
             if (code == "ZW") country = "Zimbabwe";
 
             return country;
+        }
+
+        public Color UserColor(int colorIndex)
+        {
+            Color[] userColors = {
+                Color.LightCoral,
+                Color.LightSalmon,
+                Color.LightPink,
+                Color.PaleVioletRed,
+                Color.Chocolate,
+                Color.DarkKhaki,
+                Color.Tomato,
+                Color.Orange,
+                Color.Gold,
+                Color.SeaGreen,                
+                Color.Plum,
+                Color.LightGreen,
+                Color.YellowGreen,
+                Color.DarkSeaGreen,
+                Color.Turquoise,
+                Color.LightSteelBlue,
+                Color.SkyBlue,
+                Color.Tan,
+                Color.SteelBlue,
+                Color.Silver
+            };
+
+            return userColors[colorIndex];
         }
     }
 }

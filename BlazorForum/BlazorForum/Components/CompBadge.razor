@@ -1,0 +1,28 @@
+﻿@using System.Drawing;
+@using BlazorForum.Libraries
+
+@inject LibData LibData
+@inject LibFormat LibFormat
+
+<div class="round_badge" style="background-color: @bagdeColor.ToKnownColor()">@initials</div>
+
+@code {
+    [Parameter]
+    public string Name { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Ip { get; set; } = string.Empty;
+
+    private string initials = string.Empty;
+    private Color bagdeColor;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        initials = LibFormat.Initials(Name);
+
+        int colorIdex = LibFormat.ColorIndexFromIp(Ip);
+        bagdeColor = LibData.UserColor(colorIdex);
+    }
+}

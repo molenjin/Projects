@@ -24,7 +24,7 @@
         {
             foreach (var comment in @commentList)
             {
-                <CompBadge Name=@comment.Name Ip=@comment.Ip></CompBadge>
+                <CompBadge Name=@comment.Name Ip=@comment.Ip Moderator=false></CompBadge>
                 <br />
                 <strong>@LibFormat.HtmlDecode(@comment.Name)</strong>
                 <br/>

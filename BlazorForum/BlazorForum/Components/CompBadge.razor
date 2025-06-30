@@ -4,7 +4,14 @@
 @inject LibData LibData
 @inject LibFormat LibFormat
 
-<div class="round_badge" style="background-color: @bagdeColor.ToKnownColor()">@initials</div>
+@if (Moderator)
+{
+    <div class="round_badge" style="background-color: navy; border-radius: 10px;">@initials</div>
+}
+else
+{
+    <div class="round_badge" style="background-color: @bagdeColor.ToKnownColor()">@initials</div>
+}
 
 @code {
     [Parameter]
@@ -12,6 +19,9 @@
 
     [Parameter]
     public string Ip { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool Moderator { get; set; } = false;
 
     private string initials = string.Empty;
     private Color bagdeColor;

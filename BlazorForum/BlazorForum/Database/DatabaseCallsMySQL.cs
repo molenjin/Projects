@@ -128,5 +128,17 @@ namespace BlazorForum.Database
         {
             await GetStoredProcResultIntAsync("IncTopicViews", topicId);
         }
+
+        public async Task<List<string>> GetSettingValueAsync(string key)
+        {
+            var param = new { SearchKey = key };
+            return await GetStoredProcResultListAsync<string>("GetSettingValueList", param);
+        }
+
+        public async Task SaveSettingValueAsync(string key, string value)
+        {
+            var param = new { SearchKey = key, Value = value };
+            await GetStoredProcResultIntAsync("SaveSettingValue ", param);
+        }
     }
 }

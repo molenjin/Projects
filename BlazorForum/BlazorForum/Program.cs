@@ -15,6 +15,8 @@ builder.Services.AddSingleton<LibData>();
 builder.Services.AddSingleton<LibFormat>();
 // Add the validation library
 builder.Services.AddSingleton<LibValidate>();
+// Add the moderator library
+builder.Services.AddSingleton<LibModerator>();
 // Add the external IO library
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<LibExternal>();

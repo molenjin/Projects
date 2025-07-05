@@ -19,7 +19,7 @@ namespace BlazorForum.Database
         Task DeleteCommentAsync(int commentId);
         Task SaveUserAsync(User user);
         Task IncTopicViewsAsync(int topicId);
-        Task<List<string>> GetSettingValueAsync(string key);
-        Task SaveSettingValueAsync(string key, string value);
+        Task<List<Setting>> GetSettingAsync(string key);
+        Task SaveSettingAsync(string key, string value);
     }
 }

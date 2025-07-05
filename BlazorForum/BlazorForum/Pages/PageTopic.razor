@@ -8,6 +8,7 @@
 @inject IDatabaseCalls DatabaseCalls
 @inject LibData LibData
 @inject LibFormat LibFormat
+@inject LibModerator LibModerator
 @inject LibExternal LibExternal
 
 <PageTitle>Topic</PageTitle>
@@ -70,15 +71,14 @@ OnClosed=OnDeleteCommentConfirmedAsync></CompModalDialog>
     [Parameter]
     public int NumOfComments { get; set; }
 
+    private IpInfo? ipInfo;
+    private bool isModerator;
     private Comment currComment;
-
     private List<Comment>? commentList;
     private string topicTitle = String.Empty;
     private bool topicClosed;
 
-    public bool showDeleteConfirmation = false;
-
-    IpInfo? ipInfo;
+    public bool showDeleteConfirmation = false;   
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,6 +87,7 @@ OnClosed=OnDeleteCommentConfirmedAsync></CompModalDialog>
         try
         {
             ipInfo = await LibExternal.GetIpInfoAsync();
+            isModerator = await LibModerator.IsModeratorAsync(ipInfo);
 
             commentList = await DatabaseCalls.GetCommentListAsync(TopicId);
 
@@ -100,7 +101,7 @@ OnClosed=OnDeleteCommentConfirmedAsync></CompModalDialog>
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            await LibExternal.SendEmailAsync(nameof(PageTopic), ex);
         }
     }
 

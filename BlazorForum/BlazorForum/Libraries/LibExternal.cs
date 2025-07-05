@@ -1,5 +1,7 @@
 ﻿using BlazorForum.Data;
+using BlazorForum.Database;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace BlazorForum.Libraries
 {
@@ -15,6 +17,10 @@ namespace BlazorForum.Libraries
             var ipInfo = JsonSerializer.Deserialize<IpInfo>(responseBody) ?? new IpInfo();
             ipInfo.UserAgent = HttpContextAccessor.HttpContext?.Request?.Headers.UserAgent.ToString() ?? "Unknown User-Agent";
             return ipInfo;
+        }
+
+        public async Task SendEmailAsync(string methodName, Exception ex)
+        {
         }
     }
 }

@@ -1,7 +1,11 @@
 ﻿@page "/new"
 
 @using BlazorForum.Data
+@using BlazorForum.Libraries
 @using BlazorForum.Components
+
+@inject LibModerator LibModerator
+@inject LibExternal LibExternal
 
 <PageTitle>New Topic</PageTitle>
 
@@ -15,5 +19,21 @@
 </div>
 
 @code {
+    private IpInfo? ipInfo;
+    private bool isModerator;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        try
+        {
+            ipInfo = await LibExternal.GetIpInfoAsync();
+            isModerator = await LibModerator.IsModeratorAsync(ipInfo);
+        }
+        catch (Exception ex)
+        {
+            await LibExternal.SendEmailAsync(nameof(PageNewTopic), ex);
+        }
+    }
 }

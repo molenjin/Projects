@@ -11,7 +11,7 @@ namespace BlazorForum.Libraries
         {
             try
             {
-                List<Setting> settings = await DatabaseCalls.GetSettingValueAsync(moderatorIpKey);
+                List<Setting> settings = await DatabaseCalls.GetSettingAsync(moderatorIpKey);
 
                 if (settings.Count != 1)
                     return false;

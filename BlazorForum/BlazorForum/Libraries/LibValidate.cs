@@ -39,6 +39,10 @@ namespace BlazorForum.Libraries
             if (IsImproperContent(comment.Name))
                 return (false, "User name contains improper content");
 
+            //------ Improper use of Moderator Name
+            if (comment.Name.ToLower() == "Moderator".ToLower() && !comment.Moderator)
+                return (false, "User name cannot be Moderator");
+
             //------ If new topic and Title length = 0
             if (IsNewTopic(comment.TopicId) && string.IsNullOrWhiteSpace(comment.Title))
                 return (false, "Topic title is missing");

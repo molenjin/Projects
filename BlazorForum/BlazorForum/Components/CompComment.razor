@@ -1,14 +1,13 @@
 ﻿@using BlazorForum.Data
 @using BlazorForum.Database
 @using BlazorForum.Libraries
-@using BlazorForum.Components
 
 @inject IDatabaseCalls DatabaseCalls
 @inject LibValidate LibValidate
 @inject LibExternal LibExternal
 
 <div class="panel">
-    <EditForm FormName="Hello" Model="this" OnSubmit="SubmitCommentAsync">
+    <EditForm FormName="Comment" Model="this" OnSubmit="SubmitCommentAsync">
         @* User name ----------------------------------------- *@
         <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
         <div class="column paddingR-10">
@@ -51,6 +50,9 @@
     [Parameter]
     public int? CommentId { get; set; }
 
+    [Parameter]
+    public bool IsModerator { get; set; }
+
     private string inputName = string.Empty;
     private string inputTitle = string.Empty;
     private string inputText = string.Empty;
@@ -62,6 +64,12 @@
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
+
+        if (IsModerator && (PostType == PostType.TopicNew || PostType == PostType.CommentNew))
+        {
+            inputName = "Moderator";
+        }
+
         rowsText = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? 20 : 10;
     }
 
@@ -79,6 +87,7 @@
                     Title = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? inputTitle.Trim() : null,
                     Text = inputText.Trim(),
                     Active = true,
+                    Moderator = IsModerator,
                     Hidden = false,
                     Closed = false
                 };

@@ -15,9 +15,8 @@
 
 <div class="forum_content">
     <div class="forum">
-
+        <CompModeratorLogIn ipInfo=@ipInfo IsModerator=isModerator></CompModeratorLogIn>
         <CompForumHeader ForumLinkOn=true ActionTitle=@topicTitle ActionLinkOn=false></CompForumHeader>
-
         <br />
         <br />
 
@@ -25,7 +24,7 @@
         {
             foreach (var comment in @commentList)
             {
-                <CompBadge Name=@comment.Name Ip=@comment.Ip Moderator=false></CompBadge>
+                <CompBadge Name=@comment.Name Ip=@comment.Ip Moderator=@comment.Moderator></CompBadge>
                 <br />
                 <strong>@LibFormat.HtmlDecode(@comment.Name)</strong>
                 <br/>
@@ -46,7 +45,7 @@
                 <hr>
             }
 
-            <CompComment PostType=PostType.CommentNew TopicId=TopicId CommentId=null></CompComment>
+            <CompComment PostType=PostType.CommentNew TopicId=TopicId CommentId=null IsModerator=isModerator></CompComment>
         }
     </div>
 
@@ -54,12 +53,12 @@
     <br />
 </div>
 
-<CompModalDialog Title="Delete comment" 
-Message="Are you sure you want to delete this comment?"
-LeftBtnText="Delete"
-RightBtnText="Cancel"
-ShowDialog=showDeleteConfirmation
-OnClosed=OnDeleteCommentConfirmedAsync></CompModalDialog>
+<CompModalDialog Title="Delete comment"
+                 Message="Are you sure you want to delete this comment?"
+                 LeftBtnText="Delete"
+                 RightBtnText="Cancel"
+                 ShowDialog=showDeleteConfirmation
+                 OnClosed=OnDeleteCommentConfirmedAsync></CompModalDialog>
 
 @code {
     [Parameter]

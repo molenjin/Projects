@@ -14,9 +14,8 @@
 
 <div class="forum_content">
     <div class="forum">
-
+        <CompModeratorLogIn ipInfo=@ipInfo IsModerator=isModerator></CompModeratorLogIn>
         <CompForumHeader ForumLinkOn=false ActionTitle="Start new topic" ActionLinkOn=true ActionLink="/new"></CompForumHeader>
-
         <br />
         <br />
         <big>
@@ -44,7 +43,10 @@
         </big>
         <br />
 
-        <button class="btn btn-primary" @onclick=OnLoadMoreAsync hidden=@loadMoreButtonStyle>Load More</button>
+        @if (loadMore)
+        {
+            <button class="btn btn-primary" @onclick=OnLoadMoreAsync>Load More</button>
+        }
 
         <br />
         <br />
@@ -61,7 +63,7 @@
     private int pageNo = 1;
     private const int pageSize = 50;
     private List<Topic>? topicList;
-    private bool loadMoreButtonStyle = true;
+    private bool loadMore;
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,7 +77,7 @@
             numOfTopics = await DatabaseCalls.GetNumOfTopicsAsync(true);
             topicList = await DatabaseCalls.GetTopicListAsync(true, pageNo, pageSize);
 
-            loadMoreButtonStyle = (pageNo * pageSize) < numOfTopics ? false : true;
+            loadMore = (pageNo * pageSize) < numOfTopics;
         }
         catch (Exception ex)
         {
@@ -95,7 +97,7 @@
                 additionalTopicList = await DatabaseCalls.GetTopicListAsync(true, pageNo, pageSize);
                 topicList.AddRange(additionalTopicList);
 
-                loadMoreButtonStyle = (pageNo * pageSize) < numOfTopics ? false : true;
+                loadMore = (pageNo * pageSize) < numOfTopics;
             }
         }
         catch (Exception ex)

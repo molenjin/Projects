@@ -1,0 +1,82 @@
+﻿@using BlazorForum.Data
+@using BlazorForum.Libraries
+
+@inject LibModerator LibModerator
+
+<div class="d-sm-flex">
+    <button class="btn btn-primary" @onclick=OnLogIn>@buttonCaption</button>
+    @if (openEdit)
+    {
+        <EditForm FormName="ModeratorLogIn" Model="this" OnSubmit="SubmitPasswordAsync">
+        <InputText @bind-Value=@inputPassword class="textfield" type="password" tabindex="1" size="20" maxlength="20" />
+        <button class="btn btn-primary" type="submit">Submit</button>
+        </EditForm>
+    }
+</div>
+
+<CompModalDialog Title="Sign out"
+                 Message="Are you sure you want to sign out?"
+                 LeftBtnText="Yes"
+                 RightBtnText="No"
+                 ShowDialog=showSignOutConfirmation
+                 OnClosed=OnSignOutConfirmedAsync></CompModalDialog>
+
+@code {
+    [Parameter]
+    public IpInfo ipInfo { get; set; } = null!;
+
+    [Parameter]
+    public bool IsModerator { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnModeratorLogIn { get; set; }
+
+    private bool openEdit;
+    private string buttonCaption = string.Empty;
+    private string inputPassword = string.Empty;
+
+    public bool showSignOutConfirmation = false;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        buttonCaption = IsModerator ? "Log out" : "Log in";
+    }
+
+    private void OnLogIn()
+    {
+        if (IsModerator)
+        {
+            showSignOutConfirmation = true;
+        }
+        else
+        {
+            openEdit = !openEdit;
+        }
+    }
+
+    async Task OnSignOutConfirmedAsync(bool signOutConfirmed)
+    {
+        showSignOutConfirmation = false;
+        if (signOutConfirmed)
+        {
+            IsModerator = false;
+            await LibModerator.ModeratorLogOutAsync();
+            buttonCaption = "Log in";
+        }
+    }
+
+    private async Task SubmitPasswordAsync()
+    {
+        if (inputPassword.Trim() == "aWedft67$j")
+        {
+            IsModerator = true;
+            await LibModerator.ModeratorLogInAsync(ipInfo);
+            buttonCaption = "Log out";
+        }
+        inputPassword = string.Empty;
+        
+        openEdit = false;
+        await OnModeratorLogIn.InvokeAsync(IsModerator);
+    }
+}

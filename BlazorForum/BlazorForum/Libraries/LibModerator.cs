@@ -25,7 +25,7 @@ namespace BlazorForum.Libraries
             return false;
         }
 
-        public async Task ModeratorLogOn(IpInfo ipInfo)
+        public async Task ModeratorLogInAsync(IpInfo ipInfo)
         {
             try
             {
@@ -33,11 +33,11 @@ namespace BlazorForum.Libraries
             }
             catch (Exception ex)
             {
-                await LibExternal.SendEmailAsync(nameof(ModeratorLogOn), ex);
+                await LibExternal.SendEmailAsync(nameof(ModeratorLogInAsync), ex);
             }
         }
 
-        public async Task ModeratorLogOff()
+        public async Task ModeratorLogOutAsync()
         {
             try
             {
@@ -45,7 +45,7 @@ namespace BlazorForum.Libraries
             }
             catch (Exception ex)
             {
-                await LibExternal.SendEmailAsync(nameof(ModeratorLogOff), ex);
+                await LibExternal.SendEmailAsync(nameof(ModeratorLogOutAsync), ex);
             }
         }
     }

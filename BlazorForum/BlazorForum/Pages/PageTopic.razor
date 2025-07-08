@@ -15,7 +15,7 @@
 
 <div class="forum_content">
     <div class="forum">
-        <CompModeratorLogIn ipInfo=@ipInfo IsModerator=isModerator></CompModeratorLogIn>
+        <CompModeratorLogIn ipInfo=@ipInfo IsModerator=isModerator OnModeratorLogIn=OnModeratorLogIn></CompModeratorLogIn>
         <CompForumHeader ForumLinkOn=true ActionTitle=@topicTitle ActionLinkOn=false></CompForumHeader>
         <br />
         <br />
@@ -39,7 +39,7 @@
                 <br />
                 <span >@LibFormat.HtmlDecode(@comment.Text)</span>
                 <br />
-                @if (comment.Ip == ipInfo?.Ip)
+                @if (comment.Ip == ipInfo?.Ip || isModerator)
                 {
                     <br />
                     <button class="btn btn-primary" @onclick="() => OnEditCommentAsync(comment)">Edit</button>
@@ -105,6 +105,11 @@
         {
             await LibExternal.SendEmailAsync(nameof(PageTopic), ex);
         }
+    }
+
+    private void OnModeratorLogIn(bool isModerator)
+    {
+        this.isModerator = isModerator;
     }
 
     private void OnEditCommentAsync(Comment comment)

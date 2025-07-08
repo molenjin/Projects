@@ -268,6 +268,16 @@ hr.topic {
     clear: left;
 }
 
+.spacer6 {
+    height: 6px;
+    clear: left;
+}
+
+.spacer8 {
+    height: 8px;
+    clear: left;
+}
+
 .spacer10 {
     height: 10px;
     clear: left;

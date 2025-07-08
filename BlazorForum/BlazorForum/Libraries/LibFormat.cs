@@ -56,7 +56,7 @@ namespace BlazorForum.Libraries
             if (name == null || name == string.Empty)
                 return "NN";
 
-            string[] parts = name.Trim().Split(' ', '.', ',', '-', '/', '&');
+            string[] parts = name.Replace("'", "").Trim().Split(' ', '.', ',', '-', '/', '&');
 
             if (parts.Length == 0)
                 return "NN";

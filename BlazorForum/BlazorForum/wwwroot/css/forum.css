@@ -321,11 +321,7 @@ hr.topic {
     overflow: hidden;
 }
 
-.user_details_left {
-    width: 100%;
-}
-
-.user_details_right {
+.user_details {
     width: 100%;
 }
 

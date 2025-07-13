@@ -49,7 +49,7 @@
                         <div class="spacer20"></div>
                      </div>
                     <div class="column">
-                        <span >@LibFormat.HtmlDecode(@comment.Text)</span>                
+                        @((MarkupString)LibFormat.CommentText(@comment.Text))
                         <br />
                         @if (comment.Ip == ipInfo?.Ip || isModerator)
                         {

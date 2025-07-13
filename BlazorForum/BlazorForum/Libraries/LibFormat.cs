@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Text.RegularExpressions;
+using System.Web;
 
 namespace BlazorForum.Libraries
 {
@@ -13,10 +14,10 @@ namespace BlazorForum.Libraries
         {
             string titleLink = title.ToLower().Trim();
 
-            titleLink = System.Text.RegularExpressions.Regex.Replace(titleLink, @"[^0-9a-zA-Z ]+", "");
-            titleLink = System.Text.RegularExpressions.Regex.Replace(titleLink, "/-+/", " ");
-            titleLink = System.Text.RegularExpressions.Regex.Replace(titleLink, "\\s+", "-");
-            titleLink = System.Text.RegularExpressions.Regex.Replace(titleLink, "/-+/", "-");
+            titleLink = Regex.Replace(titleLink, @"[^0-9a-zA-Z ]+", "");
+            titleLink = Regex.Replace(titleLink, "/-+/", " ");
+            titleLink = Regex.Replace(titleLink, "\\s+", "-");
+            titleLink = Regex.Replace(titleLink, "/-+/", "-");
 
             return titleLink;
         }
@@ -82,6 +83,21 @@ namespace BlazorForum.Libraries
                 }
             }
             return sum % 20;
+        }
+
+        public static string CommentText(string commentText)
+        {
+            // HTML Decode
+            string result = HtmlDecode(commentText);
+
+            // Line breaks
+            result = result.Replace("\r\n", "<br />\r\n");
+            result = result.Replace("\n\n", "\r\n<br />\r\n<br />\r\n");
+
+            // Insert hyperlinks
+            result = Regex.Replace(result, "((https?://)?www\\.[^\\s]+)", "<a href=\"$1\">$1</a>");
+
+            return result;
         }
     }
 }

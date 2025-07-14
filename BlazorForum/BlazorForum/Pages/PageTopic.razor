@@ -16,6 +16,7 @@
 <div class="forum_content">
     <div class="forum">
         <CompModeratorLogIn ipInfo=@ipInfo IsModerator=isModerator OnModeratorLogIn=OnModeratorLogIn></CompModeratorLogIn>
+        <br />
         <CompForumHeader ForumLinkOn=true ActionTitle=@topicTitle ActionLinkOn=false></CompForumHeader>
         <br />
         <br />
@@ -49,8 +50,17 @@
                         <div class="spacer20"></div>
                      </div>
                     <div class="column">
-                        @((MarkupString)LibFormat.CommentText(@comment.Text))
-                        <br />
+                        @if (@comment.Hidden == false)
+                        {
+                            @((MarkupString)LibFormat.CommentText(@comment.Text))
+                        }
+                        @if (@comment.Hidden == true)
+                        {
+                            <p>(hidden)</p>
+                            <span class="forum_faint">
+                            @((MarkupString)LibFormat.CommentText(@comment.Text))
+                            </span>
+                        }
                         @if (comment.Ip == ipInfo?.Ip || isModerator)
                         {
                             <br />
@@ -59,7 +69,7 @@
                         }
                     </div>
                 </div>
-                <hr>
+                <hr class="topic">
             }
             <CompComment PostType=PostType.CommentNew TopicId=TopicId CommentId=null IsModerator=isModerator></CompComment>
         }

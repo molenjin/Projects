@@ -15,42 +15,22 @@
 }
 
 .small {
-    font-family: verdana;
     font-size: 8pt;
 }
 
 .normal {
-    font-family: verdana;
     font-size: 10pt;
 }
 
 .large {
-    font-family: verdana;
     font-size: 12pt;
 }
 
 .title {
-    font-family: verdana;
     font-size: 32pt;
 }
 
 .email {
-    font-family: verdana;
-    font-size: 12pt;
-}
-
-.forum_header {
-    color: rgb(50,50,50);
-    text-align: left;
-    font-family: verdana;
-    font-size: 14pt;
-    font-weight: bold;
-}
-
-.forum_topic {
-    color: rgb(50,50,50);
-    text-align: left;
-    font-family: verdana;
     font-size: 12pt;
 }
 
@@ -62,10 +42,25 @@
     line-height: 1.2em;
 }
 
+.forum_header {
+    color: rgb(50,50,50);
+    text-align: left;
+
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.forum_topic {
+    color: rgb(50,50,50);
+    text-align: left;
+
+    font-size: 12pt;
+}
+
 .forum_faint {
     color: rgb(100,100,100);
     text-align: left;
-    font-family: verdana;
+
     font-size: 8pt;
 }
 
@@ -331,7 +326,6 @@ hr.topic {
 .round_badge {
     width: 36px;
     height: 36px;
-    font-family: verdana;
     font-size: 14pt;
     font-weight: bold;
     color: white;

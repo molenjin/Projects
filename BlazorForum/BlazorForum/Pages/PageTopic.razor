@@ -64,6 +64,7 @@
                         @if (comment.Ip == ipInfo?.Ip || isModerator)
                         {
                             <br />
+                        <br />
                             <button class="btn btn-primary" @onclick="() => OnEditCommentAsync(comment)">Edit</button>
                             <button class="btn btn-primary" @onclick="() => OnDeleteCommentAsync(comment)">Delete</button>
                         }

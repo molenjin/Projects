@@ -47,7 +47,6 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="spacer20"></div>
                      </div>
                     <div class="column">
                         @if (@comment.Hidden == false)
@@ -72,7 +71,7 @@
                 </div>
                 <hr class="topic">
             }
-            <CompComment PostType=PostType.CommentNew TopicId=TopicId CommentId=null IsModerator=isModerator></CompComment>
+            <CompCommentEdit PostType=PostType.CommentNew TopicId=TopicId CommentId=null IsModerator=isModerator></CompCommentEdit>
         }
     </div>
 

@@ -37,10 +37,10 @@
     public string RightBtnText { get; set; } = string.Empty;
 
     [Parameter]
-    public bool ShowDialog { get; set; } = false;
+    public EventCallback<bool> OnClosed { get; set; }
 
     [Parameter]
-    public EventCallback<bool> OnClosed { get; set; }
+    public bool ShowDialog { get; set; } = false;
 
     private async Task Close(bool value)
     {

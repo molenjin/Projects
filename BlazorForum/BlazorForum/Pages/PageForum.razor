@@ -14,9 +14,18 @@
 
 <div class="forum_content">
     <div class="forum">
-        <CompModeratorLogIn ipInfo=@ipInfo IsModerator=isModerator></CompModeratorLogIn>
+        <CompModeratorLogIn 
+            ipInfo=@ipInfo 
+            IsModerator=@isModerator 
+            OnModeratorLogIn=@OnModeratorLogIn>
+        </CompModeratorLogIn>
         <br />
-        <CompForumHeader ForumLinkOn=false ActionTitle="Start new topic" ActionLinkOn=true ActionLink="/new"></CompForumHeader>
+        <CompForumHeader 
+            ForumLinkOn=false 
+            ActionTitle="Start new topic" 
+            ActionLinkOn=true 
+            ActionLink="/new">
+        </CompForumHeader>
         <br />
         <br />
         <big>
@@ -84,6 +93,11 @@
         {
             await LibExternal.SendEmailAsync(nameof(PageForum), ex);
         }
+    }
+
+    private void OnModeratorLogIn(bool isModerator)
+    {
+        this.isModerator = isModerator;
     }
 
     async Task OnLoadMoreAsync()

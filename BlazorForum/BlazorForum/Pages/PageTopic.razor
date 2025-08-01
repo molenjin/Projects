@@ -15,9 +15,17 @@
 
 <div class="forum_content">
     <div class="forum">
-        <CompModeratorLogIn ipInfo=@ipInfo IsModerator=isModerator OnModeratorLogIn=OnModeratorLogIn></CompModeratorLogIn>
+        <CompModeratorLogIn 
+            ipInfo=@ipInfo 
+            IsModerator=@isModerator 
+            OnModeratorLogIn=@OnModeratorLogIn>
+        </CompModeratorLogIn>
         <br />
-        <CompForumHeader ForumLinkOn=true ActionTitle=@topicTitle ActionLinkOn=false></CompForumHeader>
+        <CompForumHeader 
+            ForumLinkOn=true 
+            ActionTitle=@topicTitle 
+            ActionLinkOn=false>
+        </CompForumHeader>
         <br />
         <br />
 
@@ -60,31 +68,29 @@
                             @((MarkupString)LibFormat.CommentText(@comment.Text))
                             </span>
                         }
-                        @if (comment.Ip == ipInfo?.Ip || isModerator)
-                        {
-                            <br />
-                        <br />
-                            <button class="btn btn-primary" @onclick="() => OnEditCommentAsync(comment)">Edit</button>
-                            <button class="btn btn-primary" @onclick="() => OnDeleteCommentAsync(comment)">Delete</button>
-                        }
+                    <CompCommentOptions 
+                        IpInfo=@ipInfo 
+                        Comment=@comment 
+                        IsModerator=@isModerator 
+                        OnEditComment=@OnEditCommentConfirmedAsync
+                        OnDeleteComment=@OnDeleteCommentConfirmedAsync
+                    ></CompCommentOptions>
                     </div>
                 </div>
                 <hr class="topic">
             }
-            <CompCommentEdit PostType=PostType.CommentNew TopicId=TopicId CommentId=null IsModerator=isModerator></CompCommentEdit>
+            <CompCommentEdit 
+                PostType=PostType.CommentNew 
+                TopicId=@TopicId 
+                CommentId=null 
+                IsModerator=@isModerator>
+            </CompCommentEdit>
         }
     </div>
 
     <br />
     <br />
 </div>
-
-<CompModalDialog Title="Delete comment"
-                 Message="Are you sure you want to delete this comment?"
-                 LeftBtnText="Delete"
-                 RightBtnText="Cancel"
-                 ShowDialog=showDeleteConfirmation
-                 OnClosed=OnDeleteCommentConfirmedAsync></CompModalDialog>
 
 @code {
     [Parameter]
@@ -98,7 +104,7 @@
 
     private IpInfo? ipInfo;
     private bool isModerator;
-    private Comment currComment;
+    private Comment? currComment;
     private List<Comment>? commentList;
     private string topicTitle = String.Empty;
     private bool topicClosed;
@@ -135,21 +141,12 @@
         this.isModerator = isModerator;
     }
 
-    private void OnEditCommentAsync(Comment comment)
+    async Task OnEditCommentConfirmedAsync()
     {
-        currComment = comment;
     }
 
-    private void OnDeleteCommentAsync(Comment comment)
+    async Task OnDeleteCommentConfirmedAsync()
     {
-        currComment = comment;
-        showDeleteConfirmation = true;
-    }
-
-    async Task OnDeleteCommentConfirmedAsync(bool deleteConfirmed)
-    {
-        showDeleteConfirmation = false;
-        if (deleteConfirmed)
-            await DatabaseCalls.DeleteCommentAsync(currComment.Id);
+        //await DatabaseCalls.DeleteCommentAsync(currComment.Id);
     }
 }

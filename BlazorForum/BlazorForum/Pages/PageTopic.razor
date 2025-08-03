@@ -68,13 +68,17 @@
                             @((MarkupString)LibFormat.CommentText(@comment.Text))
                             </span>
                         }
-                    <CompCommentOptions 
-                        IpInfo=@ipInfo 
-                        Comment=@comment 
-                        IsModerator=@isModerator 
-                        OnEditComment=@OnEditCommentConfirmedAsync
-                        OnDeleteComment=@OnDeleteCommentConfirmedAsync
-                    ></CompCommentOptions>
+                        <br />
+                        <br />
+                        <CompCommentOptions 
+                            IpInfo=@ipInfo 
+                            Comment=@comment 
+                            IsModerator=@isModerator 
+                            OnEditComment=@OnEditCommentConfirmedAsync
+                            OnDeleteComment=@OnDeleteCommentConfirmedAsync
+                            OnHideComment=@OnHideCommentConfirmedAsync
+                            OnUnhideComment=@OnUnhideCommentConfirmedAsync>
+                        </CompCommentOptions>
                     </div>
                 </div>
                 <hr class="topic">
@@ -104,7 +108,6 @@
 
     private IpInfo? ipInfo;
     private bool isModerator;
-    private Comment? currComment;
     private List<Comment>? commentList;
     private string topicTitle = String.Empty;
     private bool topicClosed;
@@ -120,7 +123,7 @@
             ipInfo = await LibExternal.GetIpInfoAsync();
             isModerator = await LibModerator.IsModeratorAsync(ipInfo);
 
-            commentList = await DatabaseCalls.GetCommentListAsync(TopicId);
+            commentList = await DatabaseCalls.GetCommentListAsync(TopicId, showAll: isModerator);
 
             if (commentList.Count != 0)
             {
@@ -145,8 +148,42 @@
     {
     }
 
-    async Task OnDeleteCommentConfirmedAsync()
+    async Task OnDeleteCommentConfirmedAsync(Comment comment)
     {
-        //await DatabaseCalls.DeleteCommentAsync(currComment.Id);
+        if (comment == null)
+            return;
+
+        try
+        {
+            await DatabaseCalls.DeleteCommentAsync(comment.Id);
+            commentList?.Remove(comment);
+        }
+        finally { }
+    }
+
+    async Task OnHideCommentConfirmedAsync(Comment comment)
+    {
+        if (comment == null)
+            return;
+
+        try
+        {
+            await DatabaseCalls.HideCommentAsync(comment.Id);
+            comment.Hidden = true;
+        }
+        finally { }
+    }
+
+    async Task OnUnhideCommentConfirmedAsync(Comment comment)
+    {
+        if (comment == null)
+            return;
+
+        try
+        {
+            await DatabaseCalls.UnhideCommentAsync(comment.Id);
+            comment.Hidden = false;
+        }
+        finally { }
     }
 }

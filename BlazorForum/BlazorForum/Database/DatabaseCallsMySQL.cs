@@ -36,9 +36,9 @@ namespace BlazorForum.Database
             return await GetStoredProcResultListAsync<Topic>("GetTopicList", param);
         }
 
-        public async Task<List<Comment>> GetCommentListAsync(int topicId)
+        public async Task<List<Comment>> GetCommentListAsync(int topicId, bool showAll)
         {
-            var param = new { TopicId = topicId, ShowAll = true }; ;
+            var param = new { TopicId = topicId, ShowAll = showAll };
             return await GetStoredProcResultListAsync<Comment>("GetCommentList", param);
         }
 
@@ -111,11 +111,22 @@ namespace BlazorForum.Database
             var param = new { ID = comment.Id, TopicID = comment.TopicId, comment.Title, comment.Text, UserID = comment.UserId, comment.Hidden, comment.Closed };
             await GetStoredProcResultIntAsync("SaveComment", param);
         }
-
         public async Task DeleteCommentAsync(int commentId)
         {
             var param = new { CommentID = commentId };
             await GetStoredProcResultIntAsync("DeleteComment", param);
+        }
+
+        public async Task HideCommentAsync(int commentId)
+        {
+            var param = new { CommentID = commentId };
+            await GetStoredProcResultIntAsync("HideComment", param);
+        }
+
+        public async Task UnhideCommentAsync(int commentId)
+        {
+            var param = new { CommentID = commentId };
+            await GetStoredProcResultIntAsync("UnhideComment", param);
         }
 
         public async Task SaveUserAsync(User user)

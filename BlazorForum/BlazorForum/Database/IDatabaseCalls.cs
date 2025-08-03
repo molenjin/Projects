@@ -6,7 +6,7 @@ namespace BlazorForum.Database
     public interface IDatabaseCalls
     {        
         Task<List<Topic>> GetTopicListAsync(bool showAll, int pageNo, int pageLimit);
-        Task<List<Comment>> GetCommentListAsync(int topicId);
+        Task<List<Comment>> GetCommentListAsync(int topicId, bool showAll);
         Task<int> GetNumOfTopicsAsync(bool showAll);
         Task<int> GetNextCommentIdAsync();
         Task<int> GetNextUserIdAsync();
@@ -17,6 +17,8 @@ namespace BlazorForum.Database
         Task<bool> TopicExistsAsync(int topicId);                
         Task SaveCommentAsync(Comment comment);
         Task DeleteCommentAsync(int commentId);
+        Task HideCommentAsync(int commentId);
+        Task UnhideCommentAsync(int commentId);
         Task SaveUserAsync(User user);
         Task IncTopicViewsAsync(int topicId);
         Task<List<Setting>> GetSettingAsync(string key);

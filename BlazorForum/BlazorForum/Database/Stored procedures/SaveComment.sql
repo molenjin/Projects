@@ -11,6 +11,7 @@ BEGIN
 		, Hidden
 		, Closed
 		, 1
+		, NULL
 		, NOW()
 		, NULL
 	);

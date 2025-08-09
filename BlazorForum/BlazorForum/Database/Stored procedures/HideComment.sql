@@ -1,5 +1,9 @@
 CREATE DEFINER=`accnaust_ACCN`@`101.185.177.147` PROCEDURE `HideComment`(CommentID INT)
 proc_exit: BEGIN
+	IF (SELECT COUNT(ID) FROM Comment WHERE ID = CommentID) = 0 THEN
+		LEAVE proc_exit;
+	END IF;	
+    
 	IF (SELECT Hidden FROM Comment WHERE ID = CommentID) = 1 THEN
 		LEAVE proc_exit;
 	END IF;			

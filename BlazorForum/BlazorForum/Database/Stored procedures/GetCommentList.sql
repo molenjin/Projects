@@ -14,6 +14,7 @@ BEGIN
 		, C.Hidden
 		, C.Closed
 		, C.Views
+		, C.Reactions
         , C.CreatedOn
         , C.ModifiedOn
 	FROM Comment C

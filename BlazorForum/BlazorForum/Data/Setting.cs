@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace BlazorForum.Data
+﻿namespace BlazorForum.Data
 {
     public class Setting
     {

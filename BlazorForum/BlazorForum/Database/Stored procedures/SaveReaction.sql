@@ -9,20 +9,20 @@ BEGIN
 			  Type
 			, CommentID
 			, IP
-			, Active
 			, NOW()
 			, NULL
 		);    
     ELSE
 		IF (SELECT R.Type FROM Reaction R WHERE R.CommentID = CommentID AND R.IP = IP LIMIT 1) = Type THEN
-			SET ReactionType = '';
+			DELETE FROM Reaction
+			WHERE CommentID = CommentID
+			LIMIT 1;
 		ELSE
-			SET ReactionType = Type;
-		END IF;            
-        
-		UPDATE Reaction
-		SET Type = ReactionType, ModifiedOn = NOW()
-		WHERE CommentID = CommentID
-		LIMIT 1;
+			UPDATE Reaction
+			SET Type = Type, ModifiedOn = NOW()
+			WHERE CommentID = CommentID
+			LIMIT 1;
+		END IF;
+
 	END IF;
 END

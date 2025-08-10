@@ -23,5 +23,7 @@ namespace BlazorForum.Database
         Task IncTopicViewsAsync(int topicId);
         Task<List<Setting>> GetSettingAsync(string key);
         Task SaveSettingAsync(string key, string value);
+        Task SaveReactionAsync(Reaction reaction);
+        Task UpdateCommentReactionsAsync(int commentId);
     }
 }

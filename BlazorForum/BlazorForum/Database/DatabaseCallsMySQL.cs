@@ -151,5 +151,17 @@ namespace BlazorForum.Database
             var param = new { SearchKey = key, Value = value };
             await GetStoredProcResultIntAsync("SaveSettingValue ", param);
         }
+
+        public async Task SaveReactionAsync(Reaction reaction)
+        {
+            var param = new { Type = reaction.Type, CommentID = reaction.CommentId, IP = reaction.Ip };
+            await GetStoredProcResultIntAsync("SaveReaction ", param);
+        }
+
+        public async Task UpdateCommentReactionsAsync(int commentId)
+        {
+            var param = new { CommentId = commentId };
+            await GetStoredProcResultIntAsync("UpdateCommentReactions ", param);
+        }
     }
 }

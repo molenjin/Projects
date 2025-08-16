@@ -1,0 +1,58 @@
+﻿@using BlazorForum.Data
+
+@if (@commentReactions != null && commentReactions.Count > 0)
+{
+    foreach (var reaction in @commentReactions)
+    {
+        <span>@reaction.Type @reaction.Count.ToString()</span>
+    }
+}
+
+@code {
+    [Parameter]
+    public Comment? Comment { get; set; }
+
+    private List<CommentReaction>? commentReactions;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (Comment?.Reactions != null)
+            commentReactions = LoadCommentReactions(Comment.Reactions);
+    }
+
+    private List<CommentReaction>? LoadCommentReactions(string reactionsStr)
+    {
+        var reactions = reactionsStr.Split(';');
+        if (reactions != null && reactions.Length > 0)
+        {
+            char reactionType;
+            int reactionCount;
+
+            var commentReactions = new List<CommentReaction>();
+
+            foreach (var reaction in reactions)
+            {
+                if (reaction?.Length > 1)
+                {
+                    reactionType = reaction[0];
+                    if (int.TryParse(reaction.Substring(1), out reactionCount))
+                    {
+                        if (reactionCount > 0)
+                        {
+                            commentReactions.Add(new CommentReaction
+                            {
+                                Type = reactionType,
+                                Count = reactionCount
+                            });
+                        }
+
+                    }
+                }
+            }
+            return commentReactions;
+        }
+        return null;
+    }
+}

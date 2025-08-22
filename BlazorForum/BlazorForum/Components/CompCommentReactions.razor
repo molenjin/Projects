@@ -1,10 +1,13 @@
 ﻿@using BlazorForum.Data
+@using BlazorForum.Libraries
+
+@inject LibFormat LibFormat
 
 @if (@commentReactions != null && commentReactions.Count > 0)
 {
     foreach (var reaction in @commentReactions)
     {
-        <span>@reaction.Type @reaction.Count.ToString()</span>
+        <span>@reaction.Count.ToString()<img style="height:18px;" src=@LibFormat.EmoticonLink(@reaction.Type)></span>
     }
 }
 

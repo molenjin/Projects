@@ -47,6 +47,18 @@ namespace BlazorForum.Libraries
             return $"/Images/Flags/{userCountryCode}.png";
         }
 
+        public static string EmoticonLink(char reaction)
+        {
+            string emoticonName = "NotFound";
+            if (reaction == 'L') emoticonName = "Like";
+            if (reaction == 'H') emoticonName = "Heart";
+            if (reaction == 'F') emoticonName = "Funny";            
+            if (reaction == 'W') emoticonName = "Wonder";
+            if (reaction == 'S') emoticonName = "Sad";
+            if (reaction == 'A') emoticonName = "Angry";
+            return $"/Images/Emoticons/{emoticonName}.svg";
+        }
+
         public static string DateTimeFormat(DateTime time)
         {
             return time.ToString("dd MMM yyy HH:mm");

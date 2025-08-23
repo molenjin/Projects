@@ -7,7 +7,9 @@
 {
     foreach (var reaction in @commentReactions)
     {
-        <span>@reaction.Count.ToString()<img style="height:18px;" src=@LibFormat.EmoticonLink(@reaction.Type)></span>
+        <span style="padding-right: 5px;">
+            <img style="height:18px; padding-right: 2px;" src=@LibFormat.EmoticonLink(@reaction.Type)>@reaction.Count.ToString()
+        </span>
     }
 }
 

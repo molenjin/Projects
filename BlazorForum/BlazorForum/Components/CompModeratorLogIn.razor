@@ -14,12 +14,14 @@
     }
 </div>
 
-<CompModalDialog Title="Sign out"
-                 Message="Are you sure you want to sign out?"
-                 LeftBtnText="Yes"
-                 RightBtnText="No"
-                 ShowDialog=showSignOutConfirmation
-                 OnClosed=OnSignOutConfirmedAsync></CompModalDialog>
+<CompModalDialog 
+    Title="Sign out"
+    LeftBtnText="Yes"
+    RightBtnText="No"
+    ShowDialog=showSignOutConfirmation
+    OnClosed=OnSignOutConfirmedAsync>
+    <span>Are you sure you want to sign out?</span>
+</CompModalDialog>
 
 @code {
     [Parameter]

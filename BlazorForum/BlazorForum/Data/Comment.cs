@@ -1,4 +1,6 @@
-﻿namespace BlazorForum.Data
+﻿using System.Xml.Linq;
+
+namespace BlazorForum.Data
 {
     public class Comment
     {
@@ -18,5 +20,10 @@
         public string Reactions { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
+
+        public bool IsTopic()
+        {
+            return TopicId == null || TopicId == 0;
+        }
     }
 }

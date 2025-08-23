@@ -9,11 +9,14 @@
 <div class="panel">
     <EditForm FormName="Comment" Model="this" OnSubmit="SubmitCommentAsync">
         @* User name ----------------------------------------- *@
-        <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
-        <div class="column paddingR-10">
-            <InputText @bind-Value=@inputName class="textfield" tabindex="1" size="40" maxlength="20" />
-        </div>
-        <div class="spacer4"></div>
+        @if (PostType == PostType.TopicNew || PostType == PostType.CommentNew)
+        {
+            <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
+            <div class="column paddingR-10">
+                <InputText @bind-Value=@inputName class="textfield" tabindex="1" size="40" maxlength="20" />
+            </div>
+            <div class="spacer4"></div>
+        }
         @* Title --------------------------------------------- *@
         @if (PostType == PostType.TopicNew || PostType == PostType.TopicUpdate)
         {

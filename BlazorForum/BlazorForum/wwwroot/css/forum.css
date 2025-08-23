@@ -338,13 +338,14 @@ hr.topic {
 .round_button {
     width: 36px;
     height: 36px;
-    font-size: 30pt;
+    font-size: 24pt;
     color: rgb(100,100,100);
     background-color: #E2E5E9;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 4px;
 }
 
 .round_button:hover {

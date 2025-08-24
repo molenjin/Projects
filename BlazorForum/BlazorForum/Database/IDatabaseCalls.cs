@@ -16,6 +16,7 @@ namespace BlazorForum.Database
         Task<bool> IsDuplicatedCommentAsync(string text);
         Task<bool> TopicExistsAsync(int topicId);                
         Task SaveCommentAsync(Comment comment);
+        Task UpdateCommentAsync(Comment comment);
         Task DeleteCommentAsync(int commentId);
         Task HideCommentAsync(int commentId);
         Task UnhideCommentAsync(int commentId);

@@ -108,9 +108,16 @@ namespace BlazorForum.Database
 
         public async Task SaveCommentAsync(Comment comment)
         {
-            var param = new { ID = comment.Id, TopicID = comment.TopicId, comment.Title, comment.Text, UserID = comment.UserId, comment.Hidden, comment.Closed };
+            var param = new { CommentID = comment.Id, TopicID = comment.TopicId, comment.Title, comment.Text, UserID = comment.UserId, comment.Hidden, comment.Closed };
             await GetStoredProcResultIntAsync("SaveComment", param);
         }
+
+        public async Task UpdateCommentAsync(Comment comment)
+        {
+            var param = new { CommentID = comment.Id, comment.Title, comment.Text };
+            await GetStoredProcResultIntAsync("UpdateComment", param);
+        }
+
         public async Task DeleteCommentAsync(int commentId)
         {
             var param = new { CommentID = commentId };

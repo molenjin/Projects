@@ -13,7 +13,7 @@
         {
             <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
             <div class="column paddingR-10">
-                <InputText @bind-Value=@inputName class="textfield" tabindex="1" size="40" maxlength="20" />
+                <InputText @bind-Value=@InputName class="textfield" tabindex="1" size="40" maxlength="20" />
             </div>
             <div class="spacer4"></div>
         }
@@ -22,14 +22,14 @@
         {
             <div class="column20 right-desktop">Title&nbsp;&nbsp;</div>
             <div class="column paddingR-10">
-                <InputText @bind-Value=@inputTitle class="textfield" tabindex="2" size="40" maxlength="60" />
+                <InputText @bind-Value=@InputTitle class="textfield" tabindex="2" size="40" maxlength="60" />
             </div>
             <div class="spacer4"></div>
         }
         @* Text ---------------------------------------------- *@
         <div class="column20 right-desktop">Text&nbsp;&nbsp;</div>
         <div class="column paddingR-10">
-            <InputTextArea @bind-Value=@inputText class="textarea" tabindex="3" rows="@rowsText" maxlength="5000" />
+            <InputTextArea @bind-Value=@InputText class="textarea" tabindex="3" rows="@rowsText" maxlength="5000" />
         </div>
         <div class="spacer4"></div>
         @* Submit -------------------------------------------- *@
@@ -56,9 +56,14 @@
     [Parameter]
     public bool IsModerator { get; set; }
 
-    private string inputName = string.Empty;
-    private string inputTitle = string.Empty;
-    private string inputText = string.Empty;
+    [Parameter]
+    public string InputName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string InputTitle { get; set; } = string.Empty;
+
+    [Parameter]
+    public string InputText { get; set; } = string.Empty;
 
     private int rowsText;
 
@@ -70,7 +75,7 @@
 
         if (IsModerator && (PostType == PostType.TopicNew || PostType == PostType.CommentNew))
         {
-            inputName = "Moderator";
+            InputName = "Moderator";
         }
 
         rowsText = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? 20 : 10;
@@ -83,17 +88,17 @@
             IpInfo ipInfo = await LibExternal.GetIpInfoAsync();
 
             Comment comment = new Comment()
-                {
-                    Id = await DatabaseCalls.GetNextCommentIdAsync(),
-                    TopicId = this.TopicId,
-                    Name = inputName.Trim(),
-                    Title = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? inputTitle.Trim() : null,
-                    Text = inputText.Trim(),
-                    Active = true,
-                    Moderator = IsModerator,
-                    Hidden = false,
-                    Closed = false
-                };
+            {
+                Id = await DatabaseCalls.GetNextCommentIdAsync(),
+                TopicId = this.TopicId,
+                Name = InputName.Trim(),
+                Title = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? InputTitle.Trim() : null,
+                Text = InputText.Trim(),
+                Active = true,
+                Moderator = IsModerator,
+                Hidden = false,
+                Closed = false
+            };
 
             errorMessage = string.Empty;
 
@@ -112,13 +117,15 @@
                 return;
             }
 
-            int userId = await DatabaseCalls.GetUserIdAsync(comment.Name, ipInfo.Ip);
-
-            if (userId == 0)
+            if (PostType == PostType.TopicNew || PostType == PostType.CommentNew)
             {
-                userId = await DatabaseCalls.GetNextUserIdAsync();
+                int userId = await DatabaseCalls.GetUserIdAsync(comment.Name, ipInfo.Ip);
 
-                await DatabaseCalls.SaveUserAsync(new User()
+                if (userId == 0)
+                {
+                    userId = await DatabaseCalls.GetNextUserIdAsync();
+
+                    await DatabaseCalls.SaveUserAsync(new User()
                     {
                         Id = userId,
                         Name = comment.Name,
@@ -127,11 +134,16 @@
                         Active = true,
                         Moderator = IsModerator
                     });
+                }
+
+                comment.UserId = userId;
+
+                await DatabaseCalls.SaveCommentAsync(comment);
             }
-
-            comment.UserId = userId;
-
-            await DatabaseCalls.SaveCommentAsync(comment);
+            else
+            {
+                await DatabaseCalls.UpdateCommentAsync(comment);
+            }
         }
         catch (Exception ex)
         {

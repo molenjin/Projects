@@ -37,8 +37,6 @@
 
 <CompModalDialog 
     Title=@dialogTitle
-    LeftBtnText=@dialogLeftBtnText
-    RightBtnText=@dialogRightBtnText
     OnClosed=@dialogOnClosed
     ShowDialog=@dialogShowEdit>
     <span>
@@ -46,7 +44,10 @@
             PostType=@postType
             TopicId=null
             CommentId=null
-            IsModerator=IsModerator>
+            IsModerator=IsModerator
+            InputName=@Comment?.Name
+            InputTitle=@Comment?.Title    
+            InputText=@Comment?.Text>
         </CompCommentEdit>
     </span>
 </CompModalDialog>
@@ -111,8 +112,6 @@
             dialogTitle = "Edit comment";
         }
 
-        dialogLeftBtnText = "Save";
-        dialogRightBtnText = "Cancel";
         dialogOnClosed = EventCallback.Factory.Create<bool>(this, EditCommentConfirmed);
         dialogShowEdit = true;
     }

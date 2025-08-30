@@ -8,16 +8,19 @@
                     <div class="round_button" data-dismiss="modal" @onclick="() => Close(false)">&times;</div>
                 </div>
                 <div class="modal-body"> @ChildContent</div>
-                <div class="modal-footer">
-                    @if (LeftBtnText != string.Empty)
-                    {
-                        <button type="button" class="btn btn-primary" @onclick="() => Close(true)">@LeftBtnText</button>
-                    }
-                    @if (RightBtnText != string.Empty)
-                    {
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close(false)">@RightBtnText</button>
-                    }
-                </div>
+                @if (LeftBtnText != null && RightBtnText != null)
+                {
+                    <div class="modal-footer">
+                        @if (LeftBtnText != null)
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="() => Close(true)">@LeftBtnText</button>
+                        }
+                        @if (RightBtnText != null)
+                        {
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close(false)">@RightBtnText</button>
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -31,10 +34,10 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public string LeftBtnText { get; set; } = string.Empty;
+    public string? LeftBtnText { get; set; }
 
     [Parameter]
-    public string RightBtnText { get; set; } = string.Empty;
+    public string? RightBtnText { get; set; }
 
     [Parameter]
     public EventCallback<bool> OnClosed { get; set; }

@@ -9,14 +9,11 @@
 <div class="panel">
     <EditForm FormName="Comment" Model="this" OnSubmit="SubmitCommentAsync">
         @* User name ----------------------------------------- *@
-        @if (PostType == PostType.TopicNew || PostType == PostType.CommentNew)
-        {
-            <div class="column20 right-desktop">User name&nbsp;&nbsp;</div>
-            <div class="column paddingR-10">
-                <InputText @bind-Value=@InputName class="textfield" tabindex="1" size="40" maxlength="20" />
-            </div>
-            <div class="spacer4"></div>
-        }
+        <div class="column20 right-desktop vertical-center">User name&nbsp;&nbsp;</div>
+        <div class="column paddingR-10">
+            <InputText @bind-Value=@InputName class="textfield" disabled="@isEditable" tabindex="1" size="40" maxlength="20" />
+        </div>
+        <div class="spacer4"></div>
         @* Title --------------------------------------------- *@
         @if (PostType == PostType.TopicNew || PostType == PostType.TopicUpdate)
         {
@@ -48,10 +45,10 @@
     public PostType PostType { get; set; }
 
     [Parameter]
-    public int? TopicId { get; set; }
+    public int? CommentId { get; set; }
 
     [Parameter]
-    public int? CommentId { get; set; }
+    public int? TopicId { get; set; }
 
     [Parameter]
     public bool IsModerator { get; set; }
@@ -64,6 +61,8 @@
 
     [Parameter]
     public string InputText { get; set; } = string.Empty;
+
+    private bool isEditable;
 
     private int rowsText;
 
@@ -78,6 +77,8 @@
             InputName = "Moderator";
         }
 
+        isEditable = PostType == PostType.TopicUpdate || PostType == PostType.CommentUpdate;
+
         rowsText = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? 20 : 10;
     }
 
@@ -89,7 +90,7 @@
 
             Comment comment = new Comment()
             {
-                Id = await DatabaseCalls.GetNextCommentIdAsync(),
+                Id = this.CommentId ?? 0,
                 TopicId = this.TopicId,
                 Name = InputName.Trim(),
                 Title = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? InputTitle.Trim() : null,
@@ -103,7 +104,7 @@
             errorMessage = string.Empty;
 
             // Validate the input fields
-            (bool result, string message) = await LibValidate.IsCommentValidAsync(comment);
+            (bool result, string message) = await LibValidate.IsCommentValidAsync(PostType, comment);
             if (result != true)
             {
                 errorMessage = message;
@@ -119,6 +120,8 @@
 
             if (PostType == PostType.TopicNew || PostType == PostType.CommentNew)
             {
+                comment.Id = await DatabaseCalls.GetNextCommentIdAsync();
+
                 int userId = await DatabaseCalls.GetUserIdAsync(comment.Name, ipInfo.Ip);
 
                 if (userId == 0)
@@ -141,7 +144,7 @@
                 await DatabaseCalls.SaveCommentAsync(comment);
             }
             else
-            {
+            {                                
                 await DatabaseCalls.UpdateCommentAsync(comment);
             }
         }

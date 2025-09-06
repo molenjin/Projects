@@ -41,9 +41,9 @@
     ShowDialog=@dialogShowEdit>
     <span>
         <CompCommentEdit 
-            PostType=@postType
-            TopicId=null
-            CommentId=null
+            PostType=@postType            
+            CommentId=@Comment?.Id
+            TopicId=@Comment?.TopicId
             IsModerator=IsModerator
             InputName=@Comment?.Name
             InputTitle=@Comment?.Title    
@@ -119,6 +119,9 @@
     private void EditCommentConfirmed(bool editConfirmed)
     {
         dialogShowEdit = false;
+
+
+        //missing invoke?
     }
 
     private void DeleteComment(Comment comment)

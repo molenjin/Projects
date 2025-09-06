@@ -49,7 +49,7 @@ namespace BlazorForum.Database
             int result = 0;
             try
             {
-                result = (await Connection.QueryAsync<int>(mrpStoredProc, param, commandType: CommandType.StoredProcedure)).First();
+                result = (await Connection.QueryAsync<int>(mrpStoredProc, param, commandType: CommandType.StoredProcedure)).FirstOrDefault();
             }
             catch (Exception ex)
             {

@@ -5,11 +5,28 @@ namespace BlazorForum.Libraries
 {
     public class LibValidate(IDatabaseCalls DatabaseCalls)
     {
-        public async Task<(bool, string)> IsCommentValidAsync(Comment comment)
+        public async Task<(bool, string)> IsCommentValidAsync(PostType postType, Comment comment)
         {
             //------ If comment is null
             if (comment == null)
                 throw new ArgumentNullException("Comment cannot be null");
+
+
+            //------ If Id != 0 but PostType = CommentNew
+            if ((comment.Id != 0) && postType == PostType.CommentNew)
+                throw new Exception("New comment should not have Id");
+
+            //------ If Id = 0 but PostType = CommentUpdate
+            if ((comment.Id == 0) && postType == PostType.CommentUpdate)
+                throw new Exception("Comment update but missing Id");
+
+            //------ If TopicId exists but PostType = TopicNew
+            if (!IsNewTopic(comment.TopicId) && postType == PostType.TopicNew)
+                throw new Exception("New topic should not have TopicId");
+
+            //------ If TopicId exists but PostType = TopicUpdate
+            if (!IsNewTopic(comment.TopicId) && postType == PostType.TopicUpdate)
+                throw new Exception("Topic update should not have TopicId");
 
             //------ If not new topic and Title length > 0
             if (!IsNewTopic(comment.TopicId) && !string.IsNullOrWhiteSpace(comment.Title))
@@ -52,19 +69,19 @@ namespace BlazorForum.Libraries
                 return (false, "Topic title is too short (min. 2 characters required)");
 
             //------ Title max length (60)
-            if (comment.Title?.Length > 60)
+            if (IsNewTopic(comment.TopicId) && comment.Title?.Length > 60)
                 return (false, "Topic title is too long (max. 60 characters allowed)");
 
             //------ Invalid characters in Title
-            if (!IsValidString(comment.Title ?? string.Empty))
+            if (IsNewTopic(comment.TopicId) && !IsValidString(comment.Title ?? string.Empty))
                 return (false, "Topic title contains invalid characters");
 
             //------ Improper content in Title
-            if (IsImproperContent(comment.Title ?? string.Empty))
+            if (IsNewTopic(comment.TopicId) && IsImproperContent(comment.Title ?? string.Empty))
                 return (false, "Topic title contains improper content");
 
             //------ Title already exist
-            if (await DatabaseCalls.IsDuplicatedTitleAsync(comment.Title))
+            if (IsNewTopic(comment.TopicId) && postType == PostType.TopicNew && await DatabaseCalls.IsDuplicatedTitleAsync(comment.Title))
                 return (false, "Topic title already exists");
 
             //------ If Text length = 0
@@ -88,7 +105,7 @@ namespace BlazorForum.Libraries
                 return (false, "Comment text contains improper content");
 
             //------ Comment already exist
-            if (await DatabaseCalls.IsDuplicatedCommentAsync(comment.Text))
+            if (postType != PostType.TopicUpdate && await DatabaseCalls.IsDuplicatedCommentAsync(comment.Text))
                 return (false, "Comment already exists");
 
             return (true, string.Empty);

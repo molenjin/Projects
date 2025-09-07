@@ -37,10 +37,13 @@
 
 <CompModalDialog 
     Title=@dialogTitle
+    LeftBtnText="Submit"
+    RightBtnText="Cancel"
     OnClosed=@dialogOnClosed
     ShowDialog=@dialogShowEdit>
     <span>
         <CompCommentEdit 
+            @ref="commentEdit"
             PostType=@postType            
             CommentId=@Comment?.Id
             TopicId=@Comment?.TopicId
@@ -86,6 +89,7 @@
     private EventCallback<bool> dialogOnClosed;
     private bool dialogShowDialog = false;
 
+    private CompCommentEdit? commentEdit;
     private bool dialogShowEdit = false;
     private PostType postType;
 
@@ -112,16 +116,26 @@
             dialogTitle = "Edit comment";
         }
 
-        dialogOnClosed = EventCallback.Factory.Create<bool>(this, EditCommentConfirmed);
+        dialogOnClosed = EventCallback.Factory.Create<bool>(this, EditCommentConfirmedAsync);
         dialogShowEdit = true;
     }
 
-    private void EditCommentConfirmed(bool editConfirmed)
+    private async void EditCommentConfirmedAsync(bool editConfirmed)
     {
-        dialogShowEdit = false;
-
-
-        //missing invoke?
+        if (editConfirmed)
+        {
+            if (commentEdit != null)
+            {
+                if (await commentEdit.SubmitCommentAsync())
+                {
+                    dialogShowEdit = false;
+                    if (editConfirmed)
+                        await OnEditComment.InvokeAsync(Comment);
+                }
+            }
+        }
+        else
+            dialogShowEdit = false;
     }
 
     private void DeleteComment(Comment comment)
@@ -130,15 +144,15 @@
         dialogMessage = "Are you sure you want to delete this comment?";
         dialogLeftBtnText = "OK";
         dialogRightBtnText = "Cancel";
-        dialogOnClosed = EventCallback.Factory.Create<bool>(this, DeleteCommentConfirmed);
+        dialogOnClosed = EventCallback.Factory.Create<bool>(this, DeleteCommentConfirmedAsync);
         dialogShowDialog = true;
     }
 
-    private void DeleteCommentConfirmed(bool deleteConfirmed)
+    private async void DeleteCommentConfirmedAsync(bool deleteConfirmed)
     {
         dialogShowDialog = false;
         if (deleteConfirmed)
-            OnDeleteComment.InvokeAsync(Comment);
+            await OnDeleteComment.InvokeAsync(Comment);
     }
 
     private void HideComment(Comment comment)
@@ -147,15 +161,15 @@
         dialogMessage = "Are you sure you want to hide this comment?";
         dialogLeftBtnText = "OK";
         dialogRightBtnText = "Cancel";
-        dialogOnClosed = EventCallback.Factory.Create<bool>(this, HideCommentConfirmed);
+        dialogOnClosed = EventCallback.Factory.Create<bool>(this, HideCommentConfirmedAsync);
         dialogShowDialog = true;
     }
 
-    private void HideCommentConfirmed(bool hideConfirmed)
+    private async void HideCommentConfirmedAsync(bool hideConfirmed)
     {
         dialogShowDialog = false;
         if (hideConfirmed)
-            OnHideComment.InvokeAsync(Comment);
+            await OnHideComment.InvokeAsync(Comment);
     }
 
     private void UnhideComment(Comment comment)
@@ -164,14 +178,14 @@
         dialogMessage = "Are you sure you want to unhide this comment?";
         dialogLeftBtnText = "OK";
         dialogRightBtnText = "Cancel";
-        dialogOnClosed = EventCallback.Factory.Create<bool>(this, UnhideCommentConfirmed);
+        dialogOnClosed = EventCallback.Factory.Create<bool>(this, UnhideCommentConfirmedAsync);
         dialogShowDialog = true;
     }
 
-    private void UnhideCommentConfirmed(bool unhideConfirmed)
+    private async void UnhideCommentConfirmedAsync(bool unhideConfirmed)
     {
         dialogShowDialog = false;
         if (unhideConfirmed)
-            OnUnhideComment.InvokeAsync(Comment);
+            await OnUnhideComment.InvokeAsync(Comment);
     }
 }

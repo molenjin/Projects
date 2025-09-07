@@ -7,37 +7,29 @@
 @inject LibExternal LibExternal
 
 <div class="panel">
-    <EditForm FormName="Comment" Model="this" OnSubmit="SubmitCommentAsync">
-        @* User name ----------------------------------------- *@
-        <div class="column20 right-desktop vertical-center">User name&nbsp;&nbsp;</div>
-        <div class="column paddingR-10">
-            <InputText @bind-Value=@InputName class="textfield" disabled="@isEditable" tabindex="1" size="40" maxlength="20" />
-        </div>
-        <div class="spacer4"></div>
-        @* Title --------------------------------------------- *@
-        @if (PostType == PostType.TopicNew || PostType == PostType.TopicUpdate)
-        {
-            <div class="column20 right-desktop">Title&nbsp;&nbsp;</div>
-            <div class="column paddingR-10">
-                <InputText @bind-Value=@InputTitle class="textfield" tabindex="2" size="40" maxlength="60" />
-            </div>
-            <div class="spacer4"></div>
-        }
-        @* Text ---------------------------------------------- *@
-        <div class="column20 right-desktop">Text&nbsp;&nbsp;</div>
-        <div class="column paddingR-10">
-            <InputTextArea @bind-Value=@InputText class="textarea" tabindex="3" rows="@rowsText" maxlength="5000" />
-        </div>
-        <div class="spacer4"></div>
-        @* Submit -------------------------------------------- *@
-        <div class="column20 right-desktop">&nbsp;</div>
-        <div class="column paddingR-10">
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <br />
-            <br />
-            <p class="text-danger">@errorMessage</p>
-        </div>
-    </EditForm>
+    @* User name ----------------------------------------- *@
+    <label class="bold">
+        User name
+        <InputText @bind-Value=@InputName class="textfield" disabled="@isEditable" tabindex="1" size="100%" maxlength="20" />
+    </label>
+    <div class="spacer10" />
+    @* Title --------------------------------------------- *@
+    @if (PostType == PostType.TopicNew || PostType == PostType.TopicUpdate)
+    {
+        <label class="bold">
+            Title
+            <InputText @bind-Value=@InputTitle class="textfield" tabindex="2" size="100%" maxlength="60" />
+        </label>           
+        <div class="spacer10" />
+    }
+    @* Text ---------------------------------------------- *@
+    <label class="bold full_width">
+        Text
+        <InputTextArea @bind-Value=@InputText class="textarea" tabindex="3" rows="@rowsText" maxlength="5000" />
+    </label>
+    <div class="spacer10" />
+    @* Error message ------------------------------------- *@
+    <p class="text-danger">@errorMessage</p>
 </div>
 
 @code {
@@ -79,10 +71,10 @@
 
         isEditable = PostType == PostType.TopicUpdate || PostType == PostType.CommentUpdate;
 
-        rowsText = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? 16 : 10;
+        rowsText = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? 16 : 8;
     }
 
-    private async Task SubmitCommentAsync()
+    public async Task<bool> SubmitCommentAsync()
     {
         try
         {
@@ -108,14 +100,14 @@
             if (result != true)
             {
                 errorMessage = message;
-                return;
+                return false;
             }
 
             //------ Banned IP
             if (await DatabaseCalls.IsBannedIpAsync(ipInfo.Ip))
             {
                 errorMessage = "You are not allowed to post on this forum";
-                return;
+                return false;
             }
 
             if (PostType == PostType.TopicNew || PostType == PostType.CommentNew)
@@ -152,5 +144,6 @@
         {
             await LibExternal.SendEmailAsync(nameof(SubmitCommentAsync), ex);
         }
+        return true;
     }
 }

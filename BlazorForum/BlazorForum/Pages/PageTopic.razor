@@ -36,11 +36,11 @@
                 <div class="panel">
                     <div class="column20">
                         <div class="panel">
-                            <div class="user_details">
+                            <div class="full_width">
                                 <CompBadge Name=@LibFormat.HtmlDecode(@comment.Name) Ip=@comment.Ip Moderator=@comment.Moderator></CompBadge>
-                                <div class="spacer6"></div>
+                                <div class="spacer6" />
                                 <strong>@LibFormat.HtmlDecode(@comment.Name)</strong>
-                                <div class="spacer4"></div>
+                                <div class="spacer4" />
                                 @if (@LibFormat.FlagExists(@comment.CountryCode))
                                 {
                                     <span><img src=@LibFormat.FlagLink(@comment.CountryCode)> @LibData.CountryName(@comment.CountryCode)</span>
@@ -83,12 +83,14 @@
                 </div>
                 <hr class="topic">
             }
+            /*
             <CompCommentEdit 
                 PostType=PostType.CommentNew 
                 TopicId=@TopicId 
                 CommentId=null 
                 IsModerator=@isModerator>
             </CompCommentEdit>
+            */
         }
     </div>
 
@@ -123,15 +125,7 @@
             ipInfo = await LibExternal.GetIpInfoAsync();
             isModerator = await LibModerator.IsModeratorAsync(ipInfo);
 
-            commentList = await DatabaseCalls.GetCommentListAsync(TopicId, showAll: isModerator);
-
-            if (commentList.Count != 0)
-            {
-                topicTitle = commentList.First().Title ?? string.Empty;
-                topicClosed = commentList.First().Closed;
-
-                ///////////////Later/////////////// await DatabaseCalls.IncTopicViewsAsync(TopicId);
-            }
+            await LoadTopicAsync();
         }
         catch (Exception ex)
         {
@@ -144,11 +138,15 @@
         this.isModerator = isModerator;
     }
 
-    async Task OnEditCommentConfirmedAsync()
+    private async Task OnEditCommentConfirmedAsync(Comment comment)
     {
+        if (comment == null)
+            return;
+
+        await LoadTopicAsync();
     }
 
-    async Task OnDeleteCommentConfirmedAsync(Comment comment)
+    private async Task OnDeleteCommentConfirmedAsync(Comment comment)
     {
         if (comment == null)
             return;
@@ -161,7 +159,7 @@
         finally { }
     }
 
-    async Task OnHideCommentConfirmedAsync(Comment comment)
+    private async Task OnHideCommentConfirmedAsync(Comment comment)
     {
         if (comment == null)
             return;
@@ -174,7 +172,7 @@
         finally { }
     }
 
-    async Task OnUnhideCommentConfirmedAsync(Comment comment)
+    private async Task OnUnhideCommentConfirmedAsync(Comment comment)
     {
         if (comment == null)
             return;
@@ -183,6 +181,23 @@
         {
             await DatabaseCalls.UnhideCommentAsync(comment.Id);
             comment.Hidden = false;
+        }
+        finally { }
+    }
+
+    private async Task LoadTopicAsync()
+    {
+        try
+        {
+            commentList = await DatabaseCalls.GetCommentListAsync(TopicId, showAll: isModerator);
+
+            if (commentList.Count != 0)
+            {
+                topicTitle = commentList.First().Title ?? string.Empty;
+                topicClosed = commentList.First().Closed;
+
+                ///////////////Later/////////////// await DatabaseCalls.IncTopicViewsAsync(TopicId);
+            }      
         }
         finally { }
     }

@@ -6,39 +6,97 @@
 @inject LibValidate LibValidate
 @inject LibExternal LibExternal
 
-@inherits CompCommentEdit;
-
 <CompModalDialog 
     Title=@dialogTitle
     LeftBtnText="Submit"
-    IsLeftBtnDisabled="@IsOriginalContent"
+    IsLeftBtnDisabled="@isOriginalContent"
     RightBtnText="Cancel"
     OnClose=@EditCommentOnClose
     ShowDialog=@ShowDialog>
     <span>
-        <CompCommentEdit
-            PostType=@PostType            
-            CommentId=@CommentId
-            TopicId=@TopicId
-            IsModerator=IsModerator
-            InputName=@InputName
-            InputTitle=@InputTitle
-            InputText=@InputText
-            OnInputNameChange=@OnOriginalContentChanged
-            OnInputTitleChange=@OnOriginalContentChanged
-            OnInputTextChange=@OnOriginalContentChanged>
-        </CompCommentEdit>
+        <div class="panel">
+            @* User name ----------------------------------------- *@
+            <label class="bold">
+                User name
+                <InputText @bind-Value=@InputName
+                           class="textfield"
+                           @oninput="OnInputNameChange"
+                           disabled="@isUpdate"
+                           tabindex="1"
+                           size="100%"
+                           maxlength="20" />
+            </label>
+            <div class="spacer10" />
+            @* Title --------------------------------------------- *@
+            @if (PostType == PostType.TopicNew || PostType == PostType.TopicUpdate)
+            {
+                <label class="bold">
+                    Title
+                    <InputText @bind-Value=@InputTitle
+                               class="textfield"
+                               @oninput="OnInputTitleChange"
+                               tabindex="2"
+                               size="100%"
+                               maxlength="60" />
+                </label>
+                <div class="spacer10" />
+            }
+            @* Text ---------------------------------------------- *@
+            <label class="bold full_width">
+                Text
+                <InputTextArea @bind-Value=@InputText
+                               class="textarea"
+                               @oninput="OnInputTextChange"
+                               tabindex="3"
+                               rows="@rowsText"
+                               maxlength="5000" />
+            </label>
+            <div class="spacer10" />
+            @* Error message ------------------------------------- *@
+            <p class="text-danger">@errorMessage</p>
+        </div>
     </span>
 </CompModalDialog>
 
 @code {
+    [Parameter]
+    public PostType PostType { get; set; }
+
+    [Parameter]
+    public int? CommentId { get; set; }
+
+    [Parameter]
+    public int? TopicId { get; set; }
+
+    [Parameter]
+    public bool IsModerator { get; set; }
+
+    [Parameter]
+    public string InputName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string InputTitle { get; set; } = string.Empty;
+
+    [Parameter]
+    public string InputText { get; set; } = string.Empty;
+
     [Parameter]
     public bool ShowDialog { get; set; } = false;
 
     [Parameter]
     public EventCallback<bool> OnEditCommentConfirmed { get; set; }
 
-    private string? dialogTitle { get; set; }
+    private string dialogTitle { get; set; } = string.Empty;
+
+    private string errorMessage = string.Empty;
+
+    private bool isUpdate;
+
+    private int rowsText;    
+
+    public bool isOriginalContent { get; set; } = true;
+
+    private string originalContent = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -48,11 +106,36 @@
         if (PostType == PostType.TopicUpdate) dialogTitle = "Edit topic";
         if (PostType == PostType.CommentNew) dialogTitle = "New comment";
         if (PostType == PostType.CommentUpdate) dialogTitle = "Edit comment";
+
+        if (IsModerator && (PostType == PostType.TopicNew || PostType == PostType.CommentNew))
+        {
+            InputName = "Moderator";
+        }
+
+        originalContent = InputName + InputTitle + InputText;
+        isOriginalContent = true;
+
+        isUpdate = PostType == PostType.TopicUpdate || PostType == PostType.CommentUpdate;
+
+        rowsText = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? 16 : 8;
     }
 
-    private void OnOriginalContentChanged(bool isOriginalContent)
+    private void OnInputNameChange(ChangeEventArgs e)
     {
-        IsOriginalContent = isOriginalContent;
+        InputName = e.Value?.ToString() ?? string.Empty;
+        isOriginalContent = (originalContent == InputName + InputTitle + InputText);
+    }
+
+    private void OnInputTitleChange(ChangeEventArgs e)
+    {
+        InputTitle = e.Value?.ToString() ?? string.Empty;
+        isOriginalContent = (originalContent == InputName + InputTitle + InputText);
+    }
+
+    private void OnInputTextChange(ChangeEventArgs e)
+    {
+        InputText = e.Value?.ToString() ?? string.Empty;
+        isOriginalContent = (originalContent == InputName + InputTitle + InputText);
     }
 
     private async void EditCommentOnClose(bool editConfirmed)
@@ -60,7 +143,79 @@
         if (editConfirmed && !await SubmitCommentAsync())
             return;
 
-        ShowDialog = false;
         await OnEditCommentConfirmed.InvokeAsync(editConfirmed);
+    }
+
+    public async Task<bool> SubmitCommentAsync()
+    {
+        try
+        {
+            IpInfo ipInfo = await LibExternal.GetIpInfoAsync();
+
+            Comment comment = new Comment()
+            {
+                Id = this.CommentId ?? 0,
+                TopicId = this.TopicId,
+                Name = InputName.Trim(),
+                Title = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? InputTitle.Trim() : null,
+                Text = InputText.Trim(),
+                Active = true,
+                Moderator = IsModerator,
+                Hidden = false,
+                Closed = false
+            };
+
+            errorMessage = string.Empty;
+
+            // Validate the input fields
+            (bool result, string message) = await LibValidate.IsCommentValidAsync(PostType, comment);
+            if (result != true)
+            {
+                errorMessage = message;
+                return false;
+            }
+
+            //------ Banned IP
+            if (await DatabaseCalls.IsBannedIpAsync(ipInfo.Ip))
+            {
+                errorMessage = "You are not allowed to post on this forum";
+                return false;
+            }
+
+            if (PostType == PostType.TopicNew || PostType == PostType.CommentNew)
+            {
+                comment.Id = await DatabaseCalls.GetNextCommentIdAsync();
+
+                int userId = await DatabaseCalls.GetUserIdAsync(comment.Name, ipInfo.Ip);
+
+                if (userId == 0)
+                {
+                    userId = await DatabaseCalls.GetNextUserIdAsync();
+
+                    await DatabaseCalls.SaveUserAsync(new User()
+                    {
+                        Id = userId,
+                        Name = comment.Name,
+                        CountryCode = ipInfo.CountryCode,
+                        IP = ipInfo.Ip,
+                        Active = true,
+                        Moderator = IsModerator
+                    });
+                }
+
+                comment.UserId = userId;
+
+                await DatabaseCalls.SaveCommentAsync(comment);
+            }
+            else
+            {
+                await DatabaseCalls.UpdateCommentAsync(comment);
+            }
+        }
+        catch (Exception ex)
+        {
+            await LibExternal.SendEmailAsync(nameof(SubmitCommentAsync), ex);
+        }
+        return true;
     }
 }

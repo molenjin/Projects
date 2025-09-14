@@ -80,8 +80,6 @@
     private string dialogRightBtnText = string.Empty;    
     private EventCallback<bool> dialogOnClosed;
     private bool dialogShowDialog = false;
-
-    private CompCommentEdit? commentEdit;
     private bool dialogShowEdit = false;
     private PostType postType;
 
@@ -105,7 +103,7 @@
 
     private async void EditCommentConfirmedAsync(bool editConfirmed)
     {
-        dialogShowDialog = false;
+        dialogShowEdit = false;
         if (editConfirmed)
             await OnEditCommentConfirmed.InvokeAsync(Comment);
     }

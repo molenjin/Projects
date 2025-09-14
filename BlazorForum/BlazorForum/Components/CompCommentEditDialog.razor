@@ -1,0 +1,66 @@
+﻿@using BlazorForum.Data
+@using BlazorForum.Database
+@using BlazorForum.Libraries
+
+@inject IDatabaseCalls DatabaseCalls
+@inject LibValidate LibValidate
+@inject LibExternal LibExternal
+
+@inherits CompCommentEdit;
+
+<CompModalDialog 
+    Title=@dialogTitle
+    LeftBtnText="Submit"
+    IsLeftBtnDisabled="@IsOriginalContent"
+    RightBtnText="Cancel"
+    OnClose=@EditCommentOnClose
+    ShowDialog=@ShowDialog>
+    <span>
+        <CompCommentEdit
+            PostType=@PostType            
+            CommentId=@CommentId
+            TopicId=@TopicId
+            IsModerator=IsModerator
+            InputName=@InputName
+            InputTitle=@InputTitle
+            InputText=@InputText
+            OnInputNameChange=@OnOriginalContentChanged
+            OnInputTitleChange=@OnOriginalContentChanged
+            OnInputTextChange=@OnOriginalContentChanged>
+        </CompCommentEdit>
+    </span>
+</CompModalDialog>
+
+@code {
+    [Parameter]
+    public bool ShowDialog { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<bool> OnEditCommentConfirmed { get; set; }
+
+    private string? dialogTitle { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (PostType == PostType.TopicNew) dialogTitle = "New topic";
+        if (PostType == PostType.TopicUpdate) dialogTitle = "Edit topic";
+        if (PostType == PostType.CommentNew) dialogTitle = "New comment";
+        if (PostType == PostType.CommentUpdate) dialogTitle = "Edit comment";
+    }
+
+    private void OnOriginalContentChanged(bool isOriginalContent)
+    {
+        IsOriginalContent = isOriginalContent;
+    }
+
+    private async void EditCommentOnClose(bool editConfirmed)
+    {
+        if (editConfirmed && !await SubmitCommentAsync())
+            return;
+
+        ShowDialog = false;
+        await OnEditCommentConfirmed.InvokeAsync(editConfirmed);
+    }
+}

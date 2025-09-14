@@ -13,11 +13,11 @@
                     <div class="modal-footer">
                         @if (LeftBtnText != null)
                         {
-                            <button type="button" class="btn btn-primary" @onclick="() => Close(true)">@LeftBtnText</button>
+                            <button type="button" class="btn btn-primary" disabled="@IsLeftBtnDisabled" @onclick="() => Close(true)">@LeftBtnText</button>
                         }
                         @if (RightBtnText != null)
                         {
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close(false)">@RightBtnText</button>
+                            <button type="button" class="btn btn-secondary" disabled="@IsRightBtnDisabled" @onclick ="() => Close(false)">@RightBtnText</button>
                         }
                     </div>
                 }
@@ -37,16 +37,22 @@
     public string? LeftBtnText { get; set; }
 
     [Parameter]
+    public bool IsLeftBtnDisabled { get; set; } = false;
+
+    [Parameter]
     public string? RightBtnText { get; set; }
 
     [Parameter]
-    public EventCallback<bool> OnClosed { get; set; }
+    public bool IsRightBtnDisabled { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
 
     [Parameter]
     public bool ShowDialog { get; set; } = false;
 
     private async Task Close(bool value)
     {
-        await OnClosed.InvokeAsync(value);
+        await OnClose.InvokeAsync(value);
     }
 }

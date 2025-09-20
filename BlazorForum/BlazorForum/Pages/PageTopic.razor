@@ -83,14 +83,15 @@
                 </div>
                 <hr class="topic">
             }
-            /*
-            <CompCommentEdit 
-                PostType=PostType.CommentNew 
-                TopicId=@TopicId 
-                CommentId=null 
-                IsModerator=@isModerator>
-            </CompCommentEdit>
-            */
+            <CompCommentEditDialog 
+                PostType=PostType.CommentNew
+                TopicId=@TopicId
+                IsModerator=@isModerator
+                OnEditCommentConfirmed=@OnAddNewCommentConfirmedAsync
+                ShowDialog=@showAddNewComment>
+            </CompCommentEditDialog>
+
+            <button class="btn btn-primary" @onclick=@OnAddNewComment>Add new comment</button>
         }
     </div>
 
@@ -114,7 +115,7 @@
     private string topicTitle = String.Empty;
     private bool topicClosed;
 
-    public bool showDeleteConfirmation = false;   
+    private bool showAddNewComment = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -183,6 +184,19 @@
             comment.Hidden = false;
         }
         finally { }
+    }
+
+    private void OnAddNewComment()
+    {
+        showAddNewComment = true;
+    }
+
+    private async Task OnAddNewCommentConfirmedAsync(bool addNewCommentConfirmed)
+    {
+        showAddNewComment = false;
+
+        if (addNewCommentConfirmed)
+            await LoadTopicAsync();        
     }
 
     private async Task LoadTopicAsync()

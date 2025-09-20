@@ -13,7 +13,8 @@
     }
     @if (ActionLinkOn)
     {
-        <span> | </span><a class="header" href=@ActionLink>@ActionTitle</a>
+        <span> | </span>
+        <a class="header" href="" @onclick="@OnActionLink" @onclick:preventDefault>@ActionTitle</a>
     }
     else
     {
@@ -32,5 +33,5 @@
     public bool ActionLinkOn { get; set; } 
 
     [Parameter]
-    public string ActionLink { get; set; } = String.Empty;
+    public EventCallback OnActionLink { get; set; }
 }

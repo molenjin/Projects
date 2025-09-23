@@ -53,7 +53,15 @@
             </label>
             <div class="spacer10" />
             @* Error message ------------------------------------- *@
-            <p class="text-danger">@errorMessage</p>
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <p class="text-danger">@errorMessage</p>
+                <div class="spacer10" />
+            }
+            @if (PostType == PostType.TopicNew || PostType == PostType.CommentNew)
+            {
+                <label class="forum_faint">You may edit or delete your comment within 60 minutes from posting</label>
+            }
         </div>
     </span>
 </CompModalDialog>

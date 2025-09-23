@@ -11,6 +11,7 @@ namespace BlazorForum.Database
         Task<int> GetNextCommentIdAsync();
         Task<int> GetNextUserIdAsync();
         Task<int> GetUserIdAsync(string name, string ip);
+        Task<string> GetUserNameAsync(string ip);
         Task<bool> IsBannedIpAsync(string ip);
         Task<bool> IsDuplicatedTitleAsync(string? title);
         Task<bool> IsDuplicatedCommentAsync(string text);

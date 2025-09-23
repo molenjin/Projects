@@ -45,7 +45,6 @@
 .forum_header {
     color: rgb(50,50,50);
     text-align: left;
-
     font-size: 14pt;
     font-weight: bold;
 }
@@ -53,14 +52,12 @@
 .forum_topic {
     color: rgb(50,50,50);
     text-align: left;
-
     font-size: 12pt;
 }
 
 .forum_faint {
     color: rgb(100,100,100);
     text-align: left;
-
     font-size: 8pt;
 }
 

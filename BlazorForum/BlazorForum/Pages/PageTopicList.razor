@@ -24,7 +24,7 @@
             ForumLinkOn=false 
             ActionTitle="Start new topic" 
             ActionLinkOn=true
-            OnActionLink=@OnAddNewTopic>
+            OnActionLink=@OnAddNewTopicAsync>
         </CompForumHeader>
         <br />
         <br />
@@ -32,6 +32,9 @@
         <CompCommentEditDialog 
             PostType=PostType.TopicNew
             IsModerator=@isModerator
+            InputName=@inputName
+            InputTitle=@string.Empty
+            InputText=@string.Empty
             OnEditCommentConfirmed=@OnAddNewTopicConfirmedAsync
             ShowDialog=@showAddNewTopic>
         </CompCommentEditDialog>
@@ -83,6 +86,7 @@
     private List<Topic>? topicList;
     private bool loadMore;
 
+    private string inputName = String.Empty;
     private bool showAddNewTopic = false;
 
     protected override async Task OnInitializedAsync()
@@ -107,8 +111,13 @@
         this.isModerator = isModerator;
     }
 
-    private void OnAddNewTopic()
+    private async Task OnAddNewTopicAsync()
     {
+        inputName = string.Empty;
+
+        if (ipInfo != null && !string.IsNullOrEmpty(ipInfo?.Ip))
+            inputName = await DatabaseCalls.GetUserNameAsync(ipInfo.Ip);
+
         showAddNewTopic = true;
     }
 

@@ -87,11 +87,14 @@
                 PostType=PostType.CommentNew
                 TopicId=@TopicId
                 IsModerator=@isModerator
+                InputName=@inputName
+                InputTitle=@string.Empty
+                InputText=@string.Empty
                 OnEditCommentConfirmed=@OnAddNewCommentConfirmedAsync
                 ShowDialog=@showAddNewComment>
             </CompCommentEditDialog>
 
-            <button class="btn btn-primary" @onclick=@OnAddNewComment>Add new comment</button>
+            <button class="btn btn-primary" @onclick=@OnAddNewCommentAsync>Add new comment</button>
         }
     </div>
 
@@ -115,6 +118,7 @@
     private string topicTitle = String.Empty;
     private bool topicClosed;
 
+    private string inputName = String.Empty;
     private bool showAddNewComment = false;
 
     protected override async Task OnInitializedAsync()
@@ -186,8 +190,13 @@
         finally { }
     }
 
-    private void OnAddNewComment()
+    private async Task OnAddNewCommentAsync()
     {
+        inputName = string.Empty;
+
+        if (ipInfo != null && !string.IsNullOrEmpty(ipInfo?.Ip))
+            inputName = await DatabaseCalls.GetUserNameAsync(ipInfo.Ip);
+
         showAddNewComment = true;
     }
 

@@ -58,6 +58,22 @@ namespace BlazorForum.Database
             return result;
         }
 
+        //--- Task<string> ---------------------------------------------------------------------------------------
+
+        private async Task<string> GetStoredProcResultStringAsync(string mrpStoredProc, object? param = null)
+        {
+            string result = string.Empty;
+            try
+            {
+                result = (await Connection.QueryAsync<string?>(mrpStoredProc, param, commandType: CommandType.StoredProcedure)).FirstOrDefault() ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            return result;
+        }
+
         public async Task<int> GetNumOfTopicsAsync(bool showAll)
         {
             var param = new { ShowAll = showAll };
@@ -80,6 +96,12 @@ namespace BlazorForum.Database
         {
             var param = new { Name = name, IP = ip };
             return await GetStoredProcResultIntAsync("GetUserId", param);
+        }
+
+        public async Task<string> GetUserNameAsync(string ip)
+        {
+            var param = new { IP = ip };
+            return await GetStoredProcResultStringAsync("GetUserName", param);
         }
 
         public async Task<bool> IsBannedIpAsync(string ip)

@@ -35,6 +35,9 @@
 }
 
 .forum_content {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
     color: rgb(0,0,0);
     text-align: left;
     font-family: verdana;
@@ -79,6 +82,10 @@
 
 .white {
     color: white;
+}
+
+.red {
+    color: red;
 }
 
 .grey {

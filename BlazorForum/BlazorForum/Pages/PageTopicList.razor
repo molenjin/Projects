@@ -12,66 +12,61 @@
 
 <PageTitle>Forum</PageTitle>
 
-<div class="forum_content">
-    <div class="forum">
-        <CompModeratorLogIn 
-            ipInfo=@ipInfo 
-            IsModerator=@isModerator 
-            OnModeratorLogIn=@OnModeratorLogIn>
-        </CompModeratorLogIn>
-        <br />
-        <CompForumHeader 
-            ForumLinkOn=false 
-            ActionTitle="Start new topic" 
-            ActionLinkOn=true
-            OnActionLink=@OnAddNewTopicAsync>
-        </CompForumHeader>
-        <br />
-        <br />
+<div class="forum">
+    <CompModeratorLogIn 
+        ipInfo=@ipInfo 
+        IsModerator=@isModerator 
+        OnModeratorLogIn=@OnModeratorLogIn>
+    </CompModeratorLogIn>
 
-        <CompCommentEditDialog 
-            PostType=PostType.TopicNew
-            IsModerator=@isModerator
-            InputName=@inputName
-            InputTitle=@string.Empty
-            InputText=@string.Empty
-            OnEditCommentConfirmed=@OnAddNewTopicConfirmedAsync
-            ShowDialog=@showAddNewTopic>
-        </CompCommentEditDialog>
+    <CompForumHeader 
+        ForumLinkOn=false 
+        ActionTitle="Start new topic" 
+        ActionLinkOn=true
+        OnActionLink=@OnAddNewTopicAsync>
+    </CompForumHeader>
+    <br />
+    <br />
 
-        <big>
+    <CompCommentEditDialog 
+        PostType=PostType.TopicNew
+        IsModerator=@isModerator
+        InputName=@inputName
+        InputTitle=@string.Empty
+        InputText=@string.Empty
+        OnEditCommentConfirmed=@OnAddNewTopicConfirmedAsync
+        ShowDialog=@showAddNewTopic>
+    </CompCommentEditDialog>
 
-        @if (@topicList != null)
+    <big>
+
+    @if (@topicList != null)
+    {
+        foreach (var topic in @topicList)
         {
-            foreach (var topic in @topicList)
+            string topicTitle = LibFormat.HtmlDecode(topic.Title);
+            string topicName = LibFormat.HtmlDecode(topic.Name);
+            string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
+            string topicHidden = LibFormat.HiddenText(topic.Hidden);
+
+            <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
+
+            if (@LibFormat.FlagExists(@topic.CountryCode))
             {
-                string topicTitle = LibFormat.HtmlDecode(topic.Title);
-                string topicName = LibFormat.HtmlDecode(topic.Name);
-                string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
-                string topicHidden = LibFormat.HiddenText(topic.Hidden);
+                <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
+            }
+            <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+            <br />
+        }            
+    }
 
-                <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
+    </big>
+    <br />
 
-                if (@LibFormat.FlagExists(@topic.CountryCode))
-                {
-                    <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
-                }
-                <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
-                <br />
-            }            
-        }
-
-        </big>
-        <br />
-
-        @if (loadMore)
-        {
-            <button class="btn btn-primary" @onclick=OnLoadMoreTopicsAsync>Load More Topics</button>
-        }
-
-        <br />
-        <br />
-    </div>
+    @if (loadMore)
+    {
+        <button class="btn btn-primary" @onclick=OnLoadMoreTopicsAsync>Load More Topics</button>
+    }
 
     <br />
     <br />

@@ -32,9 +32,9 @@
     {
         foreach (var comment in @commentList)
         {
-            <div class="panel">
+            <div class="width100 flex">
                 <div class="column20">
-                    <div class="panel">
+                    <div class="width100 flex">
                         <div class="full_width">
                             <CompBadge Name=@LibFormat.HtmlDecode(@comment.Name) Ip=@comment.Ip Moderator=@comment.Moderator></CompBadge>
                             <div class="spacer6" />
@@ -54,7 +54,7 @@
                             </span>
                         </div>
                     </div>
-                    </div>
+                </div>
                 <div class="column">
                     @if (@comment.Hidden == false)
                     {

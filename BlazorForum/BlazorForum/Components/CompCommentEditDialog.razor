@@ -14,7 +14,7 @@
     OnClose=@EditCommentOnClose
     ShowDialog=@ShowDialog>
     <span>
-        <div class="panel">
+        <div class="width100">
             @* User name ----------------------------------------- *@
             <label class="bold">
                 User name
@@ -37,7 +37,7 @@
                                @oninput="OnInputTitleChange"
                                tabindex="2"
                                size="100%"
-                               maxlength="60" />
+                               maxlength="40" />
                 </label>
                 <div class="spacer10" />
             }
@@ -48,8 +48,9 @@
                                class="textarea"
                                @oninput="OnInputTextChange"
                                tabindex="3"
-                               rows="@rowsText"
-                               maxlength="5000" />
+                               rows="@rowsText"                               
+                               maxlength="5000" 
+                               style="min-height:60px; max-height:600px" />
             </label>
             <div class="spacer10" />
             @* Error message ------------------------------------- *@

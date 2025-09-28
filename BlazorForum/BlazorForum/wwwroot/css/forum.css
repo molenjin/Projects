@@ -42,7 +42,7 @@
     text-align: left;
     font-family: verdana;
     font-size: 10pt;
-    line-height: 1.2em;
+    line-height: normal;
 }
 
 .forum_header {
@@ -193,28 +193,28 @@ hr.topic {
     display: block;
     border: none;
     height: 1px;
-    color: rgb(180,180,180);
-    background-color: rgb(180,180,180);
-    border-color: rgb(180,180,180);
-    margin: 10px;
+    color: rgb(210,210,210);
+    background-color: rgb(210,210,210);
+    border-color: rgb(210,210,210);
+    margin: 12px 0 12px 0;
     opacity: 1;
 }
 
 /*--- Padding -------------------------------------*/
 
-.padding-2 {
+.padding2 {
     padding: 2px;
 }
 
-.padding-5 {
+.padding5 {
     padding: 5px;
 }
 
-.padding-10 {
+.padding10 {
     padding: 10px;
 }
 
-.padding-20 {
+.padding20 {
     padding: 20px;
 }
 
@@ -257,17 +257,6 @@ input:disabled {
 
 /*--- Div -----------------------------------------*/
 
-.frame_content {
-    height: auto;
-    display: flex;
-    justify-content: center;
-}
-
-.frame_main {
-    width: 800px;
-    height: 100%;
-}
-
 .spacer2 {
     height: 2px;
     clear: left;
@@ -298,18 +287,23 @@ input:disabled {
     clear: left;
 }
 
-.panel {
+.flex {
+    display: flex;
+}
+
+.width50 {
+    width: 50%;
+}
+
+.width100 {
     width: 100%;
-    overflow: hidden;
 }
 
 .column {
-    overflow: hidden;
 }
 
 .column20 {
-    width: 20%;
-    float: left;
+    min-width: 160px;
 }
 
 .cell {
@@ -401,15 +395,6 @@ input:disabled {
 
     .right-desktop {
         text-align: left;
-    }
-
-    .frame_main {
-        width: 100%;
-    }
-
-    .panel {
-        width: 100%;
-        display: table;
     }
 
     .column {

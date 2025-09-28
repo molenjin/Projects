@@ -167,7 +167,7 @@
                 TopicId = this.TopicId,
                 Name = InputName.Trim(),
                 Title = PostType == PostType.TopicNew || PostType == PostType.TopicUpdate ? InputTitle.Trim() : null,
-                Text = InputText.Trim(),
+                Text = LibFormat.CommentTextTrim(InputText),
                 Active = true,
                 Moderator = IsModerator,
                 Hidden = false,

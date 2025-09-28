@@ -97,10 +97,29 @@ namespace BlazorForum.Libraries
             return sum % 20;
         }
 
-        public static string CommentText(string commentText)
+        public static string CommentTextTrim(string commentText)
+        {
+            string result = commentText.Trim();
+
+            char[] nn = { '\n', '\n' };
+            result = result.Trim(nn);
+
+            char[] rn = { '\r', '\n' };
+            result = result.Trim(rn);
+
+            return result;
+        }
+
+        public static string CommentTextDecode(string commentText)
         {
             // HTML Decode
             string result = HtmlDecode(commentText);
+
+            char[] nn = { '\n', '\n' };
+            result = result.Trim(nn);
+
+            char[] rn = { '\r', '\n' };
+            result = result.Trim(rn);
 
             // Line breaks
             result = result.Replace("\r\n", "<br />\r\n");

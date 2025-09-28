@@ -58,13 +58,13 @@
                 <div class="column">
                     @if (@comment.Hidden == false)
                     {
-                        @((MarkupString)LibFormat.CommentText(@comment.Text))
+                        @((MarkupString)LibFormat.CommentTextDecode(@comment.Text))
                     }
                     @if (@comment.Hidden == true)
                     {
                         <p>(hidden)</p>
                         <span class="forum_faint">
-                        @((MarkupString)LibFormat.CommentText(@comment.Text))
+                        @((MarkupString)LibFormat.CommentTextDecode(@comment.Text))
                         </span>
                     }
                     <br />

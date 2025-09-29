@@ -3,16 +3,15 @@
 
 @inject LibModerator LibModerator
 
-<div class="d-sm-flex">
-    <button class="btn btn-primary" @onclick=OnLogIn>@buttonCaption</button>
-    @if (openEdit)
-    {
-        <EditForm FormName="ModeratorLogIn" Model="this" OnSubmit="SubmitPasswordAsync">
+<CompPopover 
+    Caption=@buttonCaption
+    Disabled=@IsModerator
+    OnClick=@OnLogIn>
+    <EditForm FormName="ModeratorLogIn" Model="this" OnSubmit="SubmitPasswordAsync">
         <InputText @bind-Value=@inputPassword class="textfield" type="password" tabindex="1" size="20" maxlength="20" />
         <button class="btn btn-primary" type="submit">Submit</button>
-        </EditForm>
-    }
-</div>
+    </EditForm>
+</CompPopover>
 
 <CompModalDialog 
     Title="Sign out"
@@ -33,7 +32,6 @@
     [Parameter]
     public EventCallback<bool> OnModeratorLogIn { get; set; }
 
-    private bool openEdit;
     private string buttonCaption = string.Empty;
     private string inputPassword = string.Empty;
 
@@ -50,10 +48,6 @@
         if (IsModerator)
         {
             showSignOutConfirmation = true;
-        }
-        else
-        {
-            openEdit = !openEdit;
         }
     }
 
@@ -79,7 +73,6 @@
         }
         inputPassword = string.Empty;
         
-        openEdit = false;
         await OnModeratorLogIn.InvokeAsync(IsModerator);
     }
 }

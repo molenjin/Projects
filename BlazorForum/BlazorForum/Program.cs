@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// Add the database call object  
-builder.Services.AddSingleton<IDatabaseCalls, DatabaseCallsMySQL>();
+// Add the MS SQL database call object  
+builder.Services.AddSingleton<IDatabaseCalls, DatabaseCallsMsSql>();
 // Add the data library
 builder.Services.AddSingleton<LibData>();
 // Add the formatting library

@@ -1,0 +1,6 @@
+﻿CREATE DEFINER=`accnaust_ACCN`@`101.185.215.189` PROCEDURE `TopicExists`(TopicID INT)
+BEGIN
+	SELECT COUNT(C.ID) AS NumOfTopics
+	FROM Comment C
+	WHERE C.ID = TopicID AND C.TopicID IS NULL;
+END

@@ -5,11 +5,11 @@ using System.Data;
 
 namespace BlazorForum.Database
 {
-    public class DatabaseCallsMySQL : IDatabaseCalls
+    public class DatabaseCallsMySql : IDatabaseCalls
     {
         private readonly MySqlConnection Connection;
 
-        public DatabaseCallsMySQL(IConfiguration configuration)
+        public DatabaseCallsMySql(IConfiguration configuration)
         {
             Connection = new MySqlConnection(configuration["ConnectionString"]);
         }

@@ -1,6 +1,14 @@
-﻿CREATE DEFINER=`accnaust_ACCN`@`101.185.215.189` PROCEDURE `TopicExists`(TopicID INT)
+﻿USE [accnaust]
+GO
+/****** Object:  StoredProcedure [dbo].[TopicExists]    Script Date: 5/10/2025 9:57:14 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[TopicExists] @TopicID INT
+AS
 BEGIN
 	SELECT COUNT(C.ID) AS NumOfTopics
-	FROM Comment C
-	WHERE C.ID = TopicID AND C.TopicID IS NULL;
+	FROM Comments C
+	WHERE C.ID = @TopicID AND C.TopicID IS NULL;
 END

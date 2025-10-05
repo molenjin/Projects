@@ -1,28 +1,40 @@
-CREATE DEFINER=`accnaust_ACCN`@`101.185.177.147` PROCEDURE `SaveReaction`(Type CHAR, CommentID INT, IP VARCHAR(16))
+USE [accnaust]
+GO
+/****** Object:  StoredProcedure [dbo].[SaveReaction]    Script Date: 5/10/2025 9:56:48 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SaveReaction] @Type CHAR, @CommentID INT, @IP VARCHAR(16)
+AS
 BEGIN
-	DECLARE ReactionType CHAR;
+	DECLARE @ReactionType CHAR;
     
-	IF (SELECT COUNT(Type) FROM Reaction R WHERE R.CommentID = CommentID AND R.IP = IP) = 0 THEN
-		INSERT INTO Reaction
+	IF (SELECT COUNT(@Type) FROM Reactions R WHERE R.CommentID = @CommentID AND R.IP = @IP) = 0 
+	BEGIN
+		INSERT INTO Reactions
 		VALUES
 		(
-			  Type
-			, CommentID
-			, IP
-			, NOW()
+			  @Type
+			, @CommentID
+			, @IP
+			, GetDate()
 			, NULL
-		);    
+		)
+	END	
     ELSE
-		IF (SELECT R.Type FROM Reaction R WHERE R.CommentID = CommentID AND R.IP = IP LIMIT 1) = Type THEN
-			DELETE FROM Reaction
-			WHERE CommentID = CommentID
-			LIMIT 1;
+	BEGIN
+		IF (SELECT R.Type FROM Reactions R WHERE R.CommentID = CommentID AND R.IP = IP) = @Type 
+		BEGIN
+			DELETE FROM Reactions
+			WHERE CommentID = @CommentID
+		END
 		ELSE
-			UPDATE Reaction
-			SET Type = Type, ModifiedOn = NOW()
-			WHERE CommentID = CommentID
-			LIMIT 1;
-		END IF;
+		BEGIN
+			UPDATE Reactions
+			SET Type = @Type, ModifiedOn = GetDate()
+			WHERE CommentID = @CommentID
+		END
 
-	END IF;
+	END
 END

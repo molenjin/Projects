@@ -1,4 +1,12 @@
-﻿CREATE DEFINER=`accnaust_ACCN`@`101.185.177.147` PROCEDURE `GetCommentList`(TopicID INT, ShowAll INT)
+﻿USE [accnaust]
+GO
+/****** Object:  StoredProcedure [dbo].[GetCommentList]    Script Date: 5/10/2025 9:48:55 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetCommentList] @TopicID INT, @ShowAll INT
+AS
 BEGIN
 	SELECT
 		  C.ID
@@ -17,9 +25,9 @@ BEGIN
 		, C.Reactions
         , C.CreatedOn
         , C.ModifiedOn
-	FROM Comment C
-	LEFT JOIN User U ON U.ID = UserID
-	WHERE (C.ID = TopicID OR C.TopicID = TopicID)
-	AND (C.Hidden = 0 OR ShowAll = 1)
+	FROM Comments C
+	LEFT JOIN Users U ON U.ID = UserID
+	WHERE (C.ID = @TopicID OR C.TopicID = @TopicID)
+	AND (C.Hidden = 0 OR @ShowAll = 1)
 	ORDER BY C.CreatedOn;
-END
+END;

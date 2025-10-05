@@ -1,7 +1,15 @@
-﻿CREATE DEFINER=`accnaust_ACCN`@`2001:8003:9489:4400:a0f6:2b53:7752:c55b` PROCEDURE `IsDuplicatedComment`(Text TEXT)
+﻿USE [accnaust]
+GO
+/****** Object:  StoredProcedure [dbo].[IsDuplicatedComment]    Script Date: 5/10/2025 9:56:16 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[IsDuplicatedComment] @Text TEXT
+AS
 BEGIN
 	SELECT COUNT(C.ID) AS NumOfComments
-	FROM Comment C
-	WHERE TRIM(LOWER(C.Text)) = TRIM(LOWER(Text))
-	AND DATEDIFF(C.CreatedOn, NOW()) < 3;
+	FROM Comments C
+	WHERE TRIM(LOWER(C.Text)) = TRIM(LOWER(@Text))
+	AND DATEDIFF(DAY, C.CreatedOn, GetDate()) < 3;
 END

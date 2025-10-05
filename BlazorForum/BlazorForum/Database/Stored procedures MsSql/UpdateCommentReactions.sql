@@ -1,8 +1,16 @@
-CREATE DEFINER=`accnaust_ACCN`@`101.185.177.147` PROCEDURE `UpdateCommentReactions`(CommentID INT)
+USE [accnaust]
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateCommentReactions]    Script Date: 5/10/2025 9:57:38 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[UpdateCommentReactions] @CommentID INT
+AS
 BEGIN
-	DECLARE Reactions VARCHAR(40);
-   
-    SET Reactions = 
+	DECLARE @Reactions VARCHAR(40);
+	/*   
+    SET @Reactions = 
     (
 		SELECT 
 			GROUP_CONCAT(T.Type, T.Count, ';' SEPARATOR '')
@@ -27,9 +35,8 @@ BEGIN
 		) T
     );
     
-	UPDATE Comment
+	UPDATE Comments
 	SET Reactions = Reactions, ModifiedOn = NOW()
 	WHERE ID = CommentID
-	LIMIT 1;
-    
+    */
 END

@@ -1,11 +1,19 @@
-﻿CREATE DEFINER=`accnaust_ACCN`@`101.189.80.166` PROCEDURE `IsDuplicatedTitle`(Title TEXT)
+﻿USE [accnaust]
+GO
+/****** Object:  StoredProcedure [dbo].[IsDuplicatedTitle]    Script Date: 5/10/2025 9:56:29 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[IsDuplicatedTitle] @Title VARCHAR(60)
+AS
 BEGIN
-	IF Title IS NULL
-    THEN
+	IF @Title IS NULL
 		SELECT 0;
 	ELSE
+	BEGIN
 		SELECT COUNT(C.ID) AS NumOfComments    
-		FROM Comment C
-		WHERE TRIM(LOWER(C.Title)) = TRIM(LOWER(Title));
-    END IF;
+		FROM Comments C
+		WHERE TRIM(LOWER(C.Title)) = TRIM(LOWER(@Title));
+    END;
 END

@@ -58,3 +58,6 @@
 /BlazorForum/BlazorForum/appsettings.json
 /BlazorForum/BlazorForum/bin/Release/net9.0
 /BlazorForum/BlazorForum/obj/Release/net9.0
+/BlazorForum/BlazorForum/Properties/PublishProfiles/FTPProfile.pubxml.user
+/BlazorForum/BlazorForum/obj/BlazorForum.csproj.EntityFrameworkCore.targets
+/BlazorForum/BlazorForum/.config/dotnet-tools.json

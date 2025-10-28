@@ -56,3 +56,5 @@
 /BlazorForum/BlazorForum/obj/Debug/net6.0
 /.vs
 /BlazorForum/BlazorForum/appsettings.json
+/BlazorForum/BlazorForum/bin/Release/net9.0
+/BlazorForum/BlazorForum/obj/Release/net9.0

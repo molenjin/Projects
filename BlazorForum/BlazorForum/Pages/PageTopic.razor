@@ -214,7 +214,7 @@
                 topicTitle = commentList.First().Title ?? string.Empty;
                 topicClosed = commentList.First().Closed;
 
-                ///////////////Later/////////////// await DatabaseCalls.IncTopicViewsAsync(TopicId);
+                await DatabaseCalls.IncTopicViewsAsync(TopicId);
             }      
         }
         finally { }

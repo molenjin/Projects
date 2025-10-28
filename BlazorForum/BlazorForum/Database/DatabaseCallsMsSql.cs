@@ -1,6 +1,7 @@
 ﻿using BlazorForum.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using System.ComponentModel.Design;
 using System.Data;
 
 namespace BlazorForum.Database
@@ -166,7 +167,8 @@ namespace BlazorForum.Database
 
         public async Task IncTopicViewsAsync(int topicId)
         {
-            await GetStoredProcResultIntAsync("IncTopicViews", topicId);
+            var param = new { TopicID = topicId };
+            await GetStoredProcResultIntAsync("IncTopicViews", param);
         }
 
         public async Task<List<Setting>> GetSettingAsync(string key)

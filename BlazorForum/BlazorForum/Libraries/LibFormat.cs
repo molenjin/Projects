@@ -61,7 +61,7 @@ namespace BlazorForum.Libraries
 
         public static string DateTimeFormat(DateTime time)
         {
-            return time.ToString("dd MMM yyy HH:mm");
+            return time.ToString("d MMM yyy HH:mm");
         }
 
         public static string Initials(string name)

@@ -11,7 +11,7 @@
 @inject LibModerator LibModerator
 @inject LibExternal LibExternal
 
-<PageTitle>Topic</PageTitle>
+<PageTitle>ACCN Australia | @topicTitle</PageTitle>
 
 <div class="forum">
     <CompModeratorLogIn 
@@ -48,7 +48,13 @@
                             <span class="forum_faint">
                                 @LibFormat.DateTimeFormat(@comment.CreatedOn)
                                 <br />
-                                @comment.Views.ToString("0,0") @if (comment.Views == 1) { <span> view</span> } else { <span> views</span> }
+                                @comment.Views.ToString("##,#") @if (comment.Views == 1) {
+                                <span> view</span>
+                            } else
+                            {
+
+                                <span> views</span>
+                            }
                                 <br />
                                 @if (isModerator) { @comment.Ip <br /> }                    
                             </span>

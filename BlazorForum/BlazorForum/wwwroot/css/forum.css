@@ -406,6 +406,13 @@ input:disabled {
         width: 100%;
     }
 
+    div.forum {
+        background-color: rgb(240,240,240);
+        border: 0px;
+        border-radius: 0px;
+        padding: 10px;
+    }
+
     .desktop-only {
         display: none;
     }

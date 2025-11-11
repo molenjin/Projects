@@ -384,6 +384,7 @@ input:disabled {
     }
 
     .forum_content {
+        width: 100%;
         font-family: helvetica;
         font-size: 12pt;
     }

@@ -49,14 +49,29 @@
             string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
             string topicHidden = LibFormat.HiddenText(topic.Hidden);
 
-            <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
+            // Desktop
+            <span class="desktop-only">
+                <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
+                @if (@LibFormat.FlagExists(@topic.CountryCode))
+                {
+                    <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
+                }
+                <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+                <br />
+            </span>
 
-            if (@LibFormat.FlagExists(@topic.CountryCode))
-            {
-                <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
-            }
-            <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
-            <br />
+            // Mobile
+            <span class="mobile-only">
+                <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a></span>
+                <span>@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+                <br />
+                    <span class="forum_topic"><strong>@topicName</strong></span>
+                @if (@LibFormat.FlagExists(@topic.CountryCode))
+                {
+                    <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
+                }
+                <hr class="topic" />
+            </span>
         }            
     }
 

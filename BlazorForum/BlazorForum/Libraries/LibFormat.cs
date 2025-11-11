@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace BlazorForum.Libraries
@@ -61,7 +62,7 @@ namespace BlazorForum.Libraries
 
         public static string DateTimeFormat(DateTime time)
         {
-            return time.ToString("d MMM yyy HH:mm");
+            return time.ToString("d MMM yyy HH:mm", CultureInfo.CreateSpecificCulture("en-US"));
         }
 
         public static string Initials(string name)

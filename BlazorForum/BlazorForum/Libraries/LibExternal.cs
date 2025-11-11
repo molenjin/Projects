@@ -1,7 +1,5 @@
 ﻿using BlazorForum.Data;
-using BlazorForum.Database;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace BlazorForum.Libraries
 {
@@ -9,7 +7,7 @@ namespace BlazorForum.Libraries
     {
         public async Task<IpInfo> GetIpInfoAsync()
         {
-            string ip = "101.189.80.166"; //HttpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "0.0.0.0";
+            string ip = HttpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "0.0.0.0";
             using var httpClient = new HttpClient();
             var response = await httpClient.GetAsync($"http://ipinfo.io/{ip}");
             response.EnsureSuccessStatusCode();

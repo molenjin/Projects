@@ -17,6 +17,12 @@
 <body>
     @RenderBody()
 
+   <script> 
+        window.getWindowWidth = function () {
+            return window.innerWidth;
+        }; 
+    </script> 
+
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.

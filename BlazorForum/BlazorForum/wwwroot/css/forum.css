@@ -291,6 +291,10 @@ input:disabled {
     display: flex;
 }
 
+.flexdesktop {
+    display: flex;
+}
+
 .width50 {
     width: 50%;
 }
@@ -396,6 +400,10 @@ input:disabled {
 
     .right-desktop {
         text-align: left;
+    }
+
+    .flexdesktop {
+        display: inline-block;
     }
 
     .column {

@@ -32,7 +32,7 @@
     {
         foreach (var comment in @commentList)
         {
-            <div class="width100 flex">
+            <div class="width100 flexdesktop">
                 <div class="column20">
                     <div class="width100 flex">
                         <div class="full_width" style="padding: 0 10px 0 0">
@@ -52,7 +52,6 @@
                                 <span> view</span>
                             } else
                             {
-
                                 <span> views</span>
                             }
                                 <br />
@@ -61,6 +60,11 @@
                         </div>
                     </div>
                 </div>
+
+                <IsMobile>
+                    <div class="spacer10" />
+                </IsMobile>
+
                 <div class="column">
                     @if (@comment.Hidden == false)
                     {
@@ -73,8 +77,6 @@
                         @((MarkupString)LibFormat.CommentTextDecode(@comment.Text))
                         </span>
                     }
-                    <br />
-                    <br />
                     <CompCommentOptions 
                         IpInfo=@ipInfo 
                         Comment=@comment 

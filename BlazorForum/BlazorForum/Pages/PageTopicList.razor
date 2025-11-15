@@ -49,8 +49,7 @@
             string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
             string topicHidden = LibFormat.HiddenText(topic.Hidden);
 
-            // Desktop
-            <span class="desktop-only">
+            <IsDesktop>
                 <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
                 @if (@LibFormat.FlagExists(@topic.CountryCode))
                 {
@@ -58,10 +57,9 @@
                 }
                 <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
                 <br />
-            </span>
+                </IsDesktop>
 
-            // Mobile
-            <span class="mobile-only">
+            <IsMobile>
                 <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a></span>
                 <span>@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
                 <br />
@@ -71,7 +69,7 @@
                     <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
                 }
                 <hr class="topic" />
-            </span>
+            </IsMobile>
         }            
     }
 

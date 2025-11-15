@@ -13,65 +13,65 @@
 <PageTitle>ACCN Australia | Forum</PageTitle>
 
 <div class="forum">
-    <CompModeratorLogIn 
-        ipInfo=@ipInfo 
-        IsModerator=@isModerator 
-        OnModeratorLogIn=@OnModeratorLogIn>
+    <CompModeratorLogIn ipInfo=@ipInfo
+                        IsModerator=@isModerator
+                        OnModeratorLogIn=@OnModeratorLogIn>
     </CompModeratorLogIn>
 
-    <CompForumHeader 
-        ForumLinkOn=false 
-        ActionTitle="Start new topic" 
-        ActionLinkOn=true
-        OnActionLink=@OnAddNewTopicAsync>
+    <CompForumHeader ForumLinkOn=false
+                     ActionTitle="Start new topic"
+                     ActionLinkOn=true
+                     OnActionLink=@OnAddNewTopicAsync>
     </CompForumHeader>
+
     <br />
     <br />
 
-    <CompCommentEditDialog 
-        PostType=PostType.TopicNew
-        IsModerator=@isModerator
-        InputName=@inputName
-        InputTitle=@string.Empty
-        InputText=@string.Empty
-        OnEditCommentConfirmed=@OnAddNewTopicConfirmedAsync
-        ShowDialog=@showAddNewTopic>
+    <CompCommentEditDialog PostType=PostType.TopicNew
+                           IsModerator=@isModerator
+                           InputName=@inputName
+                           InputTitle=@string.Empty
+                           InputText=@string.Empty
+                           OnEditCommentConfirmed=@OnAddNewTopicConfirmedAsync
+                           ShowDialog=@showAddNewTopic>
     </CompCommentEditDialog>
 
     <big>
 
-    @if (@topicList != null)
-    {
-        foreach (var topic in @topicList)
+        @if (@topicList != null)
         {
-            string topicTitle = LibFormat.HtmlDecode(topic.Title);
-            string topicName = LibFormat.HtmlDecode(topic.Name);
-            string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
-            string topicHidden = LibFormat.HiddenText(topic.Hidden);
+            foreach (var topic in @topicList)
+            {
+                string topicTitle = LibFormat.HtmlDecode(topic.Title);
+                string topicName = LibFormat.HtmlDecode(topic.Name);
+                string topicLink = $"/topic/{topic.Id}/{LibFormat.TitleLink(topic.Title)}{LibFormat.NumberOfCommentsLink(topic.NumOfComments)}";
+                string topicHidden = LibFormat.HiddenText(topic.Hidden);
 
-            <IsDesktop>
-                <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
-                @if (@LibFormat.FlagExists(@topic.CountryCode))
-                {
-                    <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
-                }
-                <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
-                <br />
-                </IsDesktop>
+                // Desktop
+                <span class="desktop-only">
+                    <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a> - @topicName</span>
+                    @if (@LibFormat.FlagExists(@topic.CountryCode))
+                    {
+                        <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
+                    }
+                    <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+                    <br />
+                </span>
 
-            <IsMobile>
-                <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a></span>
-                <span>@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
-                <br />
+                // Mobile
+                <span class="mobile-only">
+                    <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a></span>
+                    <span>@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+                    <br />
                     <span class="forum_topic"><strong>@topicName</strong></span>
-                @if (@LibFormat.FlagExists(@topic.CountryCode))
-                {
-                    <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
-                }
-                <hr class="topic" />
-            </IsMobile>
-        }            
-    }
+                    @if (@LibFormat.FlagExists(@topic.CountryCode))
+                    {
+                        <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
+                    }
+                    <hr class="topic" />
+                </span>
+            }
+        }
 
     </big>
     <br />

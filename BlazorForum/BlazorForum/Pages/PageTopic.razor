@@ -34,37 +34,47 @@
         {
             <div class="width100 flexdesktop">
                 <div class="column20">
-                    <div class="width100 flex">
-                        <div class="full_width" style="padding: 0 10px 0 0">
+                    <div class="flexmobile">
+                        <div style="margin-right: 10px">
                             <CompBadge Name=@LibFormat.HtmlDecode(@comment.Name) Ip=@comment.Ip Moderator=@comment.Moderator></CompBadge>
-                            <div class="spacer6" />
-                            <strong>@LibFormat.HtmlDecode(@comment.Name)</strong>
-                            <div class="spacer4" />
-                            @if (@LibFormat.FlagExists(@comment.CountryCode))
-                            {
-                                <span><img src=@LibFormat.FlagLink(@comment.CountryCode)> @LibData.CountryName(@comment.CountryCode)</span>
-                                <br />
-                            }
+                        </div>
+                        <div class="spacer4 desktop-only" />
+                        <div>
+                            <div class="desktop-only">
+                                <strong>@LibFormat.HtmlDecode(@comment.Name)</strong>
+                                <div class="spacer4" />
+                                @if (@LibFormat.FlagExists(@comment.CountryCode))
+                                {  
+                                    <span>
+                                        <img src=@LibFormat.FlagLink(@comment.CountryCode)>
+                                        @LibData.CountryName(@comment.CountryCode)
+                                    </span>
+                                }
+                            </div>                            
+                            <div class="mobile-only">
+                                <strong>@LibFormat.HtmlDecode(@comment.Name)&nbsp;</strong>
+                                @if (@LibFormat.FlagExists(@comment.CountryCode))
+                                {
+                                    <img src=@LibFormat.FlagLink(@comment.CountryCode)>
+                                }
+                            </div>
                             <span class="forum_faint">
                                 @LibFormat.DateTimeFormat(@comment.CreatedOn)
                                 <br />
                                 @comment.Views.ToString("##,#") @if (comment.Views == 1) {
-                                <span> view</span>
-                            } else
-                            {
-                                <span> views</span>
-                            }
+                                    <span> view</span>
+                                } 
+                                else
+                                {
+                                    <span> views</span>
+                                }
                                 <br />
                                 @if (isModerator) { @comment.Ip <br /> }                    
                             </span>
                         </div>
-                    </div>
+                    </div>          
                 </div>
-
-                <IsMobile>
-                    <div class="spacer10" />
-                </IsMobile>
-
+                <div class="spacer20 mobile-only" />
                 <div class="column">
                     @if (@comment.Hidden == false)
                     {

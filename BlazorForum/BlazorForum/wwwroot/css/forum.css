@@ -295,6 +295,10 @@ input:disabled {
     display: flex;
 }
 
+.flexmobile {
+    display: block;
+}
+
 .width50 {
     width: 50%;
 }
@@ -320,9 +324,9 @@ input:disabled {
 }
 
 .round_badge {
-    width: 36px;
-    height: 36px;
-    font-size: 14pt;
+    width: 56px;
+    height: 56px;
+    font-size: 22pt;
     font-weight: bold;
     color: white;
     border-radius: 50%;
@@ -352,6 +356,15 @@ input:disabled {
 /*--- iPhone --------------------------------------*/
 
 @media only screen and (max-width: 640px) {
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: block;
+    }
+
     .small {
         font-family: helvetica;
         font-size: 10pt;
@@ -403,7 +416,11 @@ input:disabled {
     }
 
     .flexdesktop {
-        display: inline-block;
+        display: block;
+    }
+
+    .flexmobile {
+        display: flex;
     }
 
     .column {
@@ -421,11 +438,15 @@ input:disabled {
         padding: 10px;
     }
 
-    .desktop-only {
-        display: none;
+    hr.topic {
+        display: block;
+        border: none;
+        height: 6px;
+        color: rgb(220,220,220);
+        background-color: rgb(220,220,220);
+        border-color: rgb(220,220,220);
+        margin: 12px 0 12px 0;
+        opacity: 1;
     }
 
-    .mobile-only {
-        display: block;
-    }
 }

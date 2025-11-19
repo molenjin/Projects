@@ -12,29 +12,34 @@
 
 <PageTitle>ACCN Australia | Forum</PageTitle>
 
+<CompCommentEditDialog 
+    PostType=PostType.TopicNew
+    IsModerator=@isModerator
+    InputName=@inputName
+    InputTitle=@string.Empty
+    InputText=@string.Empty
+    OnEditCommentConfirmed=@OnAddNewTopicConfirmedAsync
+    ShowDialog=@showAddNewTopic>
+</CompCommentEditDialog>
+
 <div class="forum">
-    <CompModeratorLogIn ipInfo=@ipInfo
-                        IsModerator=@isModerator
-                        OnModeratorLogIn=@OnModeratorLogIn>
-    </CompModeratorLogIn>
 
-    <CompForumHeader ForumLinkOn=false
-                     ActionTitle="Start new topic"
-                     ActionLinkOn=true
-                     OnActionLink=@OnAddNewTopicAsync>
-    </CompForumHeader>
+    <div class="forum_header">
+        <div class="width100 flex">
+            <div class="width50 left flex">
+                <span class="desktop-only">ACCN Forum&nbsp;|&nbsp;</span>
+                <a class="header" href="" @onclick="@OnAddNewTopicAsync" @onclick:preventDefault>Start new topic</a>
+            </div>
+            <div class="width50 right">
+                <CompModeratorLogIn ipInfo=@ipInfo
+                                    IsModerator=@isModerator
+                                    OnModeratorLogIn=@OnModeratorLogIn>
+                </CompModeratorLogIn>
+            </div>
+        </div>
+    </div>
 
-    <br />
-    <br />
-
-    <CompCommentEditDialog PostType=PostType.TopicNew
-                           IsModerator=@isModerator
-                           InputName=@inputName
-                           InputTitle=@string.Empty
-                           InputText=@string.Empty
-                           OnEditCommentConfirmed=@OnAddNewTopicConfirmedAsync
-                           ShowDialog=@showAddNewTopic>
-    </CompCommentEditDialog>
+    <div class="spacer20" />
 
     <big>
 

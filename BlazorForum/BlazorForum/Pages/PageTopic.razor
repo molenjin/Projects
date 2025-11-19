@@ -14,19 +14,27 @@
 <PageTitle>ACCN Australia | @topicTitle</PageTitle>
 
 <div class="forum">
-    <CompModeratorLogIn 
-        ipInfo=@ipInfo 
-        IsModerator=@isModerator 
-        OnModeratorLogIn=@OnModeratorLogIn>
-    </CompModeratorLogIn>
 
-    <CompForumHeader 
-        ForumLinkOn=true 
-        ActionTitle=@topicTitle 
-        ActionLinkOn=false>
-    </CompForumHeader>
-    <br />
-    <br />
+    <div class="forum_header">
+        <div class="width100 flex">
+            <div class="width50 left">
+                <a class="header" href="/">Back to topic list</a>
+            </div>   
+            <div class="width50 right">
+                <CompModeratorLogIn 
+                    ipInfo=@ipInfo
+                    IsModerator=@isModerator
+                    OnModeratorLogIn=@OnModeratorLogIn>
+                </CompModeratorLogIn>
+            </div>
+        </div>
+        <div class="spacer20" />
+        <div>
+            @LibFormat.HtmlDecode(@topicTitle )
+        </div>
+    </div>
+
+    <div class="spacer20" />
 
     @if (@commentList != null)
     {

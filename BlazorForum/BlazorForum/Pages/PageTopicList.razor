@@ -25,15 +25,16 @@
 <div class="forum">
 
     <div class="forum_header">
-        <div class="width100 flex">
-            <div class="width50 left flex">
-                <span class="desktop-only">ACCN Forum&nbsp;|&nbsp;</span>
-                <a class="header" href="" @onclick="@OnAddNewTopicAsync" @onclick:preventDefault>Start new topic</a>
+        <div class="width100 flex space-between">
+            <div class="left flex">
+                <span>ACCN Forum&nbsp;|&nbsp;</span>
+                <a class="header" href="" @onclick="@OnAddNewTopicAsync" @onclick:preventDefault>New topic</a>
             </div>
-            <div class="width50 right">
-                <CompModeratorLogIn ipInfo=@ipInfo
-                                    IsModerator=@isModerator
-                                    OnModeratorLogIn=@OnModeratorLogIn>
+            <div class="right">
+                <CompModeratorLogIn 
+                    ipInfo=@ipInfo
+                    IsModerator=@isModerator
+                    OnModeratorLogIn=@OnModeratorLogIn>
                 </CompModeratorLogIn>
             </div>
         </div>

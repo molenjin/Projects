@@ -16,11 +16,12 @@
 <div class="forum">
 
     <div class="forum_header">
-        <div class="width100 flex">
-            <div class="width50 left">
-                <a class="header" href="/">Back to topic list</a>
+        <div class="flex space-between">
+            <div class="left">
+                <span>ACCN Forum&nbsp;|&nbsp;</span>
+                <a class="header" href="/">Topic list</a>
             </div>   
-            <div class="width50 right">
+            <div class="right">
                 <CompModeratorLogIn 
                     ipInfo=@ipInfo
                     IsModerator=@isModerator
@@ -28,13 +29,13 @@
                 </CompModeratorLogIn>
             </div>
         </div>
-        <div class="spacer20" />
-        <div>
-            @LibFormat.HtmlDecode(@topicTitle )
+        <div class="spacer10" />
+        <div class="white back-black padding10" style="border-radius: 4px">
+            @LibFormat.HtmlDecode(@topicTitle)
         </div>
     </div>
 
-    <div class="spacer20" />
+    <div class="spacer10" />
 
     @if (@commentList != null)
     {

@@ -218,8 +218,13 @@ hr.topic {
     padding: 20px;
 }
 
-/*--- Text field ----------------------------------*/
+/*--- Spacing -------------------------------------*/
 
+.space-between {
+    justify-content: space-between
+}
+
+/*--- Text field ----------------------------------*/
 .textfield {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -297,10 +302,6 @@ input:disabled {
 
 .flexmobile {
     display: block;
-}
-
-.width50 {
-    width: 50%;
 }
 
 .width100 {

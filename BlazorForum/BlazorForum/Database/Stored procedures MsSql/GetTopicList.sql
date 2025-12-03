@@ -1,6 +1,6 @@
 ﻿USE [accnaust]
 GO
-/****** Object:  StoredProcedure [dbo].[GetTopicList]    Script Date: 5/10/2025 9:49:37 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetTopicList]    Script Date: 3/12/2025 8:44:49 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -17,6 +17,9 @@ BEGIN
 		, U.Active
 		, U.Moderator
 		, T.Hidden
+		, T.Views
+        , T.CreatedOn
+        , T.ModifiedOn
 		, (SELECT COUNT(C.ID) FROM Comments C WHERE C.TopicID = T.ID AND C.Hidden = 0) AS NumOfComments
 		, (SELECT MAX(C.CreatedOn) FROM Comments C WHERE (C.TopicID = T.ID OR C.ID = T.ID)) AS LastCommentOn
 	FROM Comments T

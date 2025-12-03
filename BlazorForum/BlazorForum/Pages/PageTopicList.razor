@@ -74,6 +74,10 @@
                     {
                         <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
                     }
+                    <br />
+                    <span class="forum_faint">
+                        @LibFormat.DateFormat(@topic.CreatedOn) | @LibFormat.Views(@topic.Views)
+                    </span>
                     <hr class="topic" />
                 </span>
             }

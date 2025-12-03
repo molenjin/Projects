@@ -60,9 +60,19 @@ namespace BlazorForum.Libraries
             return $"/Images/Emoticons/{emoticonName}.svg";
         }
 
+        public static string DateFormat(DateTime time)
+        {
+            return time.ToString("d MMM yyy", CultureInfo.CreateSpecificCulture("en-US"));
+        }
+
         public static string DateTimeFormat(DateTime time)
         {
             return time.ToString("d MMM yyy HH:mm", CultureInfo.CreateSpecificCulture("en-US"));
+        }
+
+        public static string Views(int views)
+        {
+            return views.ToString("##,#") + " " + (views == 1 ? "view" : "views");
         }
 
         public static string Initials(string name)

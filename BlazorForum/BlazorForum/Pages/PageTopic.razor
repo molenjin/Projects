@@ -70,13 +70,7 @@
                             <span class="forum_faint">
                                 @LibFormat.DateTimeFormat(@comment.CreatedOn)
                                 <br />
-                                @comment.Views.ToString("##,#") @if (comment.Views == 1) {
-                                    <span> view</span>
-                                } 
-                                else
-                                {
-                                    <span> views</span>
-                                }
+                                @LibFormat.Views(@comment.Views)
                                 <br />
                                 @if (isModerator) { @comment.Ip <br /> }                    
                             </span>

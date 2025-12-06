@@ -98,6 +98,10 @@
 
 /*--- Text style ----------------------------------*/
 
+.plain {
+    font-weight: normal;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -304,6 +308,16 @@ input:disabled {
     display: block;
 }
 
+.paddingdesktop10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.paddingmobile10 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .width100 {
     width: 100%;
 }
@@ -422,6 +436,16 @@ input:disabled {
 
     .flexmobile {
         display: flex;
+    }
+
+    .paddingdesktop10 {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .paddingmobile10 {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .column {

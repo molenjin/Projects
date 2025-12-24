@@ -86,7 +86,7 @@ namespace BlazorForum.Libraries
             if (name == null || name == string.Empty)
                 return "NN";
 
-            string[] parts = name.Replace("'", "").Trim().Split(' ', '.', ',', '-', '/', '&');
+            string[] parts = name.Replace("'", "").Trim().Split(' ', '.', ',', '-', ':', ';', '/', '&');
 
             foreach (string part in parts)
             {

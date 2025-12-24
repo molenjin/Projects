@@ -23,9 +23,15 @@ namespace BlazorForum.Libraries
             return titleLink;
         }
 
-        public static string NumberOfCommentsText(int numOfComments)
+        public static string NumOfCommentsTextDesktop(int numOfComments)
         {
             return numOfComments == 0 ? " " : $"({numOfComments})";
+        }
+
+        public static string NumOfCommentsTextMobile(int numOfComments)
+        {
+            string commentsWord = numOfComments == 1 ? "comment" : "comments";
+            return numOfComments == 0 ? " " : $" | {numOfComments} {commentsWord}";
         }
 
         public static string NumberOfCommentsLink(int numOfComments)

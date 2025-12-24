@@ -60,14 +60,13 @@
                     {
                         <span>&nbsp;<img src=@LibFormat.FlagLink(@topic.CountryCode)></span>
                     }
-                    <span>&nbsp;@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+                    <span>&nbsp;@LibFormat.NumOfCommentsTextDesktop(@topic.NumOfComments)</span>
                     <br />
                 </span>
 
                 // Mobile
                 <span class="mobile-only">
-                    <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a></span>
-                    <span>@LibFormat.NumberOfCommentsText(@topic.NumOfComments)</span>
+                    <span>@topicHidden<a class="topiclist forum_topic" href=@topicLink>@topicTitle</a></span>         
                     <br />
                     <span class="forum_topic"><strong>@topicName</strong></span>
                     @if (@LibFormat.FlagExists(@topic.CountryCode))
@@ -76,7 +75,7 @@
                     }
                     <br />
                     <span class="forum_content grey">
-                        @LibFormat.DateFormat(@topic.CreatedOn) | @LibFormat.Views(@topic.Views)
+                        @LibFormat.DateFormat(@topic.CreatedOn) | @LibFormat.Views(@topic.Views) @LibFormat.NumOfCommentsTextMobile(@topic.NumOfComments)
                     </span>
                     <hr class="topic" />
                 </span>

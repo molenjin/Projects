@@ -88,6 +88,14 @@ namespace BlazorForum.Libraries
 
             string[] parts = name.Replace("'", "").Trim().Split(' ', '.', ',', '-', '/', '&');
 
+            foreach (string part in parts)
+            {
+                if (part.Length == 0)
+                {
+                    parts = parts.Where(p => p != part).ToArray();
+                }
+            }
+
             if (parts.Length == 0)
                 return "NN";
 

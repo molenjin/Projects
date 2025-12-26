@@ -147,6 +147,7 @@ namespace BlazorForum.Libraries
             result = result.Trim(rn);
 
             // Line breaks
+            result = result.Replace("\n", "<br />\n");
             result = result.Replace("\r\n", "<br />\r\n");
             result = result.Replace("\n\n", "\r\n<br />\r\n<br />\r\n");
 

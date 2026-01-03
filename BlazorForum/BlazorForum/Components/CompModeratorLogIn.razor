@@ -8,8 +8,13 @@
     Disabled=@IsModerator
     OnClick=@OnLogIn>
     <EditForm FormName="ModeratorLogIn" Model="this" OnSubmit="SubmitPasswordAsync">
+        <div class="normal plain padding10">   
+        <div class="width100 left">Password</div>
+        <div class="spacer4" />
         <InputText @bind-Value=@inputPassword class="textfield" type="password" tabindex="1" size="20" maxlength="20" />
+        <div class="spacer10"/>
         <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
     </EditForm>
 </CompPopover>
 
@@ -45,6 +50,8 @@
 
     private void OnLogIn()
     {
+        inputPassword = string.Empty;
+
         if (IsModerator)
         {
             showSignOutConfirmation = true;

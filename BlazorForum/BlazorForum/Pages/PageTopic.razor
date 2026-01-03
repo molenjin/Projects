@@ -228,14 +228,15 @@
     {
         try
         {
+            // Increment topic views, it must come before getting comments
+            await DatabaseCalls.IncTopicViewsAsync(TopicId);
+
             commentList = await DatabaseCalls.GetCommentListAsync(TopicId, showAll: isModerator);
 
             if (commentList.Count != 0)
             {
                 topicTitle = commentList.First().Title ?? string.Empty;
-                topicClosed = commentList.First().Closed;
-
-                await DatabaseCalls.IncTopicViewsAsync(TopicId);
+                topicClosed = commentList.First().Closed;                
             }      
         }
         finally { }

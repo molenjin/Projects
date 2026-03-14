@@ -150,7 +150,7 @@
         }
         catch (Exception ex)
         {
-            await LibExternal.SendEmailAsync(nameof(PageTopic), ex);
+            await LibExternal.SendExceptionEmailAsync(nameof(PageTopic), ex);
         }
     }
 

@@ -223,7 +223,7 @@
         }
         catch (Exception ex)
         {
-            await LibExternal.SendEmailAsync(nameof(SubmitCommentAsync), ex);
+            await LibExternal.SendExceptionEmailAsync(nameof(SubmitCommentAsync), ex);
         }
         return true;
     }

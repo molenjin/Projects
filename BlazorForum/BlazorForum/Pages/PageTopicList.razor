@@ -119,7 +119,7 @@
         }
         catch (Exception ex)
         {
-            await LibExternal.SendEmailAsync(nameof(PageTopicList), ex);
+            await LibExternal.SendExceptionEmailAsync(nameof(PageTopicList), ex);
         }
     }
 
@@ -175,7 +175,7 @@
         }
         catch (Exception ex)
         {
-            await LibExternal.SendEmailAsync(nameof(PageTopicList), ex);
+            await LibExternal.SendExceptionEmailAsync(nameof(PageTopicList), ex);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace BlazorForum.Libraries
             }
             catch (Exception ex)
             {
-                await LibExternal.SendEmailAsync(nameof(IsModeratorAsync), ex);
+                await LibExternal.SendExceptionEmailAsync(nameof(IsModeratorAsync), ex);
             }
             return false;
         }
@@ -33,7 +33,7 @@ namespace BlazorForum.Libraries
             }
             catch (Exception ex)
             {
-                await LibExternal.SendEmailAsync(nameof(ModeratorLogInAsync), ex);
+                await LibExternal.SendExceptionEmailAsync(nameof(ModeratorLogInAsync), ex);
             }
         }
 
@@ -45,7 +45,7 @@ namespace BlazorForum.Libraries
             }
             catch (Exception ex)
             {
-                await LibExternal.SendEmailAsync(nameof(ModeratorLogOutAsync), ex);
+                await LibExternal.SendExceptionEmailAsync(nameof(ModeratorLogOutAsync), ex);
             }
         }
     }

@@ -124,6 +124,12 @@
     text-align: right;
 }
 
+/*--- Vertical alignment --------------------------*/
+
+.vcenter {
+    align-items: center;
+}
+
 a, img {
     border: none;
     outline: none;

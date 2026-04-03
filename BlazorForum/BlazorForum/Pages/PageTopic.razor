@@ -5,6 +5,7 @@
 @using BlazorForum.Libraries
 @using BlazorForum.Components
 
+@inject NavigationManager NavigationManager
 @inject IDatabaseCalls DatabaseCalls
 @inject LibData LibData
 @inject LibFormat LibFormat
@@ -21,12 +22,10 @@
                 <span>ACCN Forum&nbsp;|&nbsp;</span>
                 <a class="header" href="/">Topic list</a>
             </div>   
-            <div class="right">
-                <CompModeratorLogIn 
-                    ipInfo=@ipInfo
-                    IsModerator=@isModerator
-                    OnModeratorLogIn=@OnModeratorLogIn>
-                </CompModeratorLogIn>
+            <div class="right vcenter">
+                <a href="/topic/@TopicId/@Title/@NumOfComments/#comment-last">
+                    <i class="fa fa-arrow-circle-o-down" aria-hidden="true" style="font-size: 28px; color: royalblue"></i>
+                </a>
             </div>
         </div>
         <div class="spacer10" />
@@ -35,13 +34,15 @@
         </div>
     </div>
 
-    <div class="spacer10" />
+    <div class="spacer20" />
 
     @if (@commentList != null)
     {
         foreach (var comment in @commentList)
         {
-            <div class="width100 flexdesktop">
+            if (comment == commentList.Last()) commentId = "comment-last"; else commentId = "comment-" + commentList.IndexOf(comment).ToString();
+
+            <div id=@commentId class="width100 flexdesktop">
                 <div class="column20">
                     <div class="flexmobile">
                         <div style="margin-right: 10px">
@@ -114,7 +115,16 @@
             ShowDialog=@showAddNewComment>
         </CompCommentEditDialog>
 
-        <button class="btn btn-primary" @onclick=@OnAddNewCommentAsync>Add new comment</button>
+        <div class="width100 flex space-between">
+            <div class="left flex vcenter">
+                <button class="btn btn-primary" @onclick=@OnAddNewCommentAsync>Add new comment</button>
+            </div>
+            <div class="right vcenter">
+                <a href="/topic/@TopicId/@Title/@NumOfComments/#header">
+                    <i id="arrow-up" class="fa fa-arrow-circle-o-up" aria-hidden="true" style="font-size: 28px; color: royalblue"></i>
+                </a>
+            </div>
+        </div>
     }
 </div>
 
@@ -133,6 +143,8 @@
     private List<Comment>? commentList;
     private string topicTitle = String.Empty;
     private bool topicClosed;
+
+    private string commentId = String.Empty;
 
     private string inputName = String.Empty;
     private bool showAddNewComment = false;

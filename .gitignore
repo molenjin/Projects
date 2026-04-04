@@ -61,3 +61,4 @@
 /BlazorForum/BlazorForum/Properties/PublishProfiles/FTPProfile.pubxml.user
 /BlazorForum/BlazorForum/obj/BlazorForum.csproj.EntityFrameworkCore.targets
 /BlazorForum/BlazorForum/.config/dotnet-tools.json
+/BlazorForum/BlazorForum/bin/Debug/net9.0/web.config

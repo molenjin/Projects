@@ -9,7 +9,7 @@
 <CompModalDialog 
     Title=@dialogTitle
     LeftBtnText="Submit"
-    IsLeftBtnDisabled="@isOriginalContent"
+    IsLeftBtnDisabled="@(originalContent == editedName + editedTitle + editedText)"
     RightBtnText="Cancel"
     OnClose=@EditCommentOnClose
     ShowDialog=@ShowDialog>
@@ -103,9 +103,11 @@
 
     private int rowsText;    
 
-    public bool isOriginalContent { get; set; } = true;
-
     private string originalContent = string.Empty;
+
+    private string editedName = string.Empty;
+    private string editedTitle = string.Empty;
+    private string editedText = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -122,7 +124,10 @@
         }
 
         originalContent = InputName + InputTitle + InputText;
-        isOriginalContent = true;
+
+        editedName = InputName;
+        editedTitle = InputTitle;
+        editedText = InputText;
 
         isUpdate = PostType == PostType.TopicUpdate || PostType == PostType.CommentUpdate;
 
@@ -132,19 +137,16 @@
     private void OnInputNameChange(ChangeEventArgs e)
     {
         InputName = e.Value?.ToString() ?? string.Empty;
-        isOriginalContent = (originalContent == InputName + InputTitle + InputText);
     }
 
     private void OnInputTitleChange(ChangeEventArgs e)
     {
         InputTitle = e.Value?.ToString() ?? string.Empty;
-        isOriginalContent = (originalContent == InputName + InputTitle + InputText);
     }
 
     private void OnInputTextChange(ChangeEventArgs e)
     {
-        InputText = e.Value?.ToString() ?? string.Empty;
-        isOriginalContent = (originalContent == InputName + InputTitle + InputText);
+        editedText = e.Value?.ToString() ?? string.Empty;
     }
 
     private async void EditCommentOnClose(bool editConfirmed)

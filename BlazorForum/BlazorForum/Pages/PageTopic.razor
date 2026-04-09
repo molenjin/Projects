@@ -23,9 +23,12 @@
                 <a class="header" href="/">Topic list</a>
             </div>   
             <div class="right vcenter">
-                <a href="/topic/@TopicId/@Title/@NumOfComments/#comment-last">
-                    <i class="fa fa-arrow-circle-o-down" aria-hidden="true" style="font-size: 28px; color: royalblue"></i>
-                </a>
+                @if (NumOfComments > 5)
+                {
+                    <a href="/topic/@TopicId/@Title/@NumOfComments/#comment-last">
+                        <i class="fa fa-arrow-circle-o-down" aria-hidden="true" style="font-size: 28px; color: royalblue"></i>
+                    </a>
+                }
             </div>
         </div>
         <div class="spacer10" />
@@ -120,9 +123,12 @@
                 <button class="btn btn-primary" @onclick=@OnAddNewCommentAsync>Add new comment</button>
             </div>
             <div class="right vcenter">
-                <a href="/topic/@TopicId/@Title/@NumOfComments/#header">
-                    <i id="arrow-up" class="fa fa-arrow-circle-o-up" aria-hidden="true" style="font-size: 28px; color: royalblue"></i>
-                </a>
+                @if (NumOfComments > 5)
+                {
+                    <a href="/topic/@TopicId/@Title/@NumOfComments/#header">
+                        <i id="arrow-up" class="fa fa-arrow-circle-o-up" aria-hidden="true" style="font-size: 28px; color: royalblue"></i>
+                    </a>
+                }
             </div>
         </div>
     }

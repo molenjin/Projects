@@ -1,5 +1,0 @@
-﻿CREATE DEFINER=`accnaust_ACCN`@`101.185.215.189` PROCEDURE `GetNextCommentID`()
-BEGIN
-	SELECT COALESCE(MAX(C.ID), 1000) + 1 AS NextCommentID
-	FROM Comment C;
-END

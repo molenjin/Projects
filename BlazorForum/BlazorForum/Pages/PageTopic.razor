@@ -103,6 +103,10 @@
                         OnHideCommentConfirmed=@OnHideCommentConfirmedAsync
                         OnUnhideCommentConfirmed=@OnUnhideCommentConfirmedAsync>
                     </CompCommentOptions>
+
+                    <CompCommentReactions
+                        Comment=@comment>
+                    </CompCommentReactions>
                 </div>
             </div>
             <hr class="topic">
@@ -249,7 +253,9 @@
             // Increment topic views, it must come before getting comments
             await DatabaseCalls.IncTopicViewsAsync(TopicId);
 
-            commentList = await DatabaseCalls.GetCommentListAsync(TopicId, showAll: isModerator);
+            string userIP = ipInfo?.Ip ?? string.Empty;
+
+            commentList = await DatabaseCalls.GetCommentListAsync(TopicId, showAll: isModerator, userIP: userIP);
 
             if (commentList.Count != 0)
             {

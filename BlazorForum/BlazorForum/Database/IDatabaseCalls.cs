@@ -6,7 +6,7 @@ namespace BlazorForum.Database
     public interface IDatabaseCalls
     {        
         Task<List<Topic>> GetTopicListAsync(bool showAll, int pageNo, int pageLimit);
-        Task<List<Comment>> GetCommentListAsync(int topicId, bool showAll);
+        Task<List<Comment>> GetCommentListAsync(int topicId, bool showAll, string userIP);
         Task<int> GetNumOfTopicsAsync(bool showAll);
         Task<int> GetNextCommentIdAsync();
         Task<int> GetNextUserIdAsync();

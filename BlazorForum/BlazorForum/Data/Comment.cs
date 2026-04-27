@@ -17,6 +17,7 @@ namespace BlazorForum.Data
         public bool Hidden { get; set; }
         public bool Closed { get; set; }
         public int Views { get; set; }
+        public char Reaction { get; set; } = default;
         public string Reactions { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }

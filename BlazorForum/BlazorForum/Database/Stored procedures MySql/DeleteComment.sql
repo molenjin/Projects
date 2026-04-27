@@ -1,6 +1,0 @@
-﻿CREATE DEFINER=`accnaust_ACCN`@`101.189.80.166` PROCEDURE `DeleteComment`(CommentID INT)
-BEGIN
-	DELETE FROM Comment
-	WHERE ID = CommentID
-	LIMIT 1;
-END

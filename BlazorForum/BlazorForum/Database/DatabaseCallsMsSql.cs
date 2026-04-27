@@ -37,9 +37,9 @@ namespace BlazorForum.Database
             return await GetStoredProcResultListAsync<Topic>("GetTopicList", param);
         }
 
-        public async Task<List<Comment>> GetCommentListAsync(int topicId, bool showAll)
+        public async Task<List<Comment>> GetCommentListAsync(int topicId, bool showAll, string userIP)
         {
-            var param = new { TopicId = topicId, ShowAll = showAll };
+            var param = new { TopicId = topicId, ShowAll = showAll, UserIP = userIP };
             return await GetStoredProcResultListAsync<Comment>("GetCommentList", param);
         }
 

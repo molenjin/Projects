@@ -124,7 +124,14 @@
 
         <div class="width100 flex space-between">
             <div class="left flex vcenter">
-                <button class="btn btn-primary" @onclick=@OnAddNewCommentAsync>Add new comment</button>
+                @if (topicClosed)
+                {
+                    <span class="bold"> - This topic is closed - </span>
+                }
+                else
+                {
+                    <button class="btn btn-primary" @onclick=@OnAddNewCommentAsync>Add new comment</button>
+                }
             </div>
             <div class="right vcenter">
                 @if (NumOfComments > 5)
